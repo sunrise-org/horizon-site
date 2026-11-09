@@ -43,6 +43,8 @@ S3 stores the original bytes. SQLite stores metadata, hashed delete tokens, byte
 
 `deploy/` contains the umceko cluster resources for namespace `sunrise`: a single site replica with persistent metadata, a dedicated RustFS instance with a 1 GiB `local-path` volume, and the retention CronJob. Keep one site replica while SQLite is used. The public hostname is supplied by the `site-domain` ConfigMap's `SITE_URL`; it is also passed to the image build as `--build-arg SITE_URL=https://your-host` for canonical links.
 
+The cluster's cert-manager controller must include the [1.16.4 Cloudflare API compatibility fix](https://cert-manager.io/docs/releases/release-notes/release-notes-1.16/) or a later release. During this deployment the controller was patched from 1.16.2 to 1.16.4; its webhook and CA injector were left unchanged. Without that fix, DNS challenges validate but cannot clean up, which blocks the next challenge and renewals.
+
 Apply `deploy/domain.yaml` for the domain, namespace-local DNS issuer, wildcard certificate and gateway routes. The `sunrise-dns` Secret holds a Cloudflare token scoped to DNS editing and zone reading for playsunrise.net.
 
 The `perf-storage` Kubernetes Secret holds `PERF_S3_ACCESS_KEY`, `PERF_S3_SECRET_KEY` and `PERF_SWEEP_TOKEN`. Generate independent random values; never commit them. The deployment reads them directly, and the RustFS console is disabled.
