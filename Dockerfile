@@ -5,6 +5,8 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 ARG GITHUB_TOKEN
+ARG SITE_URL
+ENV SITE_URL=$SITE_URL
 RUN npm run build
 
 FROM node:24-bookworm-slim
@@ -15,6 +17,8 @@ COPY --from=build --chown=node:node /app/.next/static ./.next/static
 COPY --from=build --chown=node:node /app/public ./public
 COPY --from=build --chown=node:node /app/content ./content
 COPY --from=build --chown=node:node /app/assets ./assets
+COPY --from=build --chown=node:node /app/scripts/perf-validate.mjs ./scripts/perf-validate.mjs
+COPY --from=build --chown=node:node /app/lib/perf/generated/horizon_perf.js ./lib/perf/generated/horizon_perf.js
 RUN mkdir -p .data && chown node:node .data
 USER node
 EXPOSE 8080

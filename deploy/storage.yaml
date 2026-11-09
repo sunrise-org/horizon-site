@@ -1,0 +1,100 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: captures
+  namespace: sunrise
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: metadata
+  namespace: sunrise
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 256Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rustfs
+  namespace: sunrise
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: sunrise-rustfs
+  template:
+    metadata:
+      labels:
+        app: sunrise-rustfs
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+      containers:
+        - name: rustfs
+          image: docker.io/rustfs/rustfs:1.0.4
+          ports:
+            - containerPort: 9000
+          env:
+            - name: RUSTFS_VOLUMES
+              value: /data
+            - name: RUSTFS_CONSOLE_ENABLE
+              value: "false"
+            - name: RUSTFS_OBS_LOGGER_LEVEL
+              value: warn
+            - name: RUSTFS_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: perf-storage
+                  key: PERF_S3_ACCESS_KEY
+            - name: RUSTFS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: perf-storage
+                  key: PERF_S3_SECRET_KEY
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+          readinessProbe:
+            tcpSocket:
+              port: 9000
+          volumeMounts:
+            - name: captures
+              mountPath: /data
+            - name: logs
+              mountPath: /logs
+      volumes:
+        - name: captures
+          persistentVolumeClaim:
+            claimName: captures
+        - name: logs
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rustfs
+  namespace: sunrise
+spec:
+  selector:
+    app: sunrise-rustfs
+  ports:
+    - port: 9000
+      targetPort: 9000

@@ -1,0 +1,36 @@
+diff --git a/crates/horizon-perf-format/proto/horizon/perf/v1/capture.proto b/crates/horizon-perf-format/proto/horizon/perf/v1/capture.proto
+index ab16610ecb..68b4b458d8 100644
+--- a/crates/horizon-perf-format/proto/horizon/perf/v1/capture.proto
++++ b/crates/horizon-perf-format/proto/horizon/perf/v1/capture.proto
+@@ -85,12 +85,14 @@ enum Trigger {
+   TRIGGER_UNSPECIFIED = 0;
+   TRIGGER_CONSOLE = 1;
+   TRIGGER_CTL = 2;
+-  // F3+O.
++  // F3+O, in captures from before /profiler.
+   TRIGGER_KEY = 3;
+   TRIGGER_ENV = 4;
+   TRIGGER_BENCHMARK = 5;
+   // Requested by a client over horizon:perf.
+   TRIGGER_REMOTE = 6;
++  // /profiler in chat.
++  TRIGGER_COMMAND = 7;
+ }
+ 
+ message Start {
+diff --git a/crates/horizon-perf/src/wire.rs b/crates/horizon-perf/src/wire.rs
+index b3a26c24dc..da3390f4f2 100644
+--- a/crates/horizon-perf/src/wire.rs
++++ b/crates/horizon-perf/src/wire.rs
+@@ -366,9 +366,10 @@ vocab! {
+         Env = "env",
+         Benchmark = "benchmark",
+         Remote = "remote",
++        Command = "command",
+     }
+ }
+-mirror!(TriggerName <- Trigger { Unspecified, Console, Ctl, Key, Env, Benchmark, Remote });
++mirror!(TriggerName <- Trigger { Unspecified, Console, Ctl, Key, Env, Benchmark, Remote, Command });
+ 
+ vocab! {
+     SymbolsName {

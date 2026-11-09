@@ -1,0 +1,136 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: site
+  namespace: sunrise
+data:
+  PERF_S3_ENDPOINT: http://rustfs:9000
+  PERF_S3_BUCKET: captures
+  PERF_DATABASE: /app/.data/perf.sqlite
+  PERF_STORAGE_BYTES: "1073741824"
+  PERF_MAX_BYTES: "67108864"
+  PERF_SHARED_DAYS: "30"
+  PERF_HOURLY_UPLOADS: "20"
+  PERF_TRUST_PROXY: "true"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: site
+  namespace: sunrise
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: sunrise-site
+  template:
+    metadata:
+      labels:
+        app: sunrise-site
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: site
+          image: hub.umceko.com/sunrise/site@sha256:8f91a73389daf6293f3673d7ea54b55c00317893a3344b79671d612f3276c813
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: site
+            - secretRef:
+                name: perf-storage
+          env:
+            - name: PERF_PUBLIC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: site-domain
+                  key: SITE_URL
+            - name: SITE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: site-domain
+                  key: SITE_URL
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "2"
+              memory: 1Gi
+          readinessProbe:
+            httpGet:
+              path: /perf
+              port: 8080
+            initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /perf
+              port: 8080
+            initialDelaySeconds: 30
+          volumeMounts:
+            - name: metadata
+              mountPath: /app/.data
+      volumes:
+        - name: metadata
+          persistentVolumeClaim:
+            claimName: metadata
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: site
+  namespace: sunrise
+spec:
+  selector:
+    app: sunrise-site
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: capture-sweep
+  namespace: sunrise
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 180
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: sweep
+              image: docker.io/curlimages/curl:8.16.0
+              args:
+                - --fail-with-body
+                - --max-time
+                - "120"
+                - --request
+                - POST
+                - --header
+                - "Authorization: Bearer $(PERF_SWEEP_TOKEN)"
+                - http://site/api/perf/sweep
+              env:
+                - name: PERF_SWEEP_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: perf-storage
+                      key: PERF_SWEEP_TOKEN
+              resources:
+                requests:
+                  cpu: 5m
+                  memory: 8Mi
+                limits:
+                  memory: 32Mi

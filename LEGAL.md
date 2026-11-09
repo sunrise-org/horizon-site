@@ -88,3 +88,7 @@ The Contributors block lists the GitHub accounts that have committed to Horizon:
 commit count and profile link, from GitHub's API. Their avatars are not stored in this repository;
 the visitor's browser loads them from `avatars.githubusercontent.com`, each one the picture its
 owner chose for their GitHub account. Bots are left out.
+
+## Performance viewer
+
+The code under `app/perf/`, `app/api/perf/` and `lib/perf/`, the WASM reader and the Horizon icon under `public/perf/` are Horizon's original MIT code and artwork, moved from [sunrise-org/horizon](https://github.com/sunrise-org/horizon). The exact reader source revision is recorded in `vendor/perf/manifest.json`; any uncommitted reader changes are in `vendor/perf/source.patch`. The Geist and Geist Mono fonts in `public/perf/fonts/` retain their SIL Open Font License in `OFL-Geist.txt` beside the files.

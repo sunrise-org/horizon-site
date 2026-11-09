@@ -1,0 +1,48 @@
+name: perf
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: perf-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      rustfs:
+        image: rustfs/rustfs:1.0.4
+        env:
+          RUSTFS_VOLUMES: /data
+          RUSTFS_CONSOLE_ENABLE: "false"
+          RUSTFS_ACCESS_KEY: ci-perf-test
+          RUSTFS_SECRET_KEY: ci-only-perf-test-storage
+        ports:
+          - 9000:9000
+    env:
+      PERF_S3_ENDPOINT: http://127.0.0.1:9000
+      PERF_S3_BUCKET: captures-test
+      PERF_S3_ACCESS_KEY: ci-perf-test
+      PERF_S3_SECRET_KEY: ci-only-perf-test-storage
+      PERF_DATABASE: /tmp/perf-ci.sqlite
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run perf:check
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run build
+      - name: Assemble and test the production server with real S3 storage
+        run: |
+          cp -r public .next/standalone/
+          cp -r .next/static .next/standalone/.next/
+          npm run test:api

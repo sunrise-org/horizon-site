@@ -3,7 +3,7 @@ import { getMessages, OG_LOCALE, type Locale } from "@/components/i18n";
 import { DISCORD_URL, GITHUB_URL } from "@/components/links";
 import en from "@/messages/en.json";
 
-export const SITE_URL = (process.env.SITE_URL || "https://playhorizon.dev").replace(/\/+$/, "");
+export const SITE_URL = (process.env.SITE_URL || "https://playsunrise.net").replace(/\/+$/, "");
 export const SITE_HOST = new URL(SITE_URL).host;
 export const SITE_NAME = "Horizon";
 export const SITE_TITLE = en.meta.title;
