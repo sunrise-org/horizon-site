@@ -1,6 +1,6 @@
 # Horizon's website
 
-Live at **https://playhorizon.dev**. The game, the launcher and their developer docs are in
+This fork runs at **https://playsunrise.net** on the umceko cluster, in namespace `sunrise`. The upstream site is https://playhorizon.dev. The game, the launcher and their developer docs are in
 [horizon-rust/horizon](https://github.com/horizon-rust/horizon); this repository is only the site.
 
 The site is a Next.js 16 app (App Router with Cache Components, React 19, Tailwind CSS 4), designed and developed by
@@ -14,13 +14,15 @@ You need Node 22 or newer.
 git clone https://github.com/horizon-rust/horizon-site && cd horizon-site
 npm ci
 npm run dev                      # http://localhost:3000
-npm run build && npm start       # the production build, as Railway runs it
+npm run build && npm start       # the production build
 npm run lint
 ```
 
-- **A push to `main` goes live.** Railway builds the `Dockerfile` and deploys https://playhorizon.dev within a few
-  minutes of every push to `main`. If the build or the healthcheck fails, the previous version stays online. For
-  anything bigger than a typo, push a branch and open a pull request first.
+- Changes land through pull requests to this fork's `main`. The `perf` workflow runs the unit tests, type checking, lint, production build and a real S3 upload test. Cluster deployment uses `Dockerfile` and `deploy/`; see [docs/perf.md](docs/perf.md). The upstream Railway deployment is separate.
+
+## Performance captures
+
+The fork includes the `/perf` viewer, capture sharing and upload API. See [docs/perf.md](docs/perf.md) for its build, reader bundle and deployment in the umceko cluster's `sunrise` namespace.
 
 ## Layout
 
