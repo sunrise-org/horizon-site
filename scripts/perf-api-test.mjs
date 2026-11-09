@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { checkPerfStyles } from "./perf-style-test.mjs";
 import { spawn } from "node:child_process";
 import { once } from "node:events";
 import { readFile } from "node:fs/promises";
@@ -28,6 +29,7 @@ const request = (path, options = {}) => fetch(base + path, options);
 const upload = (body) => request(endpoint, { method: "POST", headers: { "Content-Type": "application/vnd.horizon.perf" }, body });
 
 try {
+  await checkPerfStyles(base);
   const created = await upload(bytes);
   assert.equal(created.status, 201);
   assert.equal(created.headers.get("cache-control"), "no-store");
