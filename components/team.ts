@@ -4,6 +4,7 @@ export const TEAM: readonly TeamMember[] = [
   { login: "UMCEKO", name: "Umut" },
   { login: "Xmilon", name: "Xmilon" },
   { login: "JuanLuci", name: "Juan Luci" },
+  { login: "arismoko", name: "Ari" },
 ];
 
 export const profileUrl = (login: string) => `https://github.com/${login}`;
