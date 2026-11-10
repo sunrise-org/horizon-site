@@ -5,6 +5,8 @@ import { grouped, num } from "@/lib/perf/format";
 import { t } from "@/lib/perf/i18n";
 import type { NetPlayerRow, NetTotalRow } from "@/lib/perf/types";
 import { RowTools } from "./row-tools";
+import { PinButton } from "./pin-button";
+import { ShowAll, useLimit } from "./show-all";
 import { useRows } from "./use-capture";
 import type { LoadedCapture } from "./use-capture";
 import styles from "./page.module.css";
@@ -14,8 +16,11 @@ interface Props {
   capture: LoadedCapture;
 }
 
+const READER_DEFAULT_LIMIT = 25;
+
 export function NetworkPanel({ reader, capture }: Props) {
-  const { rows, error } = useRows<NetTotalRow | NetPlayerRow>(reader, capture, "net");
+  const cap = useLimit(READER_DEFAULT_LIMIT);
+  const { rows, error } = useRows<NetTotalRow | NetPlayerRow>(reader, capture, "net", { limit: cap.limit });
 
   if (error) return <p className={styles.error}>{error}</p>;
   const total = rows.find((row): row is NetTotalRow => "players" in row);
@@ -36,7 +41,10 @@ export function NetworkPanel({ reader, capture }: Props) {
         </div>
         <div className={styles.kvRow}>
           <dt>{t("net.players")}</dt>
-          <dd>{total.players}</dd>
+          <dd>
+            {total.players}
+            <PinButton field="h:players" />
+          </dd>
         </div>
       </dl>
       {players.length > 0 ? (
@@ -70,6 +78,7 @@ export function NetworkPanel({ reader, capture }: Props) {
           </tbody>
         </table>
       ) : null}
+      {cap.capped(players.length) ? <ShowAll count={players.length} onClick={cap.show} /> : null}
     </div>
   );
 }

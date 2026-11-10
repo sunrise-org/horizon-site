@@ -13,9 +13,12 @@ import { RowTools } from "./row-tools";
 import { Marked, TreeBody } from "./tree-rows";
 import { TREE_SHAPE, useTreeEnv } from "./tree-state";
 import type { Scope } from "./tree-state";
+import { ShowAll, useLimit } from "./show-all";
 import { useRows } from "./use-capture";
 import styles from "./page.module.css";
 import tree from "./tree.module.css";
+
+const GROUP_LIMIT = 200;
 
 /** A call tree of the samples a scope keeps: the given rows, or the ones its own query answers with. */
 export function ScopedTree({ scope, focusKey, rows, baseDepth }: { scope: Scope; focusKey?: string; rows: readonly TreeRow[] | null; baseDepth?: number }) {
@@ -28,7 +31,8 @@ export function ScopedTree({ scope, focusKey, rows, baseDepth }: { scope: Scope;
 /** The samples divided by one context; opening a group draws the call tree of just its samples. */
 export function GroupList({ kind }: { kind: Exclude<GroupKind, "none"> }) {
   const env = useTreeEnv();
-  const { rows, error } = useRows<GroupRow>(env.reader, env.capture, "group", { by: kind, limit: 200, ...(kind === "thread" ? { thread: undefined } : {}) });
+  const cap = useLimit(GROUP_LIMIT);
+  const { rows, error } = useRows<GroupRow>(env.reader, env.capture, "group", { by: kind, limit: cap.limit, ...(kind === "thread" ? { thread: undefined } : {}) });
   if (error) return <p className={styles.error}>{error}</p>;
   const max = rows.reduce((top, row) => Math.max(top, row.value), 0) || 1;
   const biggest = rows.findIndex((row) => row.key !== null);
@@ -72,6 +76,7 @@ export function GroupList({ kind }: { kind: Exclude<GroupKind, "none"> }) {
           </div>
         );
       })}
+      {cap.capped(rows.length) ? <ShowAll count={rows.length} onClick={cap.show} /> : null}
     </>
   );
 }

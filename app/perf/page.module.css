@@ -1830,3 +1830,56 @@ tr[data-part="true"] .gpuBarCell .meterFill {
 .pin[aria-pressed="true"] {
   color: var(--accent);
 }
+
+.table tbody tr[data-tone="grew"] td:last-child {
+  color: var(--warn);
+}
+
+.table tbody tr[data-tone="shrank"] td:last-child {
+  color: var(--success);
+}
+
+/* Functions pinned above the Functions list */
+
+.pinnedSearch {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.searchInput {
+  height: 34px;
+  width: min(100%, 360px);
+  border: 0;
+  border-radius: 8px;
+  padding: 0 12px;
+  background: rgb(255 255 255 / 0.06);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+}
+
+.searchInput:focus {
+  background: rgb(255 255 255 / 0.09);
+}
+
+.searchInput::placeholder {
+  color: rgb(255 255 255 / 0.4);
+}
+
+.pinnedTerm {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.pinnedHead {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 12px;
+}
