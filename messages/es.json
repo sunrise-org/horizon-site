@@ -29,7 +29,7 @@
   "footer": {
     "disclaimer": "No es un producto oficial de Minecraft. No está aprobado por Mojang ni Microsoft ni asociado con ellos.",
     "whoTitle": "Quién lo hace",
-    "who": "Sunrise es un fork de la comunidad de <horizon>Horizon</horizon>, que hace Ludovic Marie; puedes contactarle en <lu4ovic>lu4ovic.com</lu4ovic>. Sunrise no contiene código, recursos ni datos de Minecraft, y este sitio no ofrece archivos del juego: necesitas tu propia copia legal de Minecraft: Java Edition. Minecraft es una marca de Mojang Synergies AB. Este sitio parte del de Horizon, desarrollado por Anthony S, de <dezerx>DezerX</dezerx>.",
+    "who": "Sunrise lo hace su equipo: Umut, Xmilon, Juan Luci y Ari, con <team>todas las personas que contribuyen</team>. Parte de <horizon>Horizon</horizon>, de Ludovic Marie y los contribuidores de horizon-rust, y este sitio parte del de Horizon, de Anthony S, de <dezerx>DezerX</dezerx>. Escríbenos en <github>GitHub</github>. Sunrise no contiene código, recursos ni datos de Minecraft, y este sitio no ofrece archivos del juego: necesitas tu propia copia legal de Minecraft: Java Edition. Minecraft es una marca de Mojang Synergies AB.",
     "licencesTitle": "Licencias",
     "licences": "El código de Sunrise está bajo la <mit>licencia MIT</mit>, como el de Horizon. Las fuentes son Geist, Geist Mono y Bricolage Grotesque, bajo la <ofl>SIL Open Font License</ofl>. Todos los recursos de este sitio figuran en LEGAL.md.",
     "privacyTitle": "Privacidad",
