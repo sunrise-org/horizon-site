@@ -69,7 +69,8 @@ async function repoFile(path: string) {
 
 function apiLinks(text: string, from: string, slugs: Set<string>) {
   return text.replace(/\]\(([^)\s]+)\)/g, (all, url: string) => {
-    if (url.startsWith("https://playsunrise.net/")) return `](${url.slice("https://playsunrise.net".length)})`;
+    const own = url.match(/^https:\/\/(?:playsunrise\.net|playhorizon\.dev)(\/.*)$/);
+    if (own) return `](${own[1]})`;
     if (/^([a-z]+:|#|\/)/i.test(url)) return all;
     const [file, id] = url.split("#");
     const path = posix.normalize(posix.join(posix.dirname(from), file));
