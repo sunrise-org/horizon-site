@@ -76,4 +76,4 @@ See [Logs, crashes and bug reports](/docs/troubleshooting).
 
 ## How can I help?
 
-See [Contribute](/docs/contributing). You can also [sponsor the project on GitHub](https://github.com/sponsors/ludovic111).
+See [Contribute](/docs/contributing).

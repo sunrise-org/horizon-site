@@ -95,15 +95,6 @@
         "title": "Team"
       }
     },
-    "sponsor": {
-      "title": "Your Minecraft<br/>Server, <accent>24/7 Online.</accent>",
-      "lead": "Get your server now in under ~60 seconds!",
-      "cta": "Get my server",
-      "copy": "Copy code {code}",
-      "copied": "Coupon copied to clipboard",
-      "selected": "Selected: press Ctrl+C to copy",
-      "hide": "Hide this partner"
-    },
     "community": {
       "eyebrow": "Community",
       "title": "Built in the open.",
@@ -112,10 +103,6 @@
         "discord": {
           "title": "Discord",
           "body": "Questions, bug reports and screenshots."
-        },
-        "sponsor": {
-          "title": "Sponsor",
-          "body": "Sponsors on GitHub fund the next release."
         },
         "source": {
           "title": "Source",
