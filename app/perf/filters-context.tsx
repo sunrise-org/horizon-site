@@ -49,7 +49,11 @@ function Provider({ reader, capture, children }: Props) {
     const ask: Ask = <R,>(op: Parameters<Ask>[0], request: Parameters<Ask>[1]) =>
       reader.query<R>(capture.handle, { op, file: QUERY_FILE, filters: { side: capture.side, ...request } });
     try {
-      return probeOptions(ask);
+      const probed = probeOptions(ask);
+      if (probed.slow) return probed;
+      // The span table keeps slow ticks even in a capture without samples.
+      const slowSpans = ask<unknown>("spans", { slow: true, limit: 1 });
+      return { ...probed, slow: slowSpans.ok && slowSpans.rows.length > 0 };
     } catch {
       return NO_OPTIONS;
     }

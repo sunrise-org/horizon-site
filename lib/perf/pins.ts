@@ -1,5 +1,5 @@
 // Fields pinned to the time chart: `series` takes `h:` health fields, `span:` spans and `x:` counters.
-const NICE_STEPS_S: readonly number[] = [0.1, 0.25, 0.5, 1, 2, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800, 3600];
+const NICE_STEPS_S: readonly number[] = [1, 2, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800, 3600];
 
 /** Points a chart aims for across its window. */
 const TARGET_POINTS = 150;

@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { autoEvery, counterField, everyFits, fieldKind, fieldName, togglePin } from "./pins.ts";
 
 test("the automatic step keeps a window near a hundred and fifty points", () => {
-  assert.equal(autoEvery(10), 0.1);
+  assert.equal(autoEvery(10), 1);
   assert.equal(autoEvery(120), 1);
   assert.equal(autoEvery(3600), 30);
   assert.equal(autoEvery(1e9), 3600);

@@ -21,6 +21,9 @@ import page from "./page.module.css";
 
 const WIDTH = 1000;
 const HEIGHT = 140;
+
+/** Room above and below so a line at an extreme is not cut by the plot's edge. */
+const PAD = 5;
 const COLORS = 6;
 
 interface Pinned {
@@ -149,7 +152,8 @@ export function PinnedChart({ reader, capture }: { reader: HorizonPerf; capture:
               key={item.field}
               className={styles.line}
               data-color={at % COLORS}
-              d={linePath(timelinePoints(item.row.t.map((time) => time - from), item.row.values, span, WIDTH, HEIGHT))}
+              transform={`translate(0 ${PAD})`}
+              d={linePath(timelinePoints(item.row.t.map((time) => time - from), item.row.values, span, WIDTH, HEIGHT - 2 * PAD))}
             />
           ) : null,
         )}

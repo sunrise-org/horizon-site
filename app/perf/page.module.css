@@ -525,10 +525,6 @@
   margin: 0 0 12px;
 }
 
-.summary .pre {
-  max-height: 340px;
-}
-
 /* Rows with a bar */
 
 .meterList {
@@ -1239,53 +1235,6 @@
 
 .table td.verdictCell[data-tone="worse"] {
   color: var(--danger);
-}
-
-/* Text panes */
-
-.pre,
-.textarea {
-  border: 0;
-  border-radius: 12px;
-  background: #0a0614;
-  color: #e7e1ff;
-  font: 12.5px/1.65 var(--mono);
-}
-
-.pre {
-  max-height: 70vh;
-  margin: 0;
-  padding: 16px;
-  overflow: auto;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.raw {
-  display: grid;
-  gap: 12px;
-  max-width: 900px;
-}
-
-.field {
-  display: grid;
-  gap: 4px;
-}
-
-.field > span {
-  color: rgb(255 255 255 / 0.6);
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.textarea {
-  min-height: 150px;
-  padding: 12px;
-  resize: vertical;
-}
-
-.raw .button {
-  justify-self: start;
 }
 
 /* Changes against a second capture */
