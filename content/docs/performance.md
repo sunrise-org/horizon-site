@@ -21,8 +21,7 @@ The numbers below are Sunrise before and after a round of performance work, on a
 
 The full tables, with the method and the Linux software-rendering run, are in [docs/graphics.md](https://github.com/sunrise-org/horizon/blob/main/docs/graphics.md#results).
 
-**Sunrise against vanilla.** The benchmark exists: `tools/perf_bench.py` starts Sunrise, vanilla 26.3 and vanilla with Sodium, Lithium, FerriteCore and ImmediatelyFast on the same machine, world, camera path and settings, and computes every number the same way. [docs/benchmark.md](https://github.com/sunrise-org/horizon/blob/main/docs/benchmark.md) says how it keeps the comparison fair. Its results for the client, measured on the project's own machines, are on the [Benchmarks page](/benchmarks), with the places where Java is faster. It also estimates other hardware from them, as a range, and shows players' uploaded results once at least three installs share a graphics card and processor.
-
+**Sunrise against vanilla.** The benchmark exists: `tools/perf_bench.py` starts Sunrise, vanilla 26.3 and vanilla with Sodium, Lithium, FerriteCore and ImmediatelyFast on the same machine, world, camera path and settings, and computes every number the same way. [docs/benchmark.md](https://github.com/sunrise-org/horizon/blob/main/docs/benchmark.md) says how it keeps the comparison fair.
 **Measure your own computer.** Sunrise's half of that benchmark is built into the game. Close other heavy apps,
 plug in a laptop, and run in a terminal:
 
@@ -48,11 +47,9 @@ It holds startup times, each scene's chunk load time, the frame rate with its 1%
 machine (operating system, processor, memory, graphics card and driver). Its format is
 [docs/benchmark-report.md](https://github.com/sunrise-org/horizon/blob/main/docs/benchmark-report.md).
 
-**Share it.** To add your computer to the [Benchmarks page](/benchmarks), either:
-
-- upload it from the launcher: `horizon-launcher data benchmark <the report's path>` shows exactly what would be sent,
-  without your file paths, and asks before sending. Or allow benchmark uploads once (`horizon-launcher data allow
-  benchmarks`), and every later report is sent for you. See [Privacy](/privacy).
+**Share it.** Upload it from the launcher: `horizon-launcher data benchmark <the report's path>` shows exactly what
+would be sent, without your file paths, and asks before sending. Or allow benchmark uploads once
+(`horizon-launcher data allow benchmarks`), and every later report is sent for you. See [Privacy](/privacy).
 
 ## Servers
 

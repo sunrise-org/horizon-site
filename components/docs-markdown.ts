@@ -2,7 +2,7 @@ import { gameBlob } from "@/components/game-repo";
 
 const REPO_BLOB = gameBlob("");
 const OFFICIAL = "https://playsunrise.net";
-const LOCAL_PATHS = /^\/(docs(\/|$|#)|hub(\/|$|#)|releases(\/|$|#)|benchmarks(\/|$|#)|mods(\/?(#|$)|\/[a-z0-9_]+\/?(#|$))|#|$)/;
+const LOCAL_PATHS = /^\/(docs(\/|$|#)|hub(\/|$|#)|releases(\/|$|#)|mods(\/?(#|$)|\/[a-z0-9_]+\/?(#|$))|#|$)/;
 
 export type DocHeading = { level: number; text: string; id: string };
 export type ImageSize = (src: string) => { width: number; height: number } | null;

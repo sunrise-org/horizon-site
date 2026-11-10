@@ -38,6 +38,8 @@ const nextConfig: NextConfig = {
       { source: "/docs/how-horizon-is-built", destination: "/docs/how-sunrise-is-built", permanent: true },
       { source: "/server", destination: "/docs/hosting", permanent: true },
       { source: "/server.html", destination: "/docs/hosting", permanent: true },
+      { source: "/benchmarks", destination: "/", permanent: true },
+      { source: "/es/benchmarks", destination: "/es", permanent: true },
       { source: "/roadmap", destination: "/hub#roadmap", permanent: true },
       // The staff dashboards moved into the hub (2026-11-01). Browsers keep the #fragment of old setup links across the redirect.
       { source: "/staff", destination: "/hub/sign-in", permanent: true },

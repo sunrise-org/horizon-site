@@ -18,7 +18,6 @@ type NavKey = keyof Messages["header"]["nav"];
 const NAV: { key: NavKey; href: string }[] = [
   { key: "about", href: "/#about" },
   { key: "hub", href: "/hub" },
-  { key: "benchmarks", href: "/benchmarks" },
   { key: "mods", href: "/mods" },
   { key: "releases", href: "/releases" },
   { key: "docs", href: "/docs" },

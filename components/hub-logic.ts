@@ -45,7 +45,7 @@ export const escape = (text: string) => text.replace(/[&<>"']/g, (c) => ESCAPES[
 
 function linkTarget(url: string) {
   if (/^https?:\/\//.test(url) || url.startsWith("#")) return url;
-  if (/^\/(docs|hub|releases|benchmarks)(\/|#|$)|^\/(#|$)/.test(url)) return url.replace(/^\/docs\/(?=#|$)/, "/docs");
+  if (/^\/(docs|hub|releases)(\/|#|$)|^\/(#|$)/.test(url)) return url.replace(/^\/docs\/(?=#|$)/, "/docs");
   if (url.startsWith("/")) return `https://playsunrise.net${url}`;
   if (/^[\w.-]+(\/[\w.-]+)*\/?$/.test(url)) return fileUrl(url);
   return null;

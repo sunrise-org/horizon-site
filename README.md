@@ -29,7 +29,7 @@ The site includes the `/perf` viewer, capture sharing and upload API. See [docs/
 
 ```
 app/                    the routes: /, /hub, /mods, /mods/<id>, /mods/submit, /mods/mine, /mods/policy, /releases,
-                        /benchmarks, /stats, /docs, /docs/<page>, /privacy, /apply, /api-gaps, and the staff's
+                        /stats, /docs, /docs/<page>, /privacy, /apply, /api-gaps, and the staff's
                         pages inside the hub: /hub/team, /hub/mod, /hub/sign-in, /hub/setup, /hub/staff-help
                         (the old /staff/* addresses redirect there; /hub/mod has a Cases tab: Kira's numbered mod
                         cases and appeals), and /hub/appeal: the appeal form for people banned from the Discord
@@ -44,9 +44,8 @@ app/sitemap.ts, robots.ts, manifest.ts, opengraph-image.tsx, llms.txt/, og/docs/
 components/             every section, page part and data loader
 components/site.ts      the canonical address (SITE_URL), titles, descriptions and pageMetadata()
 content/docs/           the player docs (*.md) and their navigation (nav.json)
-content/benchmarks/     our benchmark runs
 vendor/horizon-site/    the previous site's hub code, pointed at Sunrise's repository; it builds /data/journal.json
-public/                 images, icons and /benchmarks.json
+public/                 images and icons
 Dockerfile, railway.json   the Railway service
 ```
 
