@@ -1,5 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { rawMainUrl, TAGS } from "@/components/github-fresh";
+import { rawGameUrl, TAGS } from "@/components/github-fresh";
 import { githubFetch } from "@/components/github-api";
 import { boardFrom, REPO, slimIssue, type HubIssue, type Roadmap } from "@/components/hub-logic";
 
@@ -9,7 +9,7 @@ export async function getRoadmap(): Promise<Roadmap | null> {
   "use cache";
   cacheTag(TAGS.main);
   try {
-    const res = await fetch(await rawMainUrl(REPO, "roadmap/roadmap.json"));
+    const res = await fetch(await rawGameUrl("roadmap/roadmap.json"));
     if (!res.ok) throw new Error(`GitHub responded ${res.status} ${res.statusText}`);
     const roadmap: Roadmap = await res.json();
     cacheLife(FRESH);

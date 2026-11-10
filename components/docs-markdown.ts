@@ -1,5 +1,7 @@
-const REPO_BLOB = "https://github.com/horizon-rust/horizon/blob/main/";
-const OFFICIAL = "https://playhorizon.dev";
+import { gameBlob } from "@/components/game-repo";
+
+const REPO_BLOB = gameBlob("");
+const OFFICIAL = "https://playsunrise.net";
 const LOCAL_PATHS = /^\/(docs(\/|$|#)|hub(\/|$|#)|releases(\/|$|#)|benchmarks(\/|$|#)|mods(\/?(#|$)|\/[a-z0-9_]+\/?(#|$))|#|$)/;
 
 export type DocHeading = { level: number; text: string; id: string };

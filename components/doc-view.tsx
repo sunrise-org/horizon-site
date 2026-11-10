@@ -2,10 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Doc } from "@/components/docs-data";
 import { DocsProse, DocsToc } from "@/components/docs-page-tools";
+import { GAME_URL, gameBlob } from "@/components/game-repo";
 import { ChevronDownIcon } from "@/components/icons";
 import { DISCORD_URL } from "@/components/links";
 
-const REPO_URL = "https://github.com/horizon-rust/horizon";
+const REPO_URL = GAME_URL;
 const PARTNER_URL = "https://my.sculkhosting.com/ref/horizon";
 
 function Partner() {
@@ -93,7 +94,7 @@ export function DocView({ doc, prev, next }: { doc: Doc; prev: Doc | null; next:
         <p className="mt-8 text-sm leading-relaxed text-white/45">
           {doc.api && (
             <>
-              <a href={`${REPO_URL}/blob/main/${doc.source}`} className="text-white/65 underline underline-offset-4 hover:text-white">
+              <a href={gameBlob(doc.source)} className="text-white/65 underline underline-offset-4 hover:text-white">
                 Edit this page on GitHub
               </a>
               {" · "}
@@ -103,10 +104,15 @@ export function DocView({ doc, prev, next }: { doc: Doc; prev: Doc | null; next:
           <a href={`${REPO_URL}/issues`} className="text-white/65 underline underline-offset-4 hover:text-white">
             Open an issue
           </a>{" "}
-          or ask on{" "}
-          <a href={DISCORD_URL} className="text-white/65 underline underline-offset-4 hover:text-white">
-            Discord
-          </a>
+          {DISCORD_URL && (
+            <>
+              {" "}
+              or ask on{" "}
+              <a href={DISCORD_URL} className="text-white/65 underline underline-offset-4 hover:text-white">
+                Discord
+              </a>
+            </>
+          )}
           .
         </p>
       </article>

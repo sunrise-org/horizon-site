@@ -6,7 +6,7 @@
 import { markdown, inline, escape } from "./markdown.js";
 import { isLauncher, isNightly, launcherVersion, newestFirst } from "./versions.js";
 
-const REPO = "horizon-rust/horizon";
+const REPO = "sunrise-org/horizon";
 
 export const channel = (r) => (isLauncher(r.tag_name) ? "Launcher" : "Game");
 const anchor = (r) => `release-${r.tag_name.replace(/[^\w.-]/g, "-")}`;
@@ -20,7 +20,7 @@ export function parts(r) {
     return { version: name || r.tag_name, line: line.charAt(0).toUpperCase() + line.slice(1), date: (r.published_at || "").slice(0, 10) };
   }
   const version = launcherVersion(r.tag_name) ?? r.tag_name.replace(/^v/, "");
-  let line = name.includes(": ") ? name.slice(name.indexOf(": ") + 2) : name.replace(/^Horizon( launcher)?\s*/i, "").replace(version, "").trim();
+  let line = name.includes(": ") ? name.slice(name.indexOf(": ") + 2) : name.replace(/^(?:Horizon|Sunrise)( launcher)?\s*/i, "").replace(version, "").trim();
   if (junk(line)) line = fromNotes(r.body) || line;
   return { version, line: line.charAt(0).toUpperCase() + line.slice(1), date: (r.published_at || "").slice(0, 10) };
 }

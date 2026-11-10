@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { cacheLife, cacheTag } from "next/cache";
 import { TAGS } from "@/components/github-fresh";
+import { GAME_REPO } from "@/components/game-repo";
 import { githubFetch } from "@/components/github-api";
 import { format, getMessages, NUMBER_LOCALE, rich, type Locale } from "@/components/i18n";
 import { ClaudeIcon, ExternalLinkIcon } from "@/components/icons";
 import { GITHUB_URL } from "@/components/links";
 
-const REPO = "horizon-rust/horizon";
+const REPO = GAME_REPO;
 
 const NOT_PEOPLE = new Set(["claude", "cursoragent", "noreply"]);
 

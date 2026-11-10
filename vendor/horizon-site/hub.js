@@ -8,9 +8,10 @@ import { parts, plainItem, sections } from "./releases.js";
 import { isGame, isLauncher, isNightly } from "./versions.js";
 import { avatar } from "./contributors.js";
 
-export const REPO = "horizon-rust/horizon";
+export const REPO = process.env.GAME_REPO?.trim() || "sunrise-org/horizon";
+const REF = process.env.GAME_REF?.trim() || "release/sunrise";
 const issueUrl = (n) => `https://github.com/${REPO}/issues/${n}`;
-const fileUrl = (path) => `https://github.com/${REPO}/blob/main/${path}`;
+const fileUrl = (path) => `https://github.com/${REPO}/blob/${REF}/${path}`;
 
 // The issues a pull request closes when merged: "Fixes #12", "closes #3, resolves #4" (as Kira's board reads them).
 export function fixesIn(text) {
@@ -261,7 +262,7 @@ export function boardFilterHtml(columns, roadmap) {
 
 // --- The journal -----------------------------------------------------------------------------------------------
 
-export const JOURNAL_URL = "https://playhorizon.dev/hub#journal";
+export const JOURNAL_URL = "https://playsunrise.net/hub#journal";
 const ENTRIES = 40;
 
 // The journal, newest first: each release with its changes grouped by roadmap item, the weekly summaries
@@ -325,7 +326,7 @@ export function journalFrom(releases, list, roadmap) {
   return entries.sort((a, b) => b.date.localeCompare(a.date)).slice(0, ENTRIES);
 }
 
-const HUB = "https://playhorizon.dev/hub";
+const HUB = "https://playsunrise.net/hub";
 const FEED = 300;
 
 // A Nightly's tag moves (`nightly`, then `nightly-<date>`), so its entry is named by the build its title names

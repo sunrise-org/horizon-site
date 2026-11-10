@@ -1,3 +1,4 @@
+import { GAME_URL, gameBlob } from "@/components/game-repo";
 export type Dashboard = "team" | "mod";
 export type Who = { name: string; user: string; dashboards: Dashboard[]; csrf: string };
 export type People = Record<string, string>;
@@ -167,9 +168,9 @@ export function left(ms: number, now = Date.now()) {
 export function safeLink(link?: string | null): { href?: string; label: string } | null {
   const s = String(link || "").trim();
   if (!s) return null;
-  if (/^#\d+$/.test(s)) return { href: `https://github.com/horizon-rust/horizon/issues/${s.slice(1)}`, label: s };
-  if (/^https:\/\/(github\.com|playhorizon\.dev)\/[^\s"'<>]*$/.test(s)) return { href: s, label: s.replace(/^https:\/\//, "") };
-  if (/^[A-Za-z0-9_./-]+$/.test(s) && !s.includes("..") && !s.startsWith("/")) return { href: `https://github.com/horizon-rust/horizon/blob/main/${s}`, label: s };
+  if (/^#\d+$/.test(s)) return { href: `${GAME_URL}/issues/${s.slice(1)}`, label: s };
+  if (/^https:\/\/(github\.com|playsunrise\.net)\/[^\s"'<>]*$/.test(s)) return { href: s, label: s.replace(/^https:\/\//, "") };
+  if (/^[A-Za-z0-9_./-]+$/.test(s) && !s.includes("..") && !s.startsWith("/")) return { href: gameBlob(s), label: s };
   return { label: s };
 }
 

@@ -2,10 +2,10 @@ import { readFile } from "node:fs/promises";
 import { readFileSync } from "node:fs";
 import { join, posix } from "node:path";
 import { cacheLife, cacheTag } from "next/cache";
-import { rawMainUrl, TAGS } from "@/components/github-fresh";
+import { rawGameUrl, TAGS } from "@/components/github-fresh";
+import { gameBlob } from "@/components/game-repo";
 import { inline, markdown, plainText, type DocHeading } from "@/components/docs-markdown";
 
-const REPO = "horizon-rust/horizon";
 const CONTENT = join(process.cwd(), "content", "docs");
 const PUBLIC = join(process.cwd(), "public");
 
@@ -26,7 +26,7 @@ export type Doc = {
 export type DocIndexEntry = { path: string; title: string; group: string; lede: string; headings: { id: string; text: string }[] };
 
 const API_TITLES: Record<string, string> = {
-  api: "Horizon APIs",
+  api: "Sunrise APIs",
   "api/stability": "API stability and versioning",
   "api/mod-index": "The registry index and .hpack",
   "api/server": "Server API",
@@ -62,20 +62,20 @@ function imageSize(src: string) {
 }
 
 async function repoFile(path: string) {
-  const res = await fetch(await rawMainUrl(REPO, path), { signal: AbortSignal.timeout(15000) });
+  const res = await fetch(await rawGameUrl(path), { signal: AbortSignal.timeout(15000) });
   if (!res.ok) throw new Error(`${path}: GitHub responded ${res.status}`);
   return res.text();
 }
 
 function apiLinks(text: string, from: string, slugs: Set<string>) {
   return text.replace(/\]\(([^)\s]+)\)/g, (all, url: string) => {
-    if (url.startsWith("https://playhorizon.dev/")) return `](${url.slice(23)})`;
+    if (url.startsWith("https://playsunrise.net/")) return `](${url.slice("https://playsunrise.net".length)})`;
     if (/^([a-z]+:|#|\/)/i.test(url)) return all;
     const [file, id] = url.split("#");
     const path = posix.normalize(posix.join(posix.dirname(from), file));
     const page = path.match(/^docs\/api\/([\w-]+)\.md$/)?.[1];
     const slug = page === "README" ? "api" : page && `api/${page}`;
-    const to = slug && slugs.has(slug) ? `/docs/${slug}` : `https://github.com/${REPO}/blob/main/${path}`;
+    const to = slug && slugs.has(slug) ? `/docs/${slug}` : gameBlob(path);
     return `](${to}${id ? `#${id}` : ""})`;
   });
 }
@@ -115,7 +115,7 @@ export async function getDocs(): Promise<Doc[]> {
           console.error(`Couldn't load ${source}:`, error);
           failed = true;
           const title = API_TITLES[slug] ?? slug;
-          const link = `https://github.com/${REPO}/blob/main/${source}`;
+          const link = gameBlob(source);
           return {
             slug,
             path,

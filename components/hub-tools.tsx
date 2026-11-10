@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { GAME_URL } from "@/components/game-repo";
 import { CheckIcon, ExternalLinkIcon } from "@/components/icons";
 
-const REPO_URL = "https://github.com/horizon-rust/horizon";
+const REPO_URL = GAME_URL;
 
 function useCopied() {
   const [copied, setCopied] = useState(false);
@@ -65,7 +66,7 @@ function reportBody(r: Report) {
     "**What I expected (what vanilla does)**",
     r.expected.trim(),
     "",
-    `**Horizon version:** ${r.version.trim() || "not given"}`,
+    `**Sunrise version:** ${r.version.trim() || "not given"}`,
     `**System:** ${r.system.trim()}`,
   ].join("\n");
 }
@@ -148,7 +149,7 @@ export function BugReport({ version }: { version: string }) {
           </Field>
         </div>
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Horizon version" hint="The launcher shows it on the Play page.">
+          <Field label="Sunrise version" hint="The launcher shows it on the Play page.">
             <input name="version" maxLength={60} defaultValue={version} autoComplete="off" className={`${FIELD} h-11`} />
           </Field>
           <Field label="Your system" hint="OS, processor and graphics card.">
