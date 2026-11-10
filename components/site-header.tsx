@@ -21,6 +21,8 @@ const NAV: { key: NavKey; href: string }[] = [
   { key: "releases", href: "/releases" },
   { key: "docs", href: "/docs" },
   { key: "players", href: "/stats" },
+  { key: "apiGaps", href: "/api-gaps" },
+  { key: "faq", href: "/faq" },
 ];
 
 const NAV_LINK = "inline-flex items-center gap-1.5 transition-colors hover:text-white";
@@ -75,13 +77,13 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, pathname 
         menuOpen ? "bg-[#100a1f]" : scrolled ? "bg-[#100a1f]/75 backdrop-blur-md" : ""
       }`}
     >
-      <div className="mx-auto flex h-18 w-full max-w-6xl items-center gap-12 px-6 lg:px-10">
+      <div className="mx-auto flex h-18 w-full max-w-6xl items-center gap-8 px-6 xl:gap-12 lg:px-10">
         <Link href={localePath(locale, "/")} className="flex items-center gap-2 text-white">
           <HorizonMark className="size-8" />
           <span className="font-display text-[19px] font-semibold tracking-[-0.02em]">Sunrise</span>
         </Link>
 
-        <nav aria-label={t.mainNav} className={`hidden items-center text-sm text-white/65 lg:flex gap-8`}>
+        <nav aria-label={t.mainNav} className={`hidden items-center text-sm text-white/65 lg:flex gap-5 xl:gap-8`}>
           {nav.map((item) => (
             <Link
               key={item.href}
@@ -108,7 +110,7 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, pathname 
         <div className="ml-auto flex items-center gap-1.5">
           <a
             href={GITHUB_URL}
-            className="hidden h-9 items-center gap-2 px-3 text-sm text-white/65 transition-colors hover:text-white sm:inline-flex"
+            className="hidden h-9 items-center gap-2 px-3 text-sm text-white/65 transition-colors hover:text-white sm:inline-flex lg:hidden xl:inline-flex"
           >
             <GitHubIcon className="size-4" />
             GitHub

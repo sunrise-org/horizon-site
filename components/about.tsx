@@ -2,7 +2,7 @@ import Image from "next/image";
 import { ChipIcon, CodeIcon, DriveIcon, ExternalLinkIcon, HorizonLogo } from "@/components/icons";
 import { getMessages, type Locale } from "@/components/i18n";
 import { rich } from "@/components/i18n-text";
-import { CONTRIBUTORS_URL, UPSTREAM_URL } from "@/components/links";
+import { CONTRIBUTORS_URL, MOD_API_AUTHOR_URL, MOD_API_REPO_URL, NEOFORGE_URL, UPSTREAM_URL } from "@/components/links";
 
 const POINTS = [
   { icon: DriveIcon, key: "copy" },
@@ -10,9 +10,20 @@ const POINTS = [
   { icon: CodeIcon, key: "open" },
 ] as const;
 
+const CREDIT_LINK = "underline decoration-white/25 underline-offset-4 transition-colors hover:text-white";
+
 export function About({ locale }: { locale: Locale }) {
   const { common, home } = getMessages(locale);
   const t = home.about;
+  const out = (href: string) =>
+    function OutLink(text: string) {
+      return (
+        <a href={href} target="_blank" rel="noreferrer" className={CREDIT_LINK}>
+          {text}
+          <span className="sr-only"> {common.newTab}</span>
+        </a>
+      );
+    };
   return (
     <section id="about" aria-labelledby="about-title" className="scroll-mt-14 pt-8 pb-8">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
@@ -44,11 +55,19 @@ export function About({ locale }: { locale: Locale }) {
                 ),
               })}
             </p>
+            <div className="mt-6 text-[14px] leading-relaxed text-white/50">
+              <h3 className="font-medium text-white/70">{t.credits.title}</h3>
+              <ul className="mt-2 space-y-1">
+                <li>{rich(t.credits.built, { horizon: out(UPSTREAM_URL) })}</li>
+                <li>{rich(t.credits.api, { neoforge: out(NEOFORGE_URL) })}</li>
+                <li>{rich(t.credits.modders, { ari: out(MOD_API_AUTHOR_URL), repo: out(MOD_API_REPO_URL) })}</li>
+              </ul>
+            </div>
             <a
               href={CONTRIBUTORS_URL}
               target="_blank"
               rel="noreferrer"
-              className="mt-5 inline-flex items-center gap-1.5 text-[15px] font-medium text-[#a98fff] underline decoration-[#a98fff]/40 underline-offset-4 transition-colors hover:text-[#c4b5ff] hover:decoration-[#c4b5ff]"
+              className="mt-6 inline-flex items-center gap-1.5 text-[15px] font-medium text-[#a98fff] underline decoration-[#a98fff]/40 underline-offset-4 transition-colors hover:text-[#c4b5ff] hover:decoration-[#c4b5ff]"
             >
               {t.contributors}
               <ExternalLinkIcon className="size-4" />

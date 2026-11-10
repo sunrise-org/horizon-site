@@ -15,7 +15,9 @@
       "mods": "Mods",
       "releases": "Releases",
       "docs": "Docs",
-      "players": "Players"
+      "players": "Players",
+      "apiGaps": "API gaps",
+      "faq": "FAQ"
     },
     "mainNav": "Main",
     "download": "Download",
@@ -34,6 +36,11 @@
     "privacy": "This site sets no cookies for visitors and has no analytics or trackers. Opening a release stores a keyed hash of your IP address, and sharing a performance capture stores the file you upload; downloads come from GitHub, under <github>GitHub's privacy statement</github>. The launcher sends nothing unless you allow it: <telemetry>what it can send, and how to delete it</telemetry>.",
     "legal": {
       "privacy": "Privacy policy"
+    },
+    "linksLabel": "More",
+    "links": {
+      "faq": "FAQ",
+      "apiGaps": "API gaps"
     },
     "madeInRust": "Made in the open, in Rust."
   },
@@ -85,6 +92,12 @@
           "title": "Open source",
           "body": "Sunrise's code is MIT. It contains no Minecraft code, assets or data; those belong to Mojang and Microsoft under the Minecraft EULA."
         }
+      },
+      "credits": {
+        "title": "Credits",
+        "built": "Sunrise is built on <horizon>Horizon</horizon> by the horizon-rust contributors.",
+        "api": "The native mod API follows <neoforge>NeoForge</neoforge>'s design and docs, with thanks.",
+        "modders": "<ari>Ari (arismoko)</ari> and the modding contributors build the mod API, in <repo>arismoko/horizon</repo>."
       }
     },
     "sponsor": {
@@ -749,5 +762,45 @@
       "discord": "Join the Discord"
     },
     "newTab": " (opens in a new tab)"
+  },
+  "faq": {
+    "meta": {
+      "title": "FAQ · Sunrise",
+      "description": "Answers about Sunrise: what it is, how it differs from Horizon, whether you need Minecraft, where the source is, which mods work and how to report a bug."
+    },
+    "kicker": "FAQ",
+    "titleA": "Questions,",
+    "titleB": "answered.",
+    "lead": "The short answers about Sunrise, and where to read more.",
+    "items": [
+      {
+        "q": "What is Sunrise?",
+        "a": "Sunrise is a free, open-source rebuild of Minecraft: Java Edition 26.3 in Rust. It runs as a native program and holds each piece of the game to the same inputs as the vanilla game until the outputs are identical. It is unofficial: not approved by or associated with Mojang or Microsoft."
+      },
+      {
+        "q": "How is it different from Horizon?",
+        "a": "Sunrise is a community fork of <horizon>Horizon</horizon>, which the horizon-rust contributors make, and it keeps Horizon's game as its base. The fork adds compatibility layers that run Java mods (Forge first, Fabric later), support for more than one game version, a built-in profiler, no ads and no telemetry: the launcher sends nothing unless you allow it. Some of this is still in progress; <releases>Releases</releases> lists what has shipped."
+      },
+      {
+        "q": "Do I need to own Minecraft?",
+        "a": "Yes. You need your own legally obtained copy of Minecraft: Java Edition. Install it with the official launcher and play 26.3 once; Sunrise builds its resources from those files on your machine. It never downloads or shares game files, and this site offers none."
+      },
+      {
+        "q": "Is it safe, and where is the source?",
+        "a": "The code is open under the MIT licence and public: <source>{repo}</source>, branch {ref}. The launcher and the game download from GitHub's release pages, where you can see what you are installing. Sunrise is a young project, so treat it as you would any program you did not write, and download it only from <releases>Releases</releases>."
+      },
+      {
+        "q": "Which mods work?",
+        "a": "Content mods and native Rust mods from the <mods>Mods</mods> page work today. Running Java mods is in progress: Forge support is not finished and not every mod loads yet, and Fabric comes later. For the native mod API, <apigaps>API gaps</apigaps> shows what is covered, what is partial and what is missing."
+      },
+      {
+        "q": "How do I report a bug or contribute?",
+        "a": "Open an issue on <issues>{repo}</issues>: say what you did, what you expected and what happened, and attach the game's log if you have it. For the mod API work, the <board>project board</board> tracks the open gaps."
+      },
+      {
+        "q": "What data does this site keep?",
+        "a": "Almost nothing: no cookies for visitors, no analytics, no trackers and no ads. The details are on the <privacy>privacy page</privacy>."
+      }
+    ]
   }
 }

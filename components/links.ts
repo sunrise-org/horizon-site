@@ -1,5 +1,8 @@
 import { GAME_URL } from "@/components/game-repo";
 export const UPSTREAM_URL = "https://github.com/horizon-rust/horizon";
+export const NEOFORGE_URL = "https://neoforged.net";
+export const MOD_API_REPO_URL = "https://github.com/arismoko/horizon";
+export const MOD_API_AUTHOR_URL = "https://github.com/arismoko";
 export const DOWNLOAD_URL = "/docs/install";
 export const GITHUB_URL = GAME_URL;
 export const WINDOWS_URL = "/docs/install#download-the-launcher";

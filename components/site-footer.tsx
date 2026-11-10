@@ -9,6 +9,11 @@ import { GITHUB_URL, UPSTREAM_URL } from "@/components/links";
 
 const LEGAL = [{ href: "/privacy", key: "privacy" }] as const;
 
+const MORE = [
+  { href: "/faq", key: "faq" },
+  { href: "/api-gaps", key: "apiGaps" },
+] as const;
+
 const LEGAL_LINK =
   "font-medium text-white/80 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60";
 
@@ -85,7 +90,15 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-white/[0.08] pt-6 text-sm text-white/50 sm:flex-row sm:items-center sm:justify-between">
+        <nav aria-label={t.linksLabel} className="mt-10 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+          {MORE.map(({ href, key }) => (
+            <Link key={href} href={localePath(locale, href)} className={LEGAL_LINK}>
+              {t.links[key]}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="mt-6 flex flex-col gap-4 border-t border-white/[0.08] pt-6 text-sm text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <p className="flex items-center gap-2">
             {t.madeInRust}
             <RustIcon className="size-4" />

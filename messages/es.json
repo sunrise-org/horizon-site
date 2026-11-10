@@ -15,7 +15,9 @@
       "mods": "Mods",
       "releases": "Versiones",
       "docs": "Docs",
-      "players": "Jugadores"
+      "players": "Jugadores",
+      "apiGaps": "Brechas de API",
+      "faq": "FAQ"
     },
     "mainNav": "Principal",
     "download": "Descargar",
@@ -34,6 +36,11 @@
     "privacy": "Este sitio no usa cookies para los visitantes y no tiene analíticas ni rastreadores. Abrir una versión guarda un hash con clave de tu dirección IP, y compartir una captura de rendimiento guarda el archivo que subes; las descargas vienen de GitHub, bajo la <github>declaración de privacidad de GitHub</github>. El launcher no envía nada salvo que lo permitas: <telemetry>qué puede enviar y cómo borrarlo</telemetry>.",
     "legal": {
       "privacy": "Política de privacidad"
+    },
+    "linksLabel": "Más",
+    "links": {
+      "faq": "FAQ",
+      "apiGaps": "Brechas de API"
     },
     "madeInRust": "Hecho en abierto, en Rust."
   },
@@ -85,6 +92,12 @@
           "title": "Código abierto",
           "body": "El código de Sunrise es MIT. No contiene código, recursos ni datos de Minecraft; esos pertenecen a Mojang y Microsoft bajo el EULA de Minecraft."
         }
+      },
+      "credits": {
+        "title": "Créditos",
+        "built": "Sunrise se construye sobre <horizon>Horizon</horizon>, de los colaboradores de horizon-rust.",
+        "api": "La API de mods nativa sigue el diseño y la documentación de <neoforge>NeoForge</neoforge>, con agradecimiento.",
+        "modders": "<ari>Ari (arismoko)</ari> y los colaboradores de mods construyen la API de mods, en <repo>arismoko/horizon</repo>."
       }
     },
     "sponsor": {
@@ -749,5 +762,45 @@
       "discord": "Únete al Discord"
     },
     "newTab": " (se abre en una pestaña nueva)"
+  },
+  "faq": {
+    "meta": {
+      "title": "FAQ · Sunrise",
+      "description": "Respuestas sobre Sunrise: qué es, en qué se diferencia de Horizon, si necesitas Minecraft, dónde está el código, qué mods funcionan y cómo informar de un fallo."
+    },
+    "kicker": "FAQ",
+    "titleA": "Preguntas,",
+    "titleB": "respondidas.",
+    "lead": "Las respuestas cortas sobre Sunrise y dónde leer más.",
+    "items": [
+      {
+        "q": "¿Qué es Sunrise?",
+        "a": "Sunrise es una reconstrucción gratuita y de código abierto de Minecraft: Java Edition 26.3 en Rust. Funciona como un programa nativo y somete cada pieza del juego a las mismas entradas que el juego vanilla hasta que las salidas son idénticas. No es oficial: no está aprobado por Mojang ni Microsoft ni asociado con ellos."
+      },
+      {
+        "q": "¿En qué se diferencia de Horizon?",
+        "a": "Sunrise es un fork de la comunidad de <horizon>Horizon</horizon>, que hacen los colaboradores de horizon-rust, y mantiene el juego de Horizon como base. El fork añade capas de compatibilidad que ejecutan mods de Java (primero Forge, después Fabric), compatibilidad con más de una versión del juego, un perfilador integrado, y ni anuncios ni telemetría: el launcher no envía nada salvo que lo permitas. Parte de esto sigue en desarrollo; <releases>Versiones</releases> lista lo que ya se ha publicado."
+      },
+      {
+        "q": "¿Necesito tener Minecraft?",
+        "a": "Sí. Necesitas tu propia copia legal de Minecraft: Java Edition. Instálala con el launcher oficial y juega a la 26.3 una vez; Sunrise crea sus recursos a partir de esos archivos en tu equipo. Nunca descarga ni comparte archivos del juego, y este sitio no ofrece ninguno."
+      },
+      {
+        "q": "¿Es seguro y dónde está el código?",
+        "a": "El código es abierto, con licencia MIT, y público: <source>{repo}</source>, rama {ref}. El launcher y el juego se descargan de las páginas de versiones de GitHub, donde puedes ver lo que instalas. Sunrise es un proyecto joven, así que trátalo como cualquier programa que no has escrito tú y descárgalo solo desde <releases>Versiones</releases>."
+      },
+      {
+        "q": "¿Qué mods funcionan?",
+        "a": "Los mods de contenido y los mods nativos en Rust de la página <mods>Mods</mods> funcionan hoy. Ejecutar mods de Java está en desarrollo: la compatibilidad con Forge no está terminada y no todos los mods cargan todavía, y Fabric llegará después. Para la API de mods nativa, <apigaps>Brechas de API</apigaps> muestra qué está cubierto, qué es parcial y qué falta."
+      },
+      {
+        "q": "¿Cómo informo de un fallo o colaboro?",
+        "a": "Abre una incidencia en <issues>{repo}</issues>: cuenta qué hiciste, qué esperabas y qué ocurrió, y adjunta el registro del juego si lo tienes. Para el trabajo de la API de mods, el <board>tablero del proyecto</board> sigue las brechas abiertas."
+      },
+      {
+        "q": "¿Qué datos guarda este sitio?",
+        "a": "Casi ninguno: sin cookies para los visitantes, sin analíticas, sin rastreadores y sin anuncios. Los detalles están en la <privacy>página de privacidad</privacy>."
+      }
+    ]
   }
 }
