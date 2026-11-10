@@ -20,7 +20,7 @@ import tree from "./tree.module.css";
 /** A call tree of the samples a scope keeps: the given rows, or the ones its own query answers with. */
 export function ScopedTree({ scope, focusKey, rows, baseDepth }: { scope: Scope; focusKey?: string; rows: readonly TreeRow[] | null; baseDepth?: number }) {
   const env = useTreeEnv();
-  const fetched = useRows<TreeRow>(env.reader, env.capture, "tree", { ...env.filters, ...scope.filters, ...TREE_SHAPE }, rows === null);
+  const fetched = useRows<TreeRow>(env.reader, env.capture, "tree", { ...scope.filters, ...TREE_SHAPE }, rows === null);
   if (fetched.error) return <p className={styles.error}>{fetched.error}</p>;
   return <TreeBody rows={rows ?? fetched.rows} scope={scope} focusKey={focusKey} baseDepth={baseDepth} />;
 }
@@ -28,7 +28,7 @@ export function ScopedTree({ scope, focusKey, rows, baseDepth }: { scope: Scope;
 /** The samples divided by one context; opening a group draws the call tree of just its samples. */
 export function GroupList({ kind }: { kind: Exclude<GroupKind, "none"> }) {
   const env = useTreeEnv();
-  const { rows, error } = useRows<GroupRow>(env.reader, env.capture, "group", { ...env.filters, by: kind, limit: 200 });
+  const { rows, error } = useRows<GroupRow>(env.reader, env.capture, "group", { by: kind, limit: 200, ...(kind === "thread" ? { thread: undefined } : {}) });
   if (error) return <p className={styles.error}>{error}</p>;
   const max = rows.reduce((top, row) => Math.max(top, row.value), 0) || 1;
   const biggest = rows.findIndex((row) => row.key !== null);

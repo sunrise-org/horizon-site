@@ -23,6 +23,9 @@ import { Delta, NewRows } from "./delta";
 import { RowTools } from "./row-tools";
 import { Segmented } from "./segmented";
 import { Spark } from "./spark";
+import { useFilters } from "./filters-context";
+import { PinButton } from "./pin-button";
+import { useLogQueries } from "./query-log";
 import { QUERY_FILE } from "./use-capture";
 import type { LoadedCapture } from "./use-capture";
 import styles from "./page.module.css";
@@ -38,34 +41,46 @@ function message(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
+/** A line of a tile; `field` is the `series` field that draws it over time. */
+type TileRow = [label: string, text: string, field?: string];
+
 function Tile({
   title,
   value,
   unit,
   rows,
   note,
+  field,
   children,
 }: {
   title: string;
   value: string;
   unit?: string;
-  rows: [string, string][];
+  rows: TileRow[];
   note?: string;
+  /** The `series` field behind the tile's number, to pin to the time chart. */
+  field?: string;
   children?: ReactNode;
 }) {
   return (
     <section className={styles.stat}>
-      <h3 className={styles.statTitle}>{title}</h3>
+      <h3 className={styles.statTitle}>
+        {title}
+        {field ? <PinButton field={field} /> : null}
+      </h3>
       <p className={styles.statValue}>
         {value}
         {unit ? <span className={styles.statUnit}>{unit}</span> : null}
       </p>
       {children}
       <dl className={styles.statRows}>
-        {rows.map(([label, text]) => (
+        {rows.map(([label, text, rowField]) => (
           <div key={label} className={styles.statRow}>
             <dt>{label}</dt>
-            <dd>{text}</dd>
+            <dd>
+              {text}
+              {rowField ? <PinButton field={rowField} /> : null}
+            </dd>
           </div>
         ))}
       </dl>
@@ -204,6 +219,7 @@ export function SummaryView({ capture, data, text }: ViewProps) {
   const compare = useChanges();
   const changes = compare ? compare.changes : null;
   const [copied, setCopied] = useState(false);
+  const ranged = useFilters().filters.range !== null;
 
   const fields = useMemo(() => byField(data.series), [data]);
   const phases = useMemo(() => flatPhases(phaseTree(data.spans)).filter(([, depth]) => depth <= 1), [data]);
@@ -289,9 +305,12 @@ export function SummaryView({ capture, data, text }: ViewProps) {
           <p className={styles.summaryMeta}>{header.join(" · ")}</p>
         </div>
         {text ? (
-          <button type="button" className={styles.buttonSmall} title={t("summary.copyHint")} onClick={() => void copy()}>
-            {copied ? t("summary.copied") : t("summary.copy")}
-          </button>
+          <div className={styles.actions}>
+            {ranged ? <span className={styles.muted}>{t("summary.reportWhole")}</span> : null}
+            <button type="button" className={styles.buttonSmall} title={t("summary.copyHint")} onClick={() => void copy()}>
+              {copied ? t("summary.copied") : t("summary.copy")}
+            </button>
+          </div>
         ) : null}
       </header>
 
@@ -299,6 +318,7 @@ export function SummaryView({ capture, data, text }: ViewProps) {
         {side === "server" ? (
           <Tile
             title={t("health.tps")}
+            field="h:tps"
             value={num(tps?.mean ?? null, 1)}
             unit={t("health.unitTps")}
             note={lowNote}
@@ -312,6 +332,7 @@ export function SummaryView({ capture, data, text }: ViewProps) {
         ) : (
           <Tile
             title={t("health.fps")}
+            field="h:fps"
             value={num(fps?.mean ?? null, 1)}
             unit={t("health.unitFps")}
             note={lowNote}
@@ -329,14 +350,15 @@ export function SummaryView({ capture, data, text }: ViewProps) {
         {side === "server" ? (
           <Tile
             title={t("health.mspt")}
+            field="h:mspt_avg"
             value={num(mspt?.mean ?? null, 1)}
             unit={t("health.unitMs")}
             rows={[
               [t("health.min"), withUnit(mspt?.min, "ms")],
               [t("health.median"), withUnit(mspt?.median, "ms")],
-              [t("health.worstP95"), withUnit(worstSecond?.max, "ms")],
+              [t("health.worstP95"), withUnit(worstSecond?.max, "ms"), "h:mspt_p95"],
               ...tailRows,
-              [t("health.max"), withUnit(peak?.max, "ms")],
+              [t("health.max"), withUnit(peak?.max, "ms"), "h:mspt_max"],
             ]}
           >
             <Spark values={fields.get("h:mspt_p95")?.values ?? []} label={t("health.mspt")} />
@@ -344,15 +366,16 @@ export function SummaryView({ capture, data, text }: ViewProps) {
         ) : (
           <Tile
             title={t("health.frame")}
+            field="h:frame_ms_p95"
             value={num(frame?.median ?? null, 1)}
             unit={t("health.unitMs")}
             rows={[
-              [t("health.p50"), withUnit(frameP50?.median, "ms")],
-              [t("health.p99"), withUnit(frameP99?.median, "ms")],
+              [t("health.p50"), withUnit(frameP50?.median, "ms"), "h:frame_ms_p50"],
+              [t("health.p99"), withUnit(frameP99?.median, "ms"), "h:frame_ms_p99"],
               ...tailRows,
-              [t("health.max"), withUnit(frameMax?.max, "ms")],
-              ...(frameCpu ? ([[t("health.cpu"), withUnit(frameCpu.median, "ms")]] as [string, string][]) : []),
-              ...(frameGpu ? ([[t("health.gpu"), withUnit(frameGpu.median, "ms")]] as [string, string][]) : []),
+              [t("health.max"), withUnit(frameMax?.max, "ms"), "h:frame_ms_max"],
+              ...(frameCpu ? ([[t("health.cpu"), withUnit(frameCpu.median, "ms"), "h:frame_cpu_ms_p50"]] as TileRow[]) : []),
+              ...(frameGpu ? ([[t("health.gpu"), withUnit(frameGpu.median, "ms"), "h:frame_gpu_ms_p50"]] as TileRow[]) : []),
             ]}
           >
             <Spark values={fields.get("h:frame_ms_p95")?.values ?? []} label={t("health.frame")} />
@@ -361,6 +384,7 @@ export function SummaryView({ capture, data, text }: ViewProps) {
 
         <Tile
           title={t("health.cpuTitle")}
+          field="h:cpu_process_cores"
           value={num(cpu?.mean ?? null, 2)}
           unit={t("health.unitCores")}
           rows={[
@@ -369,6 +393,7 @@ export function SummaryView({ capture, data, text }: ViewProps) {
               meta?.machine
                 ? t("health.systemOf", { used: num(system?.mean ?? null, 2), total: meta.machine.cpu_threads })
                 : withUnit(system?.mean, t("health.unitCores"), 2),
+              "h:cpu_system_cores",
             ],
           ]}
         >
@@ -380,10 +405,11 @@ export function SummaryView({ capture, data, text }: ViewProps) {
 
         <Tile
           title={t("health.memory")}
+          field="h:rss_mb"
           value={mib(rss?.last)}
           rows={[
-            [t("health.physical"), mib(physical?.last)],
-            [t("health.swap"), mib(swap?.last)],
+            [t("health.physical"), mib(physical?.last), "h:physical_used_mb"],
+            [t("health.swap"), mib(swap?.last), "h:swap_used_mb"],
             [t("summary.change"), grew === null ? "—" : `${grew > 0 ? "+" : ""}${withUnit(grew, "MiB", 0)}`],
           ]}
         >
@@ -393,10 +419,11 @@ export function SummaryView({ capture, data, text }: ViewProps) {
         {allocs || allocRate ? (
           <Tile
             title={t("health.allocations")}
+            field="h:allocs_per_s"
             value={withUnit(allocs?.mean, t("health.unitPerS"), 0)}
             rows={[
-              [t("health.allocated"), withUnit(allocRate?.mean, t("health.unitMibPerS"), 2)],
-              [t("health.commit"), mib(commit?.last)],
+              [t("health.allocated"), withUnit(allocRate?.mean, t("health.unitMibPerS"), 2), "h:alloc_mib_per_s"],
+              [t("health.commit"), mib(commit?.last), "h:allocator_commit_mb"],
             ]}
           />
         ) : null}
@@ -413,19 +440,21 @@ export function SummaryView({ capture, data, text }: ViewProps) {
         {side === "server" ? (
           <Tile
             title={t("health.world")}
+            field="h:players"
             value={num(players?.last ?? null, 0)}
             unit={players?.last === 1 ? t("health.player") : t("health.players")}
             rows={[
-              [t("health.chunks"), num(chunks?.last ?? null, 0)],
-              [t("health.entities"), num(entities?.last ?? null, 0)],
+              [t("health.chunks"), num(chunks?.last ?? null, 0), "h:chunks"],
+              [t("health.entities"), num(entities?.last ?? null, 0), "h:entities"],
             ]}
           />
         ) : chunks ? (
           <Tile
             title={t("health.world")}
+            field="h:chunks"
             value={num(chunks.last, 0)}
             unit={t("health.chunks")}
-            rows={[[t("health.entities"), num(entities?.last ?? null, 0)]]}
+            rows={[[t("health.entities"), num(entities?.last ?? null, 0), "h:entities"]]}
           />
         ) : null}
       </div>
@@ -577,21 +606,29 @@ export function SummaryView({ capture, data, text }: ViewProps) {
 
 /** The Summary tab: loads what the view draws, then draws it. */
 export function SummaryPanel({ reader, capture }: Props) {
+  const { filters, marks } = useFilters();
   const { data, error, text } = useMemo(() => {
     let data: Overview;
     try {
-      data = loadOverview(reader, capture.handle, QUERY_FILE, capture.side, capture.meta);
+      data = loadOverview(reader, capture.handle, QUERY_FILE, capture.side, capture.meta, filters, marks);
     } catch (failure) {
       return { data: null, error: message(failure), text: "" };
     }
     try {
-      const report = reader.summary(capture.handle, { file: QUERY_FILE, side: capture.side });
+      const report = reader.summary(capture.handle, {
+        file: QUERY_FILE,
+        side: capture.side,
+        ...(filters.thread !== null ? { thread: filters.thread } : {}),
+        ...(filters.slow ? { slow: true } : {}),
+      });
       const lead = `${QUERY_FILE}: `;
       return { data, error: null, text: report.startsWith(lead) ? report.slice(lead.length) : report };
     } catch {
       return { data, error: null, text: "" };
     }
-  }, [reader, capture]);
+  }, [reader, capture, filters, marks]);
+  const queries = useMemo(() => data?.queries ?? [], [data]);
+  useLogQueries(queries);
 
   if (error) return <p className={styles.error}>{error}</p>;
   if (!data) return null;

@@ -14,7 +14,6 @@ test("a side only offers the tabs whose query has rows", () => {
     "hot",
     "tree",
     "compare",
-    "query",
   ]);
 });
 
@@ -33,5 +32,5 @@ test("network needs real traffic, not just a recorded section", () => {
 });
 
 test("an empty side still offers what needs no data", () => {
-  assert.deepEqual(tabsFor(answering(), false), ["summary", "metadata", "compare", "query"]);
+  assert.deepEqual(tabsFor(answering(), false), ["summary", "metadata", "compare"]);
 });

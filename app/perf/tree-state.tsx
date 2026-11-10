@@ -1,15 +1,13 @@
 "use client";
 
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext } from "react";
 import type { HorizonPerf } from "@/lib/perf/generated/horizon_perf";
 import type { Changes } from "@/lib/perf/compare";
+import type { SampleFilters } from "@/lib/perf/tree-options";
 import { entry, last } from "@/lib/perf/tree-model";
 import type { OpenState, TreeNode } from "@/lib/perf/tree-model";
-import { probeOptions } from "@/lib/perf/tree-options";
-import type { Ask, SampleFilters, SampleOptions } from "@/lib/perf/tree-options";
 import type { TreeRow, Unit } from "@/lib/perf/types";
 import type { AmountKind } from "@/lib/perf/units";
-import { QUERY_FILE } from "./use-capture";
 import type { LoadedCapture } from "./use-capture";
 
 /** The shape of the tree the wasm answers with: deep, with siblings under 0.05 % folded into their parent's `folded`. */
@@ -53,7 +51,6 @@ export function targetOf(scope: Scope, node: TreeNode, merge: boolean): Target {
 export interface TreeEnv {
   reader: HorizonPerf;
   capture: LoadedCapture;
-  filters: SampleFilters;
   merge: boolean;
   query: string;
   mods: ReadonlySet<string>;
@@ -76,19 +73,4 @@ export function useTreeEnv(): TreeEnv {
   const env = useContext(Env);
   if (!env) throw new Error("the call tree's parts need their panel");
   return env;
-}
-
-const NO_OPTIONS: SampleOptions = { selections: [], groups: ["none"], threads: [], thread: null };
-
-/** What the capture's samples can be shown as, found once per capture and side. */
-export function useSampleOptions(reader: HorizonPerf, capture: LoadedCapture): SampleOptions {
-  return useMemo(() => {
-    const ask: Ask = <R,>(op: string, filters: Record<string, unknown>) =>
-      reader.query<R>(capture.handle, { op, file: QUERY_FILE, filters: { side: capture.side, ...filters } });
-    try {
-      return probeOptions(ask);
-    } catch {
-      return NO_OPTIONS;
-    }
-  }, [reader, capture.handle, capture.side]);
 }

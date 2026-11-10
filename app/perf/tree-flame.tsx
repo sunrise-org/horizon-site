@@ -9,6 +9,7 @@ import { groupScope } from "@/lib/perf/tree-options";
 import type { GroupKind } from "@/lib/perf/tree-options";
 import type { GroupRow, TreeRow } from "@/lib/perf/types";
 import { amount } from "@/lib/perf/units";
+import { useFilters } from "./filters-context";
 import { FlameGraph } from "./flame-graph";
 import { TREE_SHAPE, WHOLE_TREE, useTreeEnv } from "./tree-state";
 import type { Scope, Target } from "./tree-state";
@@ -26,7 +27,8 @@ interface ScopeProps {
 /** The flame graph of one set of samples, shaped as the list shows it: merged when merge mode is on, cut to the focused line. */
 function FlameScope({ scope, whole, focusKey }: ScopeProps) {
   const env = useTreeEnv();
-  const fetched = useRows<TreeRow>(env.reader, env.capture, "tree", { ...env.filters, ...scope.filters, ...TREE_SHAPE }, scope.filters !== null);
+  const { filters } = useFilters();
+  const fetched = useRows<TreeRow>(env.reader, env.capture, "tree", { ...scope.filters, ...TREE_SHAPE }, scope.filters !== null);
   const base = scope.filters === null ? whole : fetched.rows;
   const rows = useMemo(() => {
     const shown = env.merge ? mergeTree([...base]) : base;
@@ -35,14 +37,14 @@ function FlameScope({ scope, whole, focusKey }: ScopeProps) {
     return node ? [entry(node)] : shown;
   }, [base, env.merge, focusKey, scope.id]);
   if (fetched.error) return <p className={styles.error}>{fetched.error}</p>;
-  const reset = JSON.stringify([env.filters, scope.id, env.merge, focusKey ?? null]);
+  const reset = JSON.stringify([filters, scope.id, env.merge, focusKey ?? null]);
   return <FlameGraph key={reset} rows={rows} mods={env.mods} kind={env.kind} query={env.query} />;
 }
 
 /** A grouped tree has one flame graph per group: the reader picks which. */
 function GroupFlame({ kind }: { kind: Exclude<GroupKind, "none"> }) {
   const env = useTreeEnv();
-  const { rows, error } = useRows<GroupRow>(env.reader, env.capture, "group", { ...env.filters, by: kind, limit: 200 });
+  const { rows, error } = useRows<GroupRow>(env.reader, env.capture, "group", { by: kind, limit: 200, ...(kind === "thread" ? { thread: undefined } : {}) });
   const [picked, setPicked] = useState<string | null>(null);
   const choices = rows.filter((row) => row.key !== null);
   if (error) return <p className={styles.error}>{error}</p>;

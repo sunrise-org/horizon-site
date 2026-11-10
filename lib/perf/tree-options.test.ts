@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { groupScope, probeOptions, sampleFilters } from "./tree-options.ts";
 import type { Ask } from "./tree-options.ts";
-import type { Envelope, GroupRow, Selection } from "./types.ts";
+import type { Envelope, GroupRow, QueryOp, RequestFilters, Selection } from "./types.ts";
 
 const selection = (samples: number, thread = "tick"): Selection => ({ side: "server", thread, ticks: 10, samples });
 
@@ -15,7 +15,7 @@ const failure = <R,>(): Envelope<R> => ({ ok: false, op: "x", rows: [], warnings
 const group = (by: string, key: string | null, label: string): GroupRow => ({ by, key, label, value: 1, pct: 50, samples: 5 });
 
 // A capture with cpu samples and some slow ticks, two threads, spans and a dimension, but no entities, chunks or blocks.
-const ask: Ask = <R,>(op: string, filters: Record<string, unknown>): Envelope<R> => {
+const ask: Ask = <R,>(op: QueryOp, filters: RequestFilters): Envelope<R> => {
   if (op === "tree") {
     if (filters.select !== "cpu") return failure();
     return reply<unknown>([], filters.slow ? 12 : 275) as Envelope<R>;
@@ -31,8 +31,10 @@ const ask: Ask = <R,>(op: string, filters: Record<string, unknown>): Envelope<R>
   return reply(rows[String(filters.by)] ?? []) as Envelope<R>;
 };
 
-test("only the selections that have samples are offered", () => {
-  assert.deepEqual(probeOptions(ask).selections, ["all", "slow"]);
+test("only the sample kinds that have samples are offered, and slow-only when slow ticks have some", () => {
+  const options = probeOptions(ask);
+  assert.deepEqual(options.kinds, ["cpu"]);
+  assert.equal(options.slow, true);
 });
 
 test("a group by is offered when some sample has that context, and threads when several have samples", () => {
@@ -43,20 +45,20 @@ test("a group by is offered when some sample has that context, and threads when 
 });
 
 test("slow ticks need samples inside them, not just the option to ask", () => {
-  const noSlow: Ask = <R,>(op: string, filters: Record<string, unknown>): Envelope<R> =>
+  const noSlow: Ask = <R,>(op: QueryOp, filters: RequestFilters): Envelope<R> =>
     filters.slow ? (reply<unknown>([], 0) as Envelope<R>) : ask<R>(op, filters);
-  assert.deepEqual(probeOptions(noSlow).selections, ["all"]);
+  assert.equal(probeOptions(noSlow).slow, false);
 });
 
 test("a capture without samples offers nothing to group or pick", () => {
   const empty: Ask = <R,>(): Envelope<R> => failure<R>();
-  assert.deepEqual(probeOptions(empty), { selections: [], groups: ["none"], threads: [], thread: null });
+  assert.deepEqual(probeOptions(empty), { kinds: [], slow: false, groups: ["none"], threads: [], thread: null });
 });
 
 test("filters carry only what the reader changed from the defaults", () => {
-  assert.deepEqual(sampleFilters("all", null), { select: "cpu" });
-  assert.deepEqual(sampleFilters("slow", "worker"), { select: "cpu", slow: true, thread: "worker" });
-  assert.deepEqual(sampleFilters("waiting", null), { select: "waiting" });
+  assert.deepEqual(sampleFilters("cpu", false, null), { select: "cpu" });
+  assert.deepEqual(sampleFilters("cpu", true, "worker"), { select: "cpu", slow: true, thread: "worker" });
+  assert.deepEqual(sampleFilters("waiting", false, null), { select: "waiting" });
 });
 
 test("a group narrows the tree to its own samples", () => {

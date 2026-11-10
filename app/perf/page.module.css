@@ -1797,3 +1797,36 @@ tr[data-part="true"] .gpuBarCell .meterFill {
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
 }
+
+/* Pins a row's series to the time chart */
+
+.pin {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-left: 4px;
+  border: 0;
+  border-radius: 6px;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0.55;
+}
+
+.pin:hover,
+.pin:focus-visible,
+.pin[aria-pressed="true"] {
+  opacity: 1;
+}
+
+.pin:hover {
+  background: rgb(255 255 255 / 0.1);
+  color: var(--ink);
+}
+
+.pin[aria-pressed="true"] {
+  color: var(--accent);
+}

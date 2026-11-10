@@ -28,7 +28,7 @@ function SplitList({ target, by }: { target: Target; by: ContextKey }) {
     env.reader,
     env.capture,
     "split",
-    { ...env.filters, ...target.scope.filters, by, limit: SPLIT_LIMIT },
+    { ...target.scope.filters, by, limit: SPLIT_LIMIT },
     true,
     [target.id],
   );
@@ -66,7 +66,7 @@ function CallerList({ target }: { target: Target }) {
     env.reader,
     env.capture,
     "callers",
-    { ...env.filters, ...target.scope.filters, depth: CALLERS_DEPTH, limit: CALLERS_LIMIT },
+    { ...target.scope.filters, depth: CALLERS_DEPTH, limit: CALLERS_LIMIT },
     true,
     [target.function],
   );

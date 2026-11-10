@@ -8,13 +8,19 @@ import type { Export } from "@/lib/perf/exports";
 import { t } from "@/lib/perf/i18n";
 import { tabsFor } from "@/lib/perf/tabs";
 import type { Tab } from "@/lib/perf/tabs";
-import type { NetPlayerRow, NetTotalRow, Side } from "@/lib/perf/types";
+import { ignoredOnTab } from "@/lib/perf/filters";
+import type { NetPlayerRow, NetTotalRow, QueryOp, Side } from "@/lib/perf/types";
 import { Icons } from "./icons";
 import { GpuPanel } from "./gpu-panel";
 import { ComparePanel } from "./compare-panel";
 import { ComparisonProvider, useComparison } from "./comparison";
+import { FilterBar } from "./filter-bar";
+import { FiltersProvider, useFilters } from "./filters-context";
 import { MetadataPanel } from "./metadata-panel";
-import { RawPanel } from "./raw-panel";
+import { PinsProvider } from "./pins-context";
+import { QueryLog, QueryLogProvider, useLoggedQueries } from "./query-log";
+import { QueryMenu } from "./query-menu";
+import { PinnedChart } from "./series-chart";
 import { Segmented } from "./segmented";
 import { ShareCapture } from "./share-capture";
 import { SummaryPanel } from "./summary-panel";
@@ -30,6 +36,7 @@ import { HotPanel } from "./hot-panel";
 import { TreePanel } from "./tree-panel";
 import { QUERY_FILE } from "./use-capture";
 import type { LoadedCapture } from "./use-capture";
+import filterStyles from "./filters.module.css";
 import styles from "./page.module.css";
 
 const PANELS: Record<Exclude<Tab, "compare">, ComponentType<{ reader: HorizonPerf; capture: LoadedCapture }>> = {
@@ -46,7 +53,6 @@ const PANELS: Record<Exclude<Tab, "compare">, ComponentType<{ reader: HorizonPer
   warnings: WarningsPanel,
   hot: HotPanel,
   tree: TreePanel,
-  query: RawPanel,
 };
 
 interface Props {
@@ -73,19 +79,42 @@ function CompareStrip() {
 export function CaptureView({ reader, capture, showSide, onClose }: Props) {
   return (
     <ComparisonProvider reader={reader} base={capture}>
-      <Shown reader={reader} capture={capture} showSide={showSide} onClose={onClose} />
+      <FiltersProvider reader={reader} capture={capture}>
+        <PinsProvider capture={capture}>
+          <Shown reader={reader} capture={capture} showSide={showSide} onClose={onClose} />
+        </PinsProvider>
+      </FiltersProvider>
     </ComparisonProvider>
+  );
+}
+
+/** Above a view: which active filters its numbers ignore, and the menu of the queries it ran. */
+function PanelTop({ tab }: { tab: Tab }) {
+  const { filters } = useFilters();
+  const ignored = ignoredOnTab(filters, tab);
+  const emptied = useLoggedQueries().some((entry) => entry.reply?.ok && entry.reply.selection?.samples === 0);
+  return (
+    <div className={filterStyles.top}>
+      {filters.range && emptied ? <p className={filterStyles.ignored}>{t("filters.noSamples")}</p> : null}
+      {ignored.length > 0 ? (
+        <p className={filterStyles.ignored}>
+          {t("filters.ignored", { list: ignored.map((key) => t(`filters.key.${key}`)).join(", ") })}
+        </p>
+      ) : null}
+      <QueryMenu />
+    </div>
   );
 }
 
 function Shown({ reader, capture, showSide, onClose }: Props) {
   const [picked, setPicked] = useState<Tab>("summary");
+  const [log] = useState(() => new QueryLog());
   const [actionError, setActionError] = useState<string | null>(null);
   const { other } = useComparison();
 
   const sides = capture.sides.filter((side) => side !== "unspecified");
   const tabs = useMemo(() => {
-    const ask = <R,>(op: string, limit?: number) => {
+    const ask = <R,>(op: QueryOp, limit?: number) => {
       try {
         const reply = reader.query<R>(capture.handle, { op, file: QUERY_FILE, filters: { side: capture.side, ...(limit ? { limit } : {}) } });
         return reply.ok ? reply.rows : [];
@@ -175,13 +204,18 @@ function Shown({ reader, capture, showSide, onClose }: Props) {
 
       {other && tab !== "compare" ? <CompareStrip /> : null}
 
-      <section key={tab} className={styles.panel}>
-        {tab === "compare" ? (
-          <ComparePanel base={capture} />
-        ) : (
-          createElement(PANELS[tab], { reader, capture })
-        )}
-      </section>
+      <FilterBar reader={reader} capture={capture} />
+      <QueryLogProvider value={log}>
+        <PinnedChart reader={reader} capture={capture} />
+        <section key={tab} className={styles.panel}>
+          <PanelTop tab={tab} />
+          {tab === "compare" ? (
+            <ComparePanel base={capture} />
+          ) : (
+            createElement(PANELS[tab], { reader, capture })
+          )}
+        </section>
+      </QueryLogProvider>
     </>
   );
 }

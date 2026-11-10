@@ -1,6 +1,9 @@
 // What the Summary tab reads from the wasm; it derives only drawing (span tree, bar lengths), never a performance number.
 import type { HorizonPerf } from "./generated/horizon_perf";
+import { NO_FILTERS, mergeFilters, windowSeconds, wireFilters } from "./filters";
+import type { CaptureFilters, MarkPoint } from "./filters";
 import { fieldsFor, stepFor } from "./health";
+import type { LoggedQuery } from "./query-text";
 import { windowsWithin } from "./trailing";
 import type {
   CostRow,
@@ -8,6 +11,9 @@ import type {
   GroupRow,
   HotRow,
   MetaRow,
+  QueryOp,
+  QueryRequest,
+  RequestFilters,
   Selection,
   SeriesRow,
   Side,
@@ -27,6 +33,8 @@ export interface Overview {
   entities: GroupRow[];
   blocks: GroupRow[];
   costs: CostRow[];
+  /** Every request the view was drawn from, for its query menu. */
+  queries: LoggedQuery[];
 }
 
 function count(selection: Selection | undefined, key: "ticks" | "samples"): number | null {
@@ -34,29 +42,42 @@ function count(selection: Selection | undefined, key: "ticks" | "samples"): numb
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
-/** Every reply the Summary tab draws; a section the capture lacks has empty rows and its card is left out. */
+function positive(value: number | null): number | null {
+  return value !== null && value > 0 ? value : null;
+}
+
+/** Every reply the Summary tab draws, narrowed by the shared filters; a section the capture lacks has empty rows and its card is left out. */
 export function loadOverview(
   reader: HorizonPerf,
   handle: number,
   name: string,
   side: Side,
   meta: Envelope<MetaRow>,
+  shared: CaptureFilters = NO_FILTERS,
+  marks: readonly MarkPoint[] = [],
 ): Overview {
-  const ask = <R,>(
-    op: string,
-    args: string[] = [],
-    filters: Record<string, unknown> = {},
-  ): Envelope<R> =>
-    reader.query<R>(handle, { op, args, file: name, filters: { side, ...filters } });
+  const queries: LoggedQuery[] = [];
+  const ask = <R,>(op: QueryOp, args: string[] = [], filters: RequestFilters = {}): Envelope<R> => {
+    const request: QueryRequest = {
+      op,
+      ...(args.length > 0 ? { args } : {}),
+      file: name,
+      filters: mergeFilters({ side, ...wireFilters(shared, op) }, filters),
+    };
+    const reply = reader.query<R>(handle, request);
+    queries.push({ request, reply });
+    return reply;
+  };
   const rows = <R,>(reply: Envelope<R>): R[] => (reply.ok ? reply.rows : []);
 
   const seconds = meta.rows.find((row) => row.side === side)?.seconds ?? 0;
-  const series = ask<SeriesRow>("series", fieldsFor(side), { every: stepFor(seconds), stats: true });
+  const covered = windowSeconds(shared.range, seconds, marks);
+  const series = ask<SeriesRow>("series", fieldsFor(side), { every: stepFor(covered), stats: true });
   const spans = ask<SpanRow>("spans", [], { limit: 40 });
   const hot = ask<HotRow>("hot", [], { limit: 12 });
 
   const trailing =
-    side === "server" && seconds > 0
+    side === "server" && seconds > 0 && shared.range === null
       ? windowsWithin(seconds).map(({ seconds: window }) => {
           const reply = ask<SeriesRow>("series", ["h:tps"], {
             from: Math.max(0, seconds - window),
@@ -68,7 +89,7 @@ export function loadOverview(
 
   return {
     seconds,
-    ticks: count(series.selection, "ticks"),
+    ticks: shared.range ? positive(count(hot.selection, "ticks")) : count(series.selection, "ticks"),
     samples: count(hot.selection, "samples"),
     series: rows(series),
     trailing,
@@ -77,6 +98,7 @@ export function loadOverview(
     entities: rows(ask<GroupRow>("group", [], { by: "entity", limit: 6 })),
     blocks: rows(ask<GroupRow>("group", [], { by: "block", limit: 6 })),
     costs: rows(ask<CostRow>("world", [], { by: "cost", limit: 6 })),
+    queries,
   };
 }
 

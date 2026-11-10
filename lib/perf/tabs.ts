@@ -1,3 +1,5 @@
+import type { QueryOp } from "./types";
+
 export const TABS = [
   "summary",
   "metadata",
@@ -13,12 +15,11 @@ export const TABS = [
   "hot",
   "tree",
   "compare",
-  "query",
 ] as const;
 
 export type Tab = (typeof TABS)[number];
 
-const QUERY: Partial<Record<Tab, string>> = {
+const QUERY: Partial<Record<Tab, QueryOp>> = {
   gpu: "gpu",
   spans: "spans",
   ticks: "ticks",
@@ -32,7 +33,7 @@ const QUERY: Partial<Record<Tab, string>> = {
 };
 
 /** The tabs with something to show: `hasRows` says whether a query answers with any rows for this side. */
-export function tabsFor(hasRows: (query: string) => boolean, hasTraffic: boolean): Tab[] {
+export function tabsFor(hasRows: (query: QueryOp) => boolean, hasTraffic: boolean): Tab[] {
   return TABS.filter((tab) => {
     if (tab === "net") return hasTraffic;
     const query = QUERY[tab];
