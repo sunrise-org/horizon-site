@@ -21,7 +21,6 @@ if (command === "import") {
   const copies = [
     [join(build, "horizon_perf.wasm"), "public/perf/horizon_perf.wasm"],
     [join(build, "horizon_perf.js"), "lib/perf/generated/horizon_perf.js"],
-    [join(source, "crates/horizon-theme/icons/horizon-64.png"), "public/perf/horizon-64.png"],
     [join(source, "crates/horizon-theme/fonts/OFL-Geist.txt"), "public/perf/fonts/OFL-Geist.txt"],
     ...["Geist-Regular", "Geist-Medium", "Geist-SemiBold", "GeistMono-Regular"].map((name) => [
       join(source, `crates/horizon-theme/fonts/${name}.ttf`), `public/perf/fonts/${name}.ttf`,

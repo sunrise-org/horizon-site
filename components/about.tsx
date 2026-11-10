@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ChipIcon, CodeIcon, DriveIcon, ExternalLinkIcon, HorizonLogo } from "@/components/icons";
+import { ChipIcon, CodeIcon, DriveIcon, ExternalLinkIcon, SunriseLogo } from "@/components/icons";
 import { getMessages, type Locale } from "@/components/i18n";
 import { rich } from "@/components/i18n-text";
 import { CONTRIBUTORS_URL, MOD_API_AUTHOR_URL, MOD_API_REPO_URL, NEOFORGE_URL, PROFILER_HELPER_URL, UPSTREAM_URL } from "@/components/links";
@@ -32,7 +32,7 @@ export function About({ locale }: { locale: Locale }) {
           <div className="reveal relative z-20 lg:col-start-1 lg:row-start-1">
             <p className="flex items-center gap-2.5 text-sm font-medium text-white/60">
               {t.eyebrow}
-              <HorizonLogo className="h-4 w-auto" />
+              <SunriseLogo className="h-4 w-auto" />
             </p>
             <h2
               id="about-title"

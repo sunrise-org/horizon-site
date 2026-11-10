@@ -2,6 +2,7 @@
 
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import type { HTMLAttributes, ReactNode } from "react";
+import { SunriseMark } from "@/components/icons";
 
 export const PLAY = "inline-flex items-center justify-center gap-2.5 rounded-[14px] bg-(--accent) font-semibold text-(--on-accent) transition-[filter] hover:brightness-110 disabled:pointer-events-none disabled:opacity-50";
 export const SOLID = "inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-[10px] bg-white px-4 text-[14px] font-medium text-[#100a1f] transition-opacity hover:opacity-90 disabled:pointer-events-none disabled:opacity-40";
@@ -28,13 +29,7 @@ export function Glass({ className = "", children, ...rest }: HTMLAttributes<HTML
 }
 
 export function Mark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 16 16" aria-hidden className={className}>
-      <path fill="#fff" d="M4 3h2v4H4zM10 3h2v4h-2z" />
-      <path fill="#fff" opacity="0.4" d="M4 8h2v4H4zM10 8h2v4h-2z" />
-      <path style={{ fill: "var(--accent-soft, #a98fff)" }} d="M1 7h14v1H1z" />
-    </svg>
-  );
+  return <SunriseMark className={className} />;
 }
 
 export function MarkTile({ size }: { size: number }) {

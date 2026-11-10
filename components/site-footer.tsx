@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { GitHubIcon, HorizonMark, MicrosoftIcon, MojangIcon, RustIcon } from "@/components/icons";
+import { GitHubIcon, SunriseMark, MicrosoftIcon, MojangIcon, RustIcon } from "@/components/icons";
 import { gameBlob } from "@/components/game-repo";
 import { getMessages, LOCALES, rich, type Locale } from "@/components/i18n";
 import { localePath } from "@/components/i18n-text";
@@ -52,7 +52,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
       <div className="mx-auto w-full max-w-6xl px-6 pt-14 pb-10 lg:px-10">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-16">
           <Link href={localePath(locale, "/")} className="flex shrink-0 items-center gap-2 text-white">
-            <HorizonMark className="size-8" />
+            <SunriseMark className="size-8" />
             <span className="font-display text-[19px] font-semibold tracking-[-0.02em]">Sunrise</span>
           </Link>
           <div className="flex max-w-xl items-center gap-4 md:flex-row-reverse md:text-right">
