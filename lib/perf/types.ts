@@ -139,7 +139,16 @@ export interface OverheadInfo {
   timeline_stopped_t: number | null;
 }
 
+export interface TimingRow {
+  count: number;
+  slowest_1pct_ms: number;
+  slowest_01pct_ms: number;
+  low_1pct: number;
+  low_01pct: number;
+}
+
 export interface MetaRow {
+  timing?: TimingRow | null;
   side: Side;
   seconds: number;
   sections: Record<string, number>;

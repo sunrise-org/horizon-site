@@ -37,7 +37,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: site
-          image: hub.umceko.com/sunrise/site@sha256:074ba34942cf2707f12738de28511795600796a2b3bfc9857a45e12d992e60b8
+          image: hub.umceko.com/sunrise/site@sha256:e27b924352903c860b7ed62ec337efc1fd1f6e061960596737916109f572da13
           ports:
             - containerPort: 8080
           envFrom:

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { DragEvent } from "react";
 import { t } from "@/lib/perf/i18n";
-import { fileFromLink, sharedFile } from "@/lib/perf/share-client";
+import { sharedFile } from "@/lib/perf/share-client";
 import { CaptureView } from "./capture-view";
 import { Landing } from "./landing";
 import { useReader } from "./use-capture";
@@ -13,7 +13,6 @@ export default function PerfViewer({ captureId }: { captureId?: string }) {
   const { reader, readerError, capture, error, open, close, showSide } = useReader();
   const [dragging, setDragging] = useState(false);
   const input = useRef<HTMLInputElement>(null);
-  const [link, setLink] = useState("");
   const [linkError, setLinkError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -25,19 +24,12 @@ export default function PerfViewer({ captureId }: { captureId?: string }) {
     return () => controller.abort();
   }, [captureId, reader, open]);
 
-  const openLink = async () => {
-    setLinkError(null);
-    try {
-      const file = await fileFromLink(link);
-      await open(file, file.name);
-    } catch (failure) {
-      setLinkError(failure instanceof Error ? failure.message : t("share.invalidLink"));
-    }
-  };
-
   const choose = useCallback(async (files: FileList | File[] | null) => {
     const file = Array.isArray(files) ? files[0] : files?.[0];
-    if (file) await open(file, file.name);
+    if (file) {
+      setLinkError(null);
+      await open(file, file.name);
+    }
   }, [open]);
 
   const drop = (event: DragEvent<HTMLElement>) => {
@@ -91,13 +83,9 @@ export default function PerfViewer({ captureId }: { captureId?: string }) {
           ready={Boolean(reader)}
           dragging={dragging}
           problem={
-            readerError ? t("error.reader", { message: readerError }) : error ? t("error.capture", { message: error }) : null
+            readerError ? t("error.reader", { message: readerError }) : error ? t("error.capture", { message: error }) : linkError
           }
           onChoose={openPicker}
-          link={link}
-          linkError={linkError}
-          onLinkChange={setLink}
-          onOpenLink={() => { void openLink(); }}
         />
       )}
     </main>

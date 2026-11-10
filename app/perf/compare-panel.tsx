@@ -24,7 +24,6 @@ function metricName(row: DiffRow): string {
 export function ComparePanel({ base }: { base: LoadedCapture }) {
   const { other, rows, warnings, error, ready, pick, clear } = useComparison();
   const picker = useRef<HTMLInputElement>(null);
-  const [link, setLink] = useState("");
   const [linkError, setLinkError] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
   const dragDepth = useRef(0);
@@ -34,7 +33,6 @@ export function ComparePanel({ base }: { base: LoadedCapture }) {
   }, [pick]);
   const openShared = useCallback(async (value: string) => {
     setLinkError(null);
-    setLink(value);
     try { await pick(await fileFromLink(value)); }
     catch (failure) { setLinkError(failure instanceof Error ? failure.message : t("share.invalidLink")); }
   }, [pick]);
@@ -109,11 +107,6 @@ export function ComparePanel({ base }: { base: LoadedCapture }) {
         ) : null}
       </div>
       <p className={styles.muted} aria-live="polite">{t(dragging ? "compare.dropActive" : "compare.dropHint")}</p>
-      <form className={styles.linkForm} onSubmit={(event) => { event.preventDefault(); void openShared(link); }}>
-        <label htmlFor="compare-link">{t("share.compareLink")}</label>
-        <input id="compare-link" className={styles.input} type="url" required value={link} onChange={(event) => setLink(event.target.value)} />
-        <button className={styles.buttonSmall} type="submit">{t("share.open")}</button>
-      </form>
       </div>
       {linkError ? <p className={styles.error} role="alert">{linkError}</p> : null}
       {error ? <p className={styles.error}>{error}</p> : null}

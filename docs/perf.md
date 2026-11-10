@@ -1,6 +1,6 @@
 # Performance captures
 
-The viewer lives at https://playsunrise.net/perf. The site uses playsunrise.net; its TLS certificate covers the apex and *.playsunrise.net. perf.playsunrise.net redirects to the profiler, and other subdomains redirect to the apex. Pick a `.hzperf` file, paste or drop one, or open a shared capture link at `/perf/c/<id>`. Reading a local capture stays in the browser. **Share** shows what the capture may contain and asks before uploading; it creates a 30-day link and shows an owner-only delete token. The Compare tab accepts a second local file or a link from this site.
+The viewer lives at https://playsunrise.net/perf. The site uses playsunrise.net; its TLS certificate covers the apex and *.playsunrise.net. perf.playsunrise.net redirects to the profiler, and other subdomains redirect to the apex. Pick a `.hzperf` file, paste or drop one, or open a shared capture link at `/perf/c/<id>`. Reading a local capture stays in the browser. **Share** shows what the capture may contain and asks before uploading; it creates a 30-day link and shows an owner-only delete token. The Compare tab accepts a second local file through the picker, Ctrl+V (⌘V on macOS), or drag-and-drop. Shared capture links open directly at `/perf/c/<id>`; there is no URL input form. A shared link can also be pasted or dropped onto Compare.
 
 The UI moved from the game repository's `web/perf/`, including its pending UI fixes. `app/perf/` has its own root layout, `lib/perf/` owns the viewer helpers, and `messages/perf/en_us.json` contains its strings. The site's other root layouts continue to own their routes.
 
@@ -68,3 +68,9 @@ The gateway trusts only Cloudflare's [published IPv4](https://www.cloudflare.com
 The `local-path` provisioner does not enforce a physical filesystem quota. The API's persistent byte reservations enforce the logical capture capacity, retaining 10% for storage metadata. The metadata PVC is 256 MiB. Include both volumes in backups and restore them together.
 
 The game tool supports `horizon-perf upload FILE`, `horizon-perf share FILE`, and share links in summary, query and diff. `PERF_UPLOAD_URL` overrides its upload endpoint.
+
+## Timing lows
+
+The summary shows 1% and 0.1% lows for FPS and ticks, plus the mean duration of each slow tail. A low is 1000 divided by the average duration of the slowest `ceil(count × fraction)` frames or ticks. Tick lows express work-based TPS capacity capped at 20, not observed scheduling cadence. The count and rounding rule are shown so short captures are not mistaken for large samples. Benchmark rows expose both stored FPS lows.
+
+Regular captures need the updated game recorder's optional `SpanSummary.timing` field. Older captures remain readable and show unavailable lows; the viewer never estimates them from per-second percentiles, coarse histograms, or the limited slow-event list. Timing collection keeps at most one million durations (about 4 MiB per active side) and omits the summary if that bound or invalid timing data prevents a complete result.
