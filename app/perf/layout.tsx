@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { SITE_URL } from "@/components/site";
 import type { ReactNode } from "react";
 import { t } from "@/lib/perf/i18n";
+import { SiteShell } from "@/components/site-shell";
+import "../globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -11,9 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <body style={{ margin: 0, background: "#0d0e13", color: "#ecedf3" }}>{children}</body>
-    </html>
-  );
+  return <SiteShell locale="en">{children}</SiteShell>;
 }

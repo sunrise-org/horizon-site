@@ -1,7 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { DragEvent } from "react";
 import { fileFromLink } from "@/lib/perf/share-client";
+import { captureId } from "@/lib/perf/sharing";
 import { changeMs, changePct, rowName, toneOf } from "@/lib/perf/compare";
 import { num } from "@/lib/perf/format";
 import { has, t } from "@/lib/perf/i18n";
@@ -24,16 +26,67 @@ export function ComparePanel({ base }: { base: LoadedCapture }) {
   const picker = useRef<HTMLInputElement>(null);
   const [link, setLink] = useState("");
   const [linkError, setLinkError] = useState<string | null>(null);
-  const pickLink = async () => {
+  const [dragging, setDragging] = useState(false);
+  const dragDepth = useRef(0);
+  const openFile = useCallback(async (file: File) => {
     setLinkError(null);
-    try { await pick(await fileFromLink(link)); }
+    await pick(file);
+  }, [pick]);
+  const openShared = useCallback(async (value: string) => {
+    setLinkError(null);
+    setLink(value);
+    try { await pick(await fileFromLink(value)); }
     catch (failure) { setLinkError(failure instanceof Error ? failure.message : t("share.invalidLink")); }
+  }, [pick]);
+
+  useEffect(() => {
+    const paste = (event: ClipboardEvent) => {
+      const file = event.clipboardData?.files[0];
+      if (file) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        void openFile(file);
+        return;
+      }
+      if (event.target instanceof Element && event.target.closest("input, textarea, [contenteditable]")) return;
+      const value = event.clipboardData?.getData("text/plain").trim();
+      if (value && captureId(value, window.location.origin)) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        void openShared(value);
+      }
+    };
+    window.addEventListener("paste", paste, true);
+    return () => window.removeEventListener("paste", paste, true);
+  }, [openFile, openShared]);
+
+  const drop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    dragDepth.current = 0;
+    setDragging(false);
+    const file = event.dataTransfer.files[0];
+    if (file) void openFile(file);
+    else {
+      const value = event.dataTransfer.getData("text/uri-list").split("\n").find((line) => line && !line.startsWith("#")) ?? event.dataTransfer.getData("text/plain");
+      if (value.trim()) void openShared(value.trim());
+    }
   };
   const table = rows.filter((row) => row.id.startsWith("h:") || row.id.startsWith("s:")).slice(0, SHOWN);
   const judged = table.some((row) => row.verdict !== "too_few_blocks");
 
   return (
     <div className={styles.metadata}>
+      <div
+        className={dragging ? styles.comparisonDropActive : styles.comparisonDrop}
+        role="group"
+        aria-label={t("compare.choose")}
+        tabIndex={0}
+        onDragEnter={(event) => { event.preventDefault(); event.stopPropagation(); dragDepth.current += 1; setDragging(true); }}
+        onDragOver={(event) => { event.preventDefault(); event.stopPropagation(); event.dataTransfer.dropEffect = "copy"; }}
+        onDragLeave={(event) => { event.stopPropagation(); dragDepth.current = Math.max(0, dragDepth.current - 1); if (!dragDepth.current) setDragging(false); }}
+        onDrop={drop}
+      >
       <div className={styles.actions}>
         <input
           ref={picker}
@@ -42,7 +95,7 @@ export function ComparePanel({ base }: { base: LoadedCapture }) {
           className={styles.fileInput}
           onChange={(event) => {
             const file = event.target.files?.[0];
-            if (file) void pick(file);
+            if (file) void openFile(file);
             event.target.value = "";
           }}
         />
@@ -55,12 +108,14 @@ export function ComparePanel({ base }: { base: LoadedCapture }) {
           </button>
         ) : null}
       </div>
-      <form className={styles.linkForm} onSubmit={(event) => { event.preventDefault(); void pickLink(); }}>
+      <p className={styles.muted} aria-live="polite">{t(dragging ? "compare.dropActive" : "compare.dropHint")}</p>
+      <form className={styles.linkForm} onSubmit={(event) => { event.preventDefault(); void openShared(link); }}>
         <label htmlFor="compare-link">{t("share.compareLink")}</label>
         <input id="compare-link" className={styles.input} type="url" required value={link} onChange={(event) => setLink(event.target.value)} />
         <button className={styles.buttonSmall} type="submit">{t("share.open")}</button>
       </form>
-      {linkError ? <p className={styles.error}>{linkError}</p> : null}
+      </div>
+      {linkError ? <p className={styles.error} role="alert">{linkError}</p> : null}
       {error ? <p className={styles.error}>{error}</p> : null}
       <p className={styles.muted}>{other ? t("compare.pair", { a: base.name, b: other.name }) : t("compare.pick")}</p>
       {other && ready ? <p className={styles.muted}>{t("compare.elsewhere")}</p> : null}

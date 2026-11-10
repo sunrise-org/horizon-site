@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { DragEvent } from "react";
 import { t } from "@/lib/perf/i18n";
 import { fileFromLink, sharedFile } from "@/lib/perf/share-client";
@@ -35,10 +35,10 @@ export default function PerfViewer({ captureId }: { captureId?: string }) {
     }
   };
 
-  const choose = async (files: FileList | File[] | null) => {
+  const choose = useCallback(async (files: FileList | File[] | null) => {
     const file = Array.isArray(files) ? files[0] : files?.[0];
     if (file) await open(file, file.name);
-  };
+  }, [open]);
 
   const drop = (event: DragEvent<HTMLElement>) => {
     event.preventDefault();
@@ -51,14 +51,14 @@ export default function PerfViewer({ captureId }: { captureId?: string }) {
   useEffect(() => {
     const handler = (event: ClipboardEvent) => {
       const files = event.clipboardData?.files;
-      if (files && files.length > 0) {
+      if (!event.defaultPrevented && files && files.length > 0) {
         event.preventDefault();
         void choose(files);
       }
     };
     window.addEventListener("paste", handler);
     return () => window.removeEventListener("paste", handler);
-  }, [reader]);
+  }, [choose]);
 
   return (
     <main
@@ -71,14 +71,6 @@ export default function PerfViewer({ captureId }: { captureId?: string }) {
       onDragLeave={() => setDragging(false)}
       onDrop={drop}
     >
-      {linkError ? <p className={styles.error} role="alert">{linkError}</p> : null}
-      {!capture ? (
-        <form className={styles.linkForm} onSubmit={(event) => { event.preventDefault(); void openLink(); }}>
-          <label htmlFor="capture-link">{t("share.openLink")}</label>
-          <input id="capture-link" className={styles.input} type="url" required value={link} onChange={(event) => setLink(event.target.value)} placeholder={t("share.linkPlaceholder")} />
-          <button className={styles.buttonSmall} type="submit" disabled={!reader}>{t("share.open")}</button>
-        </form>
-      ) : null}
       <input
         ref={input}
         type="file"
@@ -102,6 +94,10 @@ export default function PerfViewer({ captureId }: { captureId?: string }) {
             readerError ? t("error.reader", { message: readerError }) : error ? t("error.capture", { message: error }) : null
           }
           onChoose={openPicker}
+          link={link}
+          linkError={linkError}
+          onLinkChange={setLink}
+          onOpenLink={() => { void openLink(); }}
         />
       )}
     </main>
