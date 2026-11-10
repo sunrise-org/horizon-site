@@ -97,7 +97,11 @@
         "title": "Credits",
         "built": "Sunrise is built on <horizon>Horizon</horizon> by the horizon-rust contributors.",
         "api": "The native mod API follows <neoforge>NeoForge</neoforge>'s design and docs, with thanks.",
-        "modders": "<ari>Ari (arismoko)</ari> and the modding contributors build the mod API, in <repo>arismoko/horizon</repo>."
+        "modders": "<ari>Ari (arismoko)</ari> and the modding contributors build the mod API, in <repo>arismoko/horizon</repo>.",
+        "profiler": "Profiler: with help from <gigger>gigger</gigger>"
+      },
+      "team": {
+        "title": "Team"
       }
     },
     "sponsor": {

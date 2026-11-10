@@ -2,6 +2,9 @@ import { ApiGapsEvidence } from "@/components/api-gaps-evidence";
 import { ApiGapsFilter } from "@/components/api-gaps-filter";
 import { Ext, RichText } from "@/components/api-gaps-rich";
 import { Synced } from "@/components/api-gaps-synced";
+import { TeamPullsSection } from "@/components/api-gaps-team-prs";
+import type { TeamPulls } from "@/lib/api-gaps/team-prs-parse";
+import { TEAM_QUERY } from "@/lib/api-gaps/team-prs";
 import { curated } from "@/lib/api-gaps/capabilities";
 import { drifted, driftOf } from "@/lib/api-gaps/drift";
 import external from "@/lib/api-gaps/external.json";
@@ -114,7 +117,7 @@ function summaryOf(group: EvidenceGroup): EvidenceSummary {
   return summarize(group);
 }
 
-export function ApiGapsView({ sync, evidence }: { sync: Sync; evidence: LiveEvidence }) {
+export function ApiGapsView({ sync, evidence, teamPulls }: { sync: Sync; evidence: LiveEvidence; teamPulls: TeamPulls | null }) {
   const counts = countByStatus(curated.capabilities);
   const total = curated.capabilities.length;
   const refs = new Map(sync.refs.map((r) => [r.number, r]));
@@ -161,6 +164,8 @@ export function ApiGapsView({ sync, evidence }: { sync: Sync; evidence: LiveEvid
             Open the project board<span className="sr-only"> (opens in a new tab)</span>
           </a>
         </aside>
+
+        <TeamPullsSection data={teamPulls} query={TEAM_QUERY} />
 
         <section aria-labelledby="summary" className="mt-12">
           <h2 id="summary" className="sr-only">

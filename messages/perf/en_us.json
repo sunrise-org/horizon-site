@@ -276,6 +276,7 @@
   "landing.way.ctl": "While the game runs, start and stop from a terminal",
   "landing.way.server": "On a server console, record for a number of seconds",
   "landing.where": "Find the .hzperf file in the reports folder in your game home.",
+  "landing.thanks": "With thanks to {name}, who helped build the profiler.",
   "landing.reads": "What you can read",
   "landing.read.tick": "Where the tick goes",
   "landing.read.tick.note": "Every phase, in milliseconds",

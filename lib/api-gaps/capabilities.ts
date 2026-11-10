@@ -20,10 +20,6 @@ export const curated: Curated = {
       "href": "https://arismoko.github.io/horizon/"
     },
     {
-      "text": "Xmilon’s open PRs",
-      "href": "https://github.com/arismoko/horizon/pulls?q=is%3Apr+is%3Aopen+author%3AXmilon"
-    },
-    {
       "text": "Up for grabs",
       "href": "https://github.com/users/arismoko/projects/1/views/2"
     },

@@ -235,6 +235,8 @@
 .fileType { color: var(--accent-soft); font: 12px/1.5 var(--mono); padding: 3px 9px; border-radius: 6px; background: color-mix(in srgb, var(--primary) 22%, transparent); }
 .landingHeading { margin: 0; color: var(--ink); font-family: var(--display); font-size: 22px; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
 .privacyNote { margin: 20px 0 0; color: rgb(255 255 255 / 0.45); font-size: 13px; line-height: 1.6; }
+.privacyNote a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.privacyNote a:hover { color: var(--ink); }
 .recordPanel { padding: 24px; border-radius: 16px; background: var(--surface); color: rgb(255 255 255 / 0.65); font-size: 14px; }
 .recordPanel p { margin: 14px 0 8px; line-height: 1.7; }
 .commandBlock { display: block; max-width: 100%; overflow-wrap: anywhere; padding: 10px 14px; background: #0a0614; border-radius: 10px; color: #e7e1ff; font: 13px/1.6 var(--mono); }
