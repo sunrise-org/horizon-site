@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import type { ReactNode } from "react";
 import { getReleases, launcherBuild } from "@/components/github-releases";
 import { getMessages, type Locale } from "@/components/i18n";
-import { getShopStatus } from "@/components/shop-data";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
@@ -42,6 +41,6 @@ export function SiteShell({ locale, children }: { locale: Locale; children: Reac
 }
 
 async function SiteNavigation({ locale }: { locale: Locale }) {
-  const [releases, shop] = await Promise.all([getReleases(), getShopStatus()]);
-  return <SiteHeader locale={locale} t={getMessages(locale).header} releaseIds={releases?.map((release) => release.id) ?? []} launcher={launcherBuild(releases)} shop={shop.open || shop.selling} />;
+  const releases = await getReleases();
+  return <SiteHeader locale={locale} t={getMessages(locale).header} releaseIds={releases?.map((release) => release.id) ?? []} launcher={launcherBuild(releases)} />;
 }

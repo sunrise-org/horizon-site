@@ -23,9 +23,6 @@ const NAV: { key: NavKey; href: string }[] = [
   { key: "players", href: "/stats" },
 ];
 
-// The shop's entry, shown while something is on sale or the founder claim is open (components/shop-data.ts).
-const SHOP: { key: NavKey; href: string } = { key: "shop", href: "/shop" };
-
 const NAV_LINK = "inline-flex items-center gap-1.5 transition-colors hover:text-white";
 
 const subscribe = (onChange: () => void) => {
@@ -33,7 +30,7 @@ const subscribe = (onChange: () => void) => {
   return () => window.removeEventListener("scroll", onChange);
 };
 
-type SiteHeaderProps = { locale: Locale; t: Messages["header"]; releaseIds?: number[]; launcher?: LauncherBuild | null; shop?: boolean };
+type SiteHeaderProps = { locale: Locale; t: Messages["header"]; releaseIds?: number[]; launcher?: LauncherBuild | null };
 
 // The current path is runtime data: read outside <Suspense> it stops Next.js from rendering pages that aren't
 // prerendered (CLIENT_HOOK_DYNAMIC). The fallback is the same header with no link marked as current.
@@ -49,8 +46,8 @@ function SiteHeaderAtPath(props: SiteHeaderProps) {
   return <SiteHeaderView {...props} pathname={usePathname()} />;
 }
 
-function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, shop = false, pathname }: SiteHeaderProps & { pathname: string }) {
-  const nav = (shop ? [...NAV, SHOP] : NAV).map((item) => ({ ...item, href: localePath(locale, item.href) }));
+function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, pathname }: SiteHeaderProps & { pathname: string }) {
+  const nav = NAV.map((item) => ({ ...item, href: localePath(locale, item.href) }));
   const scrolled = useSyncExternalStore(
     subscribe,
     () => window.scrollY > 8,
@@ -81,11 +78,10 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, shop = fa
       <div className="mx-auto flex h-18 w-full max-w-6xl items-center gap-12 px-6 lg:px-10">
         <Link href={localePath(locale, "/")} className="flex items-center gap-2 text-white">
           <HorizonMark className="size-8" />
-          <span className="font-display text-[19px] font-semibold tracking-[-0.02em]">Horizon</span>
+          <span className="font-display text-[19px] font-semibold tracking-[-0.02em]">Sunrise</span>
         </Link>
 
-        {/* With the shop's entry the row is one link longer: tighter gaps below xl keep Download inside 1024 px. */}
-        <nav aria-label={t.mainNav} className={`hidden items-center text-sm text-white/65 lg:flex ${shop ? "gap-5 xl:gap-8" : "gap-8"}`}>
+        <nav aria-label={t.mainNav} className={`hidden items-center text-sm text-white/65 lg:flex gap-8`}>
           {nav.map((item) => (
             <Link
               key={item.href}
