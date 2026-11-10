@@ -31,6 +31,9 @@ const nextConfig: NextConfig = {
     // Each language has its own root layout (app/(en), app/es), so unmatched addresses need app/global-not-found.tsx.
     globalNotFound: true,
   },
+  async rewrites() {
+    return [{ source: "/api-gaps", destination: "/api-gaps.html" }];
+  },
   async redirects() {
     return [
       { source: "/:path*", has: [{ type: "host", value: "[^.]+\\.up\\.railway\\.app" }], destination: `${process.env.SITE_URL || "https://playsunrise.net"}/:path*`, permanent: true },
