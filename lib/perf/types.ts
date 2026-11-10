@@ -236,6 +236,10 @@ export interface NetTotalRow {
 export interface NetPlayerRow {
   id: string;
   index: number;
+  /** Empty on a client's own connection and in captures made before names were kept. */
+  name?: string;
+  brand?: string;
+  view_distance?: number;
   joined_t: number;
   left_t: number | null;
   out_bytes: number;

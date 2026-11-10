@@ -535,6 +535,8 @@
   "net.in": "Received",
   "net.players": "Players connected",
   "net.player": "Player",
+  "net.client": "Client",
+  "net.viewDistance": "View distance",
   "net.playerN": "Player {n}",
   "net.peakOut": "Peak sent",
   "net.packetsOut": "Packets sent",

@@ -1,8 +1,8 @@
 {
   "repository": "https://github.com/sunrise-org/horizon",
-  "revision": "bcdc035d963ec53a684ff30c0dc4809cc403c140",
+  "revision": "e3fbf94bbd331d48fa4a5c39b456f378fde495fd",
   "files": {
-    "public/perf/horizon_perf.wasm": "817387800f84535b4cf2ed497f6483f58bc56b145422471cddd3bfbc839aa118",
+    "public/perf/horizon_perf.wasm": "6a9f3d9e1a3b0a112552b691470950fdc2b57ae5bdc9c938ed4f0406ad36133c",
     "lib/perf/generated/horizon_perf.js": "782cdf8e0e01857b0c3ccec2066f1272fb463afdddf1889d3f9507e734f93594",
     "public/perf/horizon-64.png": "1017decdf41f0dba0113dcc02e65845456ae07ed6ce419b71723e7e50a1e3f67",
     "public/perf/fonts/OFL-Geist.txt": "c683bfbcc7e087f5d37a54ef628f10387c451a83ddc459b151403a164ac46c90",
