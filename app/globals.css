@@ -568,3 +568,56 @@ body {
     transition: none;
   }
 }
+
+/* /api-gaps: short classes, because its 77 rows would repeat long utility strings in the page and its payload */
+.ag-link {
+  @apply text-[#c4b5ff] underline decoration-[#c4b5ff]/40 underline-offset-4 transition-colors hover:text-white;
+}
+.ag-src {
+  @apply font-mono text-[13px] text-[#c4b5ff] underline decoration-[#c4b5ff]/40 underline-offset-4 transition-colors hover:text-white;
+}
+.ag-row {
+  @apply grid gap-x-6 gap-y-2 border-t border-white/10 px-5 py-4 first:border-t-0 sm:grid-cols-[1fr_auto];
+}
+.ag-title {
+  @apply text-[15px] leading-snug font-semibold text-white;
+}
+.ag-note {
+  @apply mt-1 max-w-[72ch] text-[15px] text-white/70;
+}
+.ag-tags {
+  @apply flex flex-wrap items-start gap-2 sm:justify-end;
+}
+.ag-wide {
+  @apply sm:col-span-2;
+}
+.ag-sum {
+  @apply cursor-pointer list-none marker:hidden [&::-webkit-details-marker]:hidden;
+}
+.ag-more {
+  @apply text-sm text-white/60 sm:col-span-2;
+}
+.ag-chev {
+  @apply mr-2 inline-block text-white/40 transition-transform group-open:rotate-90;
+}
+.ag-list {
+  @apply mt-2 list-disc space-y-1 pl-6 marker:text-white/30;
+}
+.ag-chip {
+  @apply inline-flex items-center gap-1.5 rounded-md bg-white/[0.06] px-2 py-0.5 text-xs;
+}
+.ag-badge {
+  @apply inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset;
+}
+.ag-covered {
+  @apply bg-emerald-400/15 text-emerald-200 ring-emerald-300/25;
+}
+.ag-partial {
+  @apply bg-amber-400/15 text-amber-200 ring-amber-300/25;
+}
+.ag-missing {
+  @apply bg-rose-400/15 text-rose-200 ring-rose-300/25;
+}
+.ag-na {
+  @apply bg-white/10 text-white/70 ring-white/15;
+}
