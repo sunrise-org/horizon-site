@@ -1,8 +1,13 @@
 import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
-import { getMessages, rich, type Locale, type Messages } from "@/components/i18n";
-import { DiscordIcon, DollarIcon, GitHubIcon, ShieldIcon } from "@/components/icons";
-import { BUILD_URL, DISCORD_URL, GITHUB_URL, SPONSOR_URL } from "@/components/links";
+import {
+  getMessages,
+  rich,
+  type Locale,
+  type Messages,
+} from "@/components/i18n";
+import { DiscordIcon, GitHubIcon, ShieldIcon } from "@/components/icons";
+import { BUILD_URL, DISCORD_URL, GITHUB_URL } from "@/components/links";
 import { PixelAurora } from "@/components/pixel-aurora";
 
 const GLASS = {
@@ -34,8 +39,16 @@ type Card = {
 };
 
 const LINKS: Card[] = [
-  ...(DISCORD_URL ? [{ key: "discord" as const, href: DISCORD_URL, icon: DiscordIcon, tone: DISCORD }] : []),
-  { key: "sponsor", href: SPONSOR_URL, icon: DollarIcon, tone: GLASS },
+  ...(DISCORD_URL
+    ? [
+        {
+          key: "discord" as const,
+          href: DISCORD_URL,
+          icon: DiscordIcon,
+          tone: DISCORD,
+        },
+      ]
+    : []),
   { key: "source", href: GITHUB_URL, icon: GitHubIcon, tone: LIGHT },
   { key: "build", href: BUILD_URL, icon: ShieldIcon, tone: GLASS },
 ];
@@ -71,11 +84,19 @@ export function Community({ locale }: { locale: Locale }) {
                 href={href}
                 className={`group flex w-full flex-col rounded-xl p-6 transition outline-none focus-visible:ring-2 motion-safe:hover:-translate-y-0.5 ${tone.card}`}
               >
-                <span className={`flex items-center gap-2.5 text-[17px] font-medium ${tone.title}`}>
-                  <Icon className={`size-5 shrink-0 transition-colors ${tone.icon}`} />
+                <span
+                  className={`flex items-center gap-2.5 text-[17px] font-medium ${tone.title}`}
+                >
+                  <Icon
+                    className={`size-5 shrink-0 transition-colors ${tone.icon}`}
+                  />
                   {t.links[key].title}
                 </span>
-                <span className={`mt-2 text-sm leading-relaxed text-pretty ${tone.body}`}>{t.links[key].body}</span>
+                <span
+                  className={`mt-2 text-sm leading-relaxed text-pretty ${tone.body}`}
+                >
+                  {t.links[key].body}
+                </span>
               </a>
             </li>
           ))}
@@ -84,7 +105,10 @@ export function Community({ locale }: { locale: Locale }) {
         <p className="mt-6 text-sm text-white/60">
           {rich(t.artists, {
             link: (chunks) => (
-              <Link href="/artists" className="font-medium text-white/85 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60">
+              <Link
+                href="/artists"
+                className="font-medium text-white/85 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60"
+              >
                 {chunks}
               </Link>
             ),

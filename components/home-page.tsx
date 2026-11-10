@@ -20,9 +20,13 @@ import {
   SITE_URL,
   WEBSITE_ID,
 } from "@/components/site";
-import { Sponsor } from "@/components/sponsor";
 
-const SCREENSHOTS = ["/media/nether.webp", "/media/village-800.webp", "/media/night-800.webp", "/media/underwater.webp"];
+const SCREENSHOTS = [
+  "/media/nether.webp",
+  "/media/village-800.webp",
+  "/media/night-800.webp",
+  "/media/underwater.webp",
+];
 
 // The home page in each language: app/(en)/page.tsx and app/es/page.tsx.
 export async function HomePage({ locale }: { locale: Locale }) {
@@ -64,7 +68,8 @@ export async function HomePage({ locale }: { locale: Locale }) {
               applicationSubCategory: "Minecraft: Java Edition client",
               operatingSystem: OPERATING_SYSTEMS,
               softwareVersion: game?.tag.replace(/^\D+/, ""),
-              softwareRequirements: "A legally obtained copy of Minecraft: Java Edition 26.3",
+              softwareRequirements:
+                "A legally obtained copy of Minecraft: Java Edition 26.3",
               downloadUrl: absolute(DOWNLOAD_URL),
               releaseNotes: absolute("/releases"),
               screenshot: SCREENSHOTS.map(absolute),
@@ -72,7 +77,11 @@ export async function HomePage({ locale }: { locale: Locale }) {
               isAccessibleForFree: true,
               license: "https://opensource.org/license/mit",
               author: AUTHOR,
-              isBasedOn: { "@type": "SoftwareApplication", name: "Horizon", url: UPSTREAM_URL },
+              isBasedOn: {
+                "@type": "SoftwareApplication",
+                name: "Horizon",
+                url: UPSTREAM_URL,
+              },
               publisher: { "@id": ORGANIZATION_ID },
               sameAs: [GITHUB_URL],
             },
@@ -81,7 +90,6 @@ export async function HomePage({ locale }: { locale: Locale }) {
       />
       <Hero locale={locale} />
       <About locale={locale} />
-      <Sponsor locale={locale} />
       <Community locale={locale} />
       <Gallery locale={locale} />
       <Contributors locale={locale} />

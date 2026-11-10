@@ -95,15 +95,6 @@
         "title": "Equipo"
       }
     },
-    "sponsor": {
-      "title": "Tu servidor<br/>de Minecraft, <accent>online 24/7.</accent>",
-      "lead": "¡Consigue tu servidor ahora en menos de ~60 segundos!",
-      "cta": "Quiero mi servidor",
-      "copy": "Copiar el código {code}",
-      "copied": "Cupón copiado al portapapeles",
-      "selected": "Seleccionado: pulsa Ctrl+C para copiar",
-      "hide": "Ocultar este socio"
-    },
     "community": {
       "eyebrow": "Comunidad",
       "title": "Hecho en abierto.",
@@ -112,10 +103,6 @@
         "discord": {
           "title": "Discord",
           "body": "Preguntas, informes de errores y capturas."
-        },
-        "sponsor": {
-          "title": "Patrocinar",
-          "body": "Los patrocinadores en GitHub financian la próxima versión."
         },
         "source": {
           "title": "Código",
