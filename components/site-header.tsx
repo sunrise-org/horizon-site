@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState, useSyncExternalStore } from "react";
-import { GitHubIcon, HorizonMark, MenuIcon, XIcon } from "@/components/icons";
+import { GitHubIcon, MenuIcon, XIcon } from "@/components/icons";
+import { LogoLink } from "@/components/logo-link";
 import type { LauncherBuild } from "@/components/github-releases";
 import type { Messages } from "@/components/i18n";
 import { format, localePath, type Locale } from "@/components/i18n-text";
@@ -78,10 +79,9 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, pathname 
       }`}
     >
       <div className="mx-auto flex h-18 w-full max-w-6xl items-center gap-8 px-6 xl:gap-12 lg:px-10">
-        <Link href={localePath(locale, "/")} className="flex items-center gap-2 text-white">
-          <HorizonMark className="size-8" />
+        <LogoLink href={localePath(locale, "/")}>
           <span className="font-display text-[19px] font-semibold tracking-[-0.02em]">Sunrise</span>
-        </Link>
+        </LogoLink>
 
         <nav aria-label={t.mainNav} className={`hidden items-center text-sm text-white/65 lg:flex gap-5 xl:gap-8`}>
           {nav.map((item) => (

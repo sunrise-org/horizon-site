@@ -13,7 +13,7 @@
     "predev": "npm run perf:check",
     "prebuild": "npm run perf:check",
     "typecheck": "next typegen && tsc --noEmit",
-    "test": "node --experimental-strip-types --test 'lib/perf/**/*.test.ts' 'lib/api-gaps/**/*.test.ts'",
+    "test": "node --experimental-strip-types --test 'lib/perf/**/*.test.ts' 'lib/api-gaps/**/*.test.ts' lib/jiggle.test.ts",
     "test:api": "node scripts/perf-api-test.mjs"
   },
   "dependencies": {
