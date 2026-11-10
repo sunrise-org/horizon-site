@@ -1431,3 +1431,353 @@
 .input { min-width: 0; min-height: 36px; padding: 7px 12px; border: 0; border-radius: 8px; background: rgb(255 255 255 / 0.06); color: var(--ink); font: inherit; font-size: 13px; transition: background 120ms ease; }
 .input:focus { background: rgb(255 255 255 / 0.09); }
 .input::placeholder { color: var(--muted); }
+
+/* GPU */
+
+.gpuVerdict {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  padding: 24px;
+  border-radius: 16px;
+  background: radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--primary) 22%, transparent), transparent 60%), var(--surface);
+}
+
+.gpuVerdict[data-bound="gpu"] {
+  --verdict: var(--warn);
+}
+
+.gpuVerdict[data-bound="cpu"] {
+  --verdict: var(--accent);
+}
+
+.gpuVerdict[data-bound="mixed"] {
+  --verdict: var(--accent-soft);
+}
+
+@media (min-width: 900px) {
+  .gpuVerdict {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    padding: 28px;
+  }
+}
+
+.gpuEyebrow {
+  margin: 0;
+  color: rgb(255 255 255 / 0.55);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.gpuBound {
+  margin: 4px 0 8px;
+  color: var(--verdict, var(--ink));
+  font-family: var(--display);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.gpuExplain {
+  max-width: 60ch;
+  margin: 0;
+  color: rgb(255 255 255 / 0.7);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.gpuBusy {
+  margin: 10px 0 0;
+  color: var(--ink);
+  font-size: 14.5px;
+  font-weight: 500;
+}
+
+.gpuFrames {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px;
+  align-content: start;
+}
+
+.gpuFrameStats {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgb(255 255 255 / 0.04);
+}
+
+.gpuFrameStats dl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.gpuFrameStats dt {
+  color: rgb(255 255 255 / 0.5);
+  font-size: 12px;
+}
+
+.gpuFrameStats dd {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.gpuSamples {
+  margin-left: 6px;
+  color: rgb(255 255 255 / 0.4);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.gpuDevice {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px solid rgb(255 255 255 / 0.06);
+  color: rgb(255 255 255 / 0.5);
+  font-size: 13px;
+}
+
+.gpuTable {
+  min-width: 640px;
+}
+
+.gpuTable td,
+.gpuTable th {
+  white-space: nowrap;
+}
+
+.gpuTable tbody tr[data-strong="true"] td:first-child {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.gpuTable tbody tr[data-part="true"] {
+  background: transparent;
+  color: var(--ink-soft);
+}
+
+.gpuTable tbody tr[data-part="true"] td:first-child {
+  padding-left: 32px;
+}
+
+.table td.gpuBarCell {
+  width: 30%;
+  min-width: 120px;
+}
+
+.gpuBarCell .meterTrack {
+  width: 100%;
+}
+
+tr[data-part="true"] .gpuBarCell .meterFill {
+  background: var(--accent-soft);
+  opacity: 0.6;
+}
+
+.gpuIndent {
+  padding-left: 20px;
+}
+
+.gpuLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+  color: rgb(255 255 255 / 0.65);
+  font-size: 12.5px;
+}
+
+.gpuLegend li {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+}
+
+.gpuSwatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--layer);
+}
+
+.gpuLegend,
+.gpuPlot {
+  --layer-0: #a98fff;
+  --layer-1: #6b4bff;
+  --layer-2: #8aa6f0;
+  --layer-3: #7fc6a0;
+  --layer-4: #f0b36a;
+  --layer-other: #4a3f6b;
+  --layer-slow: var(--danger);
+}
+
+.gpuPlot {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto auto;
+  column-gap: 10px;
+  color: rgb(255 255 255 / 0.45);
+  font: 11px/1.4 var(--mono);
+}
+
+.gpuAxisTop {
+  grid-area: 1 / 1;
+  text-align: right;
+}
+
+.gpuAxisZero {
+  grid-area: 3 / 1;
+  align-self: end;
+  text-align: right;
+}
+
+.gpuChart {
+  position: relative;
+  grid-area: 1 / 2 / 4 / 3;
+  height: 240px;
+  border-radius: 10px;
+  background: var(--well);
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+
+.gpuChart svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.gpuArea {
+  fill: var(--layer);
+  stroke: var(--well);
+  stroke-width: 0.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.gpuGrid {
+  stroke: rgb(255 255 255 / 0.06);
+  stroke-dasharray: 3 4;
+  vector-effect: non-scaling-stroke;
+}
+
+.gpuSlow {
+  stroke: var(--danger);
+  stroke-width: 1.5;
+  opacity: 0.75;
+  vector-effect: non-scaling-stroke;
+}
+
+.gpuMark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px dashed var(--accent-soft);
+  pointer-events: none;
+}
+
+.gpuMark span {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgb(16 10 31 / 0.85);
+  color: var(--accent-soft);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.gpuGuide {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--ink);
+  pointer-events: none;
+}
+
+.gpuAxisStart,
+.gpuAxisEnd {
+  grid-row: 4;
+  margin-top: 6px;
+}
+
+.gpuAxisStart {
+  grid-column: 2;
+}
+
+.gpuAxisEnd {
+  grid-column: 2;
+  justify-self: end;
+}
+
+.gpuTip {
+  position: absolute;
+  top: 8px;
+  z-index: 3;
+  display: grid;
+  gap: 6px;
+  width: max-content;
+  max-width: min(320px, 70%);
+  padding: 10px 12px;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 12px;
+  background: #1c1433;
+  color: var(--ink-soft);
+  font: 12px/1.45 var(--font-geist-sans), sans-serif;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.4);
+  pointer-events: none;
+}
+
+.gpuTipHead {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin: 0;
+  color: rgb(255 255 255 / 0.6);
+}
+
+.gpuTipHead strong {
+  color: var(--ink);
+  font-family: var(--mono);
+  font-weight: 500;
+}
+
+.gpuTipSlow {
+  margin: 0;
+  color: var(--danger);
+}
+
+.gpuTip dl {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+}
+
+.gpuTip dl > div {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.gpuTip dl > div[data-part="true"] {
+  padding-left: 12px;
+  color: rgb(255 255 255 / 0.5);
+}
+
+.gpuTip dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
