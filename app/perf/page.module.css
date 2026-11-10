@@ -125,13 +125,6 @@
   color: rgb(255 255 255 / 0.85);
 }
 
-/* The open list is drawn by the browser, which paints a translucent select's options on white. */
-.page select option,
-.page select optgroup {
-  background: var(--surface);
-  color: var(--ink);
-}
-
 .buttonSmall:hover,
 .select:hover {
   background: rgb(255 255 255 / 0.12);

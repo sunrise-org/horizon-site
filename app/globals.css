@@ -18,6 +18,13 @@ body {
   color: var(--foreground);
 }
 
+/* The browser paints a translucent select's open list on white, so give it the site's dark surface. */
+select option,
+select optgroup {
+  background: var(--background);
+  color: var(--foreground);
+}
+
 ::selection {
   background: #6b4bff;
   color: #fff;
