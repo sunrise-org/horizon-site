@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { getMessages, rich, type Locale } from "@/components/i18n";
-import { HorizonLogo } from "@/components/icons";
+import { SunriseLogo } from "@/components/icons";
 
 const WIDE = "(min-width: 1024px) 44rem, 100vw";
 const NARROW = "(min-width: 1024px) 22rem, (min-width: 640px) 50vw, 100vw";
@@ -46,7 +46,7 @@ export function Gallery({ locale }: { locale: Locale }) {
           <div className="reveal mb-6 sm:col-span-2 lg:col-span-1 lg:col-start-3 lg:row-start-1 lg:mb-0 lg:pl-4">
             <p className="flex items-center gap-2.5 text-sm font-medium text-white/60">
               {t.eyebrow}
-              <HorizonLogo className="h-4 w-auto" />
+              <SunriseLogo className="h-4 w-auto" />
               <span className="sr-only">Sunrise</span>
             </p>
             <h2

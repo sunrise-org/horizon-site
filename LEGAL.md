@@ -33,7 +33,7 @@ browsers fetch nothing from a font service.
 
 | File | Source | Licence |
 | --- | --- | --- |
-| `public/favicon.svg`, `public/favicon-32.png`, `public/apple-touch-icon.png` | Horizon's mark, `docs/media/brand/icon.svg` (an original drawing: an H whose crossbar is the horizon), rendered by `cargo run -p xtask -- icons` | MIT, Horizon's original work |
+| `app/icon.svg`, `app/favicon.ico`, `app/apple-icon.png`, `public/icon-192.png`, `public/icon-512.png`, `public/perf/sunrise-64.png` | Sunrise's mark (sun and three sparks over an indigo ground bar), drawn on a 16×16 pixel grid by the Sunrise project | The Sunrise project's original work |
 | `public/og.png` | Rendered by `scripts/shots.mjs` from `public/og.html`: the mark, a headline and the faint wordmark, in Geist | MIT for the layout; the fonts as listed here |
 
 No Minecraft logo or wordmark appears anywhere on the site, in images or as text styling.

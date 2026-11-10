@@ -156,10 +156,11 @@ export async function ogCard({ kicker, title, accent, footer = DEFAULT_FOOTER, i
         <div style={{ position: "absolute", top: 0, left: 0, width: OG_WIDTH, height: OG_HEIGHT, background: "rgba(16, 10, 31, 0.8)" }} />
         <div style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%", height: "100%", padding: "64px 72px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <svg width={52} height={52} viewBox="0 0 16 16">
-              <path fill="#ffffff" d="M4 3h2v4H4zM10 3h2v4h-2z" />
-              <path fill="#ffffff" fillOpacity={0.4} d="M4 8h2v4H4zM10 8h2v4h-2z" />
-              <path fill="#a98fff" d="M1 7h14v1H1z" />
+            <svg width={64} height={64} viewBox="0 0 16 16">
+              <path fill="#6f58d9" d="M1 12h14v1H1zM1 13h14v1H1z" />
+              <path fill="#ffcf5c" d="M6 7h4v1H6zM4 8h8v1H4zM3 9h10v1H3z" />
+              <path fill="#ffb48a" d="M3 10h10v1H3z" />
+              <path fill="#ffe39a" d="M7 3h2v1H7zM7 4h2v1H7zM2 5h2v1H2zM12 5h2v1h-2zM2 6h2v1H2zM12 6h2v1h-2z" />
             </svg>
             <span style={{ fontSize: 40, fontWeight: 600, letterSpacing: -0.8 }}>Sunrise</span>
           </div>

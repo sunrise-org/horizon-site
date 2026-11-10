@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import type { Messages } from "@/components/i18n";
 import { rich } from "@/components/i18n-text";
-import { HorizonMark, MinecraftIcon } from "@/components/icons";
+import { SunriseMark, MinecraftIcon } from "@/components/icons";
 
 const FPS = { horizon: 150, standard: 50 };
 const RATIO = FPS.horizon / FPS.standard;
@@ -115,7 +115,7 @@ export function FrameRateComparison({ t }: { t: Messages["home"]["frameRate"] })
       <div className="mt-10 space-y-8">
         <div>
           <Readout
-            icon={<HorizonMark className="size-4" />}
+            icon={<SunriseMark className="size-4" />}
             label="Sunrise"
             value={horizon}
             strong
