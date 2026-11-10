@@ -606,6 +606,7 @@
   "share.notice": "Upload this capture to create a public link for 30 days. It can include world details, hardware, settings, mod names and recorded activity. Anyone with the link can download it. Share only a capture you are comfortable making public.",
   "share.confirm": "Upload and share",
   "share.uploading": "Uploading…",
+  "share.opening": "Opening the shared capture…",
   "share.expires": "Available until {date}",
   "share.link": "Share link",
   "share.keepToken": "Keep the delete token to remove this capture later. It is saved in this tab for this session.",

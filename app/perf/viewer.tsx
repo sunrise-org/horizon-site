@@ -14,13 +14,15 @@ export default function PerfViewer({ captureId }: { captureId?: string }) {
   const [dragging, setDragging] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   const [linkError, setLinkError] = useState<string | null>(null);
+  const [linkPending, setLinkPending] = useState(Boolean(captureId));
 
   useEffect(() => {
     if (!captureId || !reader) return;
     const controller = new AbortController();
     void sharedFile(captureId, controller.signal)
       .then((file) => { if (!controller.signal.aborted) return open(file, file.name); })
-      .catch((failure: unknown) => { if (!controller.signal.aborted) setLinkError(failure instanceof Error ? failure.message : t("share.error.unavailable")); });
+      .catch((failure: unknown) => { if (!controller.signal.aborted) setLinkError(failure instanceof Error ? failure.message : t("share.error.unavailable")); })
+      .finally(() => { if (!controller.signal.aborted) setLinkPending(false); });
     return () => controller.abort();
   }, [captureId, reader, open]);
 
@@ -78,6 +80,10 @@ export default function PerfViewer({ captureId }: { captureId?: string }) {
           {error ? <p className={styles.error}>{t("error.capture", { message: error })}</p> : null}
           <CaptureView reader={reader} capture={capture} showSide={showSide} onClose={close} />
         </>
+      ) : linkPending && !readerError ? (
+        <section className={styles.opening} aria-busy="true">
+          <p className={styles.muted} role="status">{t("share.opening")}</p>
+        </section>
       ) : (
         <Landing
           ready={Boolean(reader)}
