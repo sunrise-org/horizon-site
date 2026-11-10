@@ -79,7 +79,7 @@ export function ModDownload({
             <div>
               <h2 className="text-sm font-medium text-white">In the launcher</h2>
               <p className="mt-1">
-                Open Mods, pick Horizon beside Modrinth, find {name} and press Install. It checks the file&apos;s checksum{signed ? " and signature" : ""} first.
+                Open Mods, pick Sunrise beside Modrinth, find {name} and press Install. It checks the file&apos;s checksum{signed ? " and signature" : ""} first.
               </p>
             </div>
             <div>

@@ -34,7 +34,7 @@ type Card = {
 };
 
 const LINKS: Card[] = [
-  { key: "discord", href: DISCORD_URL, icon: DiscordIcon, tone: DISCORD },
+  ...(DISCORD_URL ? [{ key: "discord" as const, href: DISCORD_URL, icon: DiscordIcon, tone: DISCORD }] : []),
   { key: "sponsor", href: SPONSOR_URL, icon: DollarIcon, tone: GLASS },
   { key: "source", href: GITHUB_URL, icon: GitHubIcon, tone: LIGHT },
   { key: "build", href: BUILD_URL, icon: ShieldIcon, tone: GLASS },

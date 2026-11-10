@@ -1,26 +1,26 @@
-# What Horizon is
+# What Sunrise is
 
-Horizon is Minecraft: Java Edition 26.3 rewritten in Rust. You install it with a small launcher, and it runs on the game files from your own copy of Minecraft. It is free, open source and unofficial.
+Sunrise is Minecraft: Java Edition 26.3 rewritten in Rust. You install it with a small launcher, and it runs on the game files from your own copy of Minecraft. It is free, open source and unofficial.
 
 ## In one minute
 
-- **A new game program, not a mod.** Horizon is written from scratch in Rust. It reads the same worlds, plays by the same rules and generates the same terrain as the Java game.
-- **Checked against vanilla.** {{HARNESSES}} automated tests ("harnesses") feed the same inputs to Horizon and to the real game, then compare the results. Passing them is not proof that nothing else differs, and players still find differences. The [status table](/#parity) shows what they covered when the project started.
+- **A new game program, not a mod.** Sunrise is written from scratch in Rust. It reads the same worlds, plays by the same rules and generates the same terrain as the Java game.
+- **Checked against vanilla.** {{HARNESSES}} automated tests ("harnesses") feed the same inputs to Sunrise and to the real game, then compare the results. Passing them is not proof that nothing else differs, and players still find differences. The [status table](/#parity) shows what they covered when the project started.
 - **Light and fast.** It starts quickly, uses little memory and draws efficiently. See [Performance](/docs/performance) for what is measured and what is not.
 - **A few things vanilla doesn't have.** Its own settings, added to vanilla's menus the way mods add theirs, graphics presets, distant terrain, controller support, optional extras such as dynamic lights, official mods such as zoom and a minimap, an invite code to play your world with friends, and a server you can run without Java.
 
-## What Horizon is not
+## What Sunrise is not
 
-- **Not Minecraft itself.** Horizon contains no Minecraft code, assets or data, and it never downloads them. You need your own legally obtained copy of Minecraft: Java Edition 26.3. Horizon builds its game files from that copy, on your computer.
-- **Not a place where Java mods run.** Forge, NeoForge, Fabric and Quilt mod jars do **not** work in Horizon, and neither do Mixins. Horizon has its own mod system, and the launcher can port some Java mods' content. See [Mods and data packs](/docs/mods) and [Modpacks](/docs/modpacks).
-- **Not for other versions.** Horizon plays Java Edition 26.3. Worlds from older versions (1.8 to 26.2) are upgraded the way vanilla upgrades them.
+- **Not Minecraft itself.** Sunrise contains no Minecraft code, assets or data, and it never downloads them. You need your own legally obtained copy of Minecraft: Java Edition 26.3. Sunrise builds its game files from that copy, on your computer.
+- **Not a place where Java mods run.** Forge, NeoForge, Fabric and Quilt mod jars do **not** work in Sunrise, and neither do Mixins. Sunrise has its own mod system, and the launcher can port some Java mods' content. See [Mods and data packs](/docs/mods) and [Modpacks](/docs/modpacks).
+- **Not for other versions.** Sunrise plays Java Edition 26.3. Worlds from older versions (1.8 to 26.2) are upgraded the way vanilla upgrades them.
 - **Not an official Minecraft product.** It is not approved by or associated with Mojang or Microsoft.
 
 ## Supported systems
 
 - **Linux, x86-64.** A graphics card with Vulkan drivers. Builds are made on Ubuntu 22.04, so use a distribution at least that recent.
 - **macOS, Apple Silicon or Intel.** Any M1 or newer, or an Intel Mac, on macOS 12 or later.
-- **Windows, x64 or ARM64.** Vulkan or DirectX 12. Horizon picks DirectX 12 by itself when Vulkan does not work, and first on ARM64 PCs (Snapdragon).
+- **Windows, x64 or ARM64.** Vulkan or DirectX 12. Sunrise picks DirectX 12 by itself when Vulkan does not work, and first on ARM64 PCs (Snapdragon).
 
 There is no build for 32-bit systems or ARM Linux. The server can be built from source on other systems.
 

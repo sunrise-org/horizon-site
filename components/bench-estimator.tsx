@@ -72,7 +72,7 @@ export function BenchEstimator({ rows, t, numberLocale }: { rows: EstimateRow[];
             <div className="mt-6 space-y-5">
               {(
                 [
-                  ["Horizon", horizon, "#a98fff"],
+                  ["Sunrise", horizon, "#a98fff"],
                   ["Java Edition", vanilla, "#8b8499"],
                 ] as const
               ).map(([name, est, color]) => (

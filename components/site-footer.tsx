@@ -1,18 +1,13 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { GitHubIcon, HorizonMark, MicrosoftIcon, MojangIcon, RustIcon } from "@/components/icons";
+import { gameBlob } from "@/components/game-repo";
 import { getMessages, LOCALES, rich, type Locale } from "@/components/i18n";
 import { localePath } from "@/components/i18n-text";
 import { LanguageSwitch } from "@/components/language-switch";
-import { GITHUB_URL } from "@/components/links";
+import { GITHUB_URL, UPSTREAM_URL } from "@/components/links";
 
-// Paddle's website review and Mojang's guidelines want these reachable from every page.
-const LEGAL = [
-  { href: "/privacy", key: "privacy" },
-  { href: "/terms", key: "terms" },
-  { href: "/refunds", key: "refunds" },
-  { href: "/shop", key: "shop" },
-] as const;
+const LEGAL = [{ href: "/privacy", key: "privacy" }] as const;
 
 const LEGAL_LINK =
   "font-medium text-white/80 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60";
@@ -53,7 +48,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-16">
           <Link href={localePath(locale, "/")} className="flex shrink-0 items-center gap-2 text-white">
             <HorizonMark className="size-8" />
-            <span className="font-display text-[19px] font-semibold tracking-[-0.02em]">Horizon</span>
+            <span className="font-display text-[19px] font-semibold tracking-[-0.02em]">Sunrise</span>
           </Link>
           <div className="flex max-w-xl items-center gap-4 md:flex-row-reverse md:text-right">
             <p className="text-[15px] leading-relaxed font-medium text-pretty text-white/80">{t.disclaimer}</p>
@@ -67,18 +62,18 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         <div className="mt-12 grid gap-10 text-sm leading-relaxed text-pretty text-white/50 md:grid-cols-3 md:gap-12">
           <div>
             <Heading>{t.whoTitle}</Heading>
-            <p className="mt-3">{rich(t.who, { lu4ovic: out("https://lu4ovic.com"), dezerx: out("https://dezerx.com") })}</p>
+            <p className="mt-3">{rich(t.who, { horizon: out(UPSTREAM_URL), lu4ovic: out("https://lu4ovic.com"), dezerx: out("https://dezerx.com") })}</p>
           </div>
           <div>
             <Heading>{t.licencesTitle}</Heading>
             <p className="mt-3">
-              {rich(t.licences, { mit: out(`${GITHUB_URL}/blob/main/LICENSE`), ofl: out("https://openfontlicense.org") })}
+              {rich(t.licences, { mit: out(gameBlob("LICENSE")), ofl: out("https://openfontlicense.org") })}
             </p>
           </div>
           <div>
             <Heading>{t.privacyTitle}</Heading>
             <p className="mt-3">
-              {rich(t.privacy, { github: out(GITHUB_PRIVACY_URL), telemetry: out(`${GITHUB_URL}/blob/main/docs/telemetry.md`) })}
+              {rich(t.privacy, { github: out(GITHUB_PRIVACY_URL), telemetry: out(gameBlob("docs/telemetry.md")) })}
             </p>
             <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
               {LEGAL.map(({ href, key }) => (

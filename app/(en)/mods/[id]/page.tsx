@@ -47,15 +47,15 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/mods/[id]">): Promise<Metadata> {
   const { id } = await params;
   const p = await getMod(id);
-  if (!p) return { title: "Not in the registry · Horizon mods", robots: { index: false } };
+  if (!p) return { title: "Not in the registry · Sunrise mods", robots: { index: false } };
   const kind = (KIND_NAMES[p.kind] ?? "Mod").toLowerCase();
   const authors = (p.authors ?? []).join(", ");
   const summary = p.summary ? `${p.summary.trim().replace(/[.!?]?$/, (end) => end || ".")} ` : "";
   return pageMetadata({
-    title: `${p.name}: ${kind} for Horizon`,
-    description: `${summary}A ${kind} for Horizon${authors ? ` by ${authors}` : ""}, reviewed before it was listed.`,
+    title: `${p.name}: ${kind} for Sunrise`,
+    description: `${summary}A ${kind} for Sunrise${authors ? ` by ${authors}` : ""}, reviewed before it was listed.`,
     path: `/mods/${p.id}`,
-    image: { url: `/mods/${p.id}/opengraph-image`, width: 1200, height: 630, alt: `${p.name}, a ${kind} for Horizon` },
+    image: { url: `/mods/${p.id}/opengraph-image`, width: 1200, height: 630, alt: `${p.name}, a ${kind} for Sunrise` },
   });
 }
 
@@ -75,7 +75,7 @@ function ModJsonLd({ p, rating }: { p: ModProject; rating: ReturnType<typeof rat
             applicationCategory: "GameApplication",
             applicationSubCategory: KIND_NAMES[p.kind] ?? "Mod",
             operatingSystem: OPERATING_SYSTEMS,
-            softwareRequirements: "Horizon",
+            softwareRequirements: "Sunrise",
             softwareVersion: v.version,
             dateModified: v.published,
             license: /^[\w.+-]+$/.test(p.license) ? `https://spdx.org/licenses/${p.license}.html` : p.license,
@@ -153,7 +153,7 @@ function byHand(kind: string): ReactNode {
     );
   return (
     <>
-      put it in <code className={CODE}>shaderpacks/</code> beside <code className={CODE}>options.txt</code>, then pick it in Options, then Horizon
+      put it in <code className={CODE}>shaderpacks/</code> beside <code className={CODE}>options.txt</code>, then pick it in Options, then Sunrise
       Settings, then Shader Packs
     </>
   );
@@ -347,8 +347,8 @@ async function ModContent({ params }: Pick<PageProps<"/mods/[id]">, "params">) {
           <div className="min-w-0">
             <p className="text-sm leading-relaxed text-white/55">
               {isOfficial(p)
-                ? "Made by Horizon. "
-                : `Made by ${authors || "its authors"}. Its authors own it and answer for it. Not made or endorsed by the Horizon project. `}
+                ? "Made by Sunrise. "
+                : `Made by ${authors || "its authors"}. Its authors own it and answer for it. Not made or endorsed by the Sunrise project. `}
               <a href={POLICY_URL} className={LINK}>
                 Mod policy
               </a>

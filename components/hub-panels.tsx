@@ -130,9 +130,11 @@ export function OverviewPanel({ roadmap, live }: { roadmap: Roadmap; live: Live 
             <a href="#report" className={BUTTON}>
               Report a bug
             </a>
-            <Out href={DISCORD_URL} className={BUTTON}>
-              Suggest something
-            </Out>
+            {DISCORD_URL && (
+              <Out href={DISCORD_URL} className={BUTTON}>
+                Suggest something
+              </Out>
+            )}
           </p>
         </Block>
       </div>
@@ -455,10 +457,10 @@ type Contributor = { login: string; avatar: string; url: string; commits: number
 const WAYS = [
   {
     title: "Tell us what differs",
-    body: "Something that doesn't play like vanilla is a bug. Say what you did, what happened and what vanilla does, with your Horizon version and system.",
+    body: "Something that doesn't play like vanilla is a bug. Say what you did, what happened and what vanilla does, with your Sunrise version and system.",
     actions: [
       { label: "Report a bug", href: "#report" },
-      { label: "Suggest something", href: DISCORD_URL },
+      ...(DISCORD_URL ? [{ label: "Suggest something", href: DISCORD_URL }] : []),
     ],
   },
   {
@@ -469,7 +471,7 @@ const WAYS = [
   {
     title: "Bring your AI agent",
     body: "On Discord, /agent connect gives your coding agent a personal token for Kira's MCP server: it reads the work board, claims tasks and posts its progress in your name.",
-    actions: [{ label: "Join the Discord", href: DISCORD_URL }],
+    actions: DISCORD_URL ? [{ label: "Join the Discord", href: DISCORD_URL }] : [],
   },
   {
     title: "Benchmark your computer",
@@ -479,7 +481,7 @@ const WAYS = [
 ];
 
 const RULES = [
-  ["Vanilla is the specification.", "Wherever Minecraft 26.3 has the feature, Horizon does exactly what it does: read vanilla's code, then match it."],
+  ["Vanilla is the specification.", "Wherever Minecraft 26.3 has the feature, Sunrise does exactly what it does: read vanilla's code, then match it."],
   ["Small pull requests, proven.", "One change each, under about 500 lines, with the block python3 tools/pr_ready.py prints: formatting, Clippy, tests and the harnesses your change can affect."],
   ["Say who wrote it.", "If an AI agent wrote or posts it, the pull request says so, and commits keep its co-author line."],
   ["Never commit Mojang's files.", "No game jars, assets, decompiled code or prepared resources, and nothing taken from other mods' code."],
@@ -588,8 +590,8 @@ export function ContributePanel({
           <Link href="/docs/contributing" className={BUTTON_PRIMARY}>
             The contributing guide
           </Link>
-          <Link href="/docs/how-horizon-is-built" className={BUTTON}>
-            How Horizon is built
+          <Link href="/docs/how-sunrise-is-built" className={BUTTON}>
+            How Sunrise is built
           </Link>
           <Out href={fileUrl("CONTRIBUTING.md")} className={BUTTON}>
             CONTRIBUTING.md
@@ -600,7 +602,7 @@ export function ContributePanel({
       {contributors && contributors.length > 0 && (
         <Block title="Contributors" id="hub-contributors">
           <p className="mt-2 text-[15px] text-white/60">
-            Everyone with commits in Horizon. On Discord, <code className="text-white/75">/link-github &lt;your login&gt; credit:True</code> adds
+            Everyone with commits in Sunrise. On Discord, <code className="text-white/75">/link-github &lt;your login&gt; credit:True</code> adds
             your Discord name next to yours.
           </p>
           <ul className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
@@ -626,10 +628,10 @@ export function ContributePanel({
 
 // The People tab: the Discord server's staff roles, top to bottom, as Kira reads them (components/org-chart.ts).
 const TIER_TEXT: Record<string, { title: string; about: string; empty?: string }> = {
-  owner: { title: "👑 Owner", about: "Started Horizon and owns the Discord server." },
-  team: { title: "🌌 Horizon Team", about: "Maintainers and core contributors: they review and merge pull requests, and moderate too." },
+  owner: { title: "👑 Owner", about: "Started Sunrise and owns the Discord server." },
+  team: { title: "🌌 Sunrise Team", about: "Maintainers and core contributors: they review and merge pull requests, and moderate too." },
   chiefmod: { title: "🛡️ Chief of Mods", about: "Leads the moderators: the first person to reach for moderation questions." },
-  mod: { title: "🛡️ Mods", about: "Keep the Discord server friendly: they time out members and delete messages. Bans go through the Horizon Team." },
+  mod: { title: "🛡️ Mods", about: "Keep the Discord server friendly: they time out members and delete messages. Bans go through the Sunrise Team." },
   support: {
     title: "🤝 Support",
     about: "Help players in #horizon-support and mark their posts solved.",
@@ -677,9 +679,9 @@ function PersonCard({ person }: { person: OrgPerson }) {
 export function PeoplePanel({ tiers }: { tiers: OrgTier[] | null }) {
   return (
     <Panel id="people">
-      <Block title="Who runs Horizon">
+      <Block title="Who runs Sunrise">
         <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-white/60">
-          The roles on Horizon&apos;s Discord server, from the top down, updated from Discord every few minutes. A GitHub account shows when
+          The roles on Sunrise&apos;s Discord server, from the top down, updated from Discord every few minutes. A GitHub account shows when
           it is confirmed: run <code className="text-white/75">/link-github &lt;your login&gt; credit:True</code> on Discord to add yours.
         </p>
         {tiers ? (
@@ -706,11 +708,16 @@ export function PeoplePanel({ tiers }: { tiers: OrgTier[] | null }) {
           </ol>
         ) : (
           <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-white/60">
-            The list couldn&apos;t be loaded from Discord just now. The roles are on{" "}
-            <a href={DISCORD_URL} className="text-[#a98fff] underline underline-offset-4">
-              Horizon&apos;s Discord server
-            </a>
-            .
+            The list couldn&apos;t be loaded from Discord just now.
+            {DISCORD_URL && (
+              <>
+                {" "}The roles are on{" "}
+                <a href={DISCORD_URL} className="text-[#a98fff] underline underline-offset-4">
+                  Sunrise&apos;s Discord server
+                </a>
+                .
+              </>
+            )}
           </p>
         )}
       </Block>

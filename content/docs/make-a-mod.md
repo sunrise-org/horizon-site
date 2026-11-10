@@ -1,6 +1,6 @@
 # Make a mod
 
-This guide takes you from nothing to a mod that other players can install from [playhorizon.dev/mods](/mods). Horizon has two kinds of mod, and the first step is to pick the right one. You need no Minecraft modding experience.
+This guide takes you from nothing to a mod that other players can install from [playsunrise.net/mods](/mods). Sunrise has two kinds of mod, and the first step is to pick the right one. You need no Minecraft modding experience.
 
 ## Two kinds of mod
 
@@ -16,13 +16,13 @@ This guide takes you from nothing to a mod that other players can install from [
 
 **Pick a native mod** when the mod has to do something: draw on the screen, react to a key, add a command, change how the game plays. The rest of this page and the two after it are about native mods.
 
-A Horizon mod is not a Java mod. Fabric, NeoForge and Forge jars don't run in Horizon, and Horizon mods don't run in Java Minecraft. What carries over from a Java mod is its data and assets ([modpacks](/docs/modpacks)).
+A Sunrise mod is not a Java mod. Fabric, NeoForge and Forge jars don't run in Sunrise, and Sunrise mods don't run in Java Minecraft. What carries over from a Java mod is its data and assets ([modpacks](/docs/modpacks)).
 
 ## How a native mod works
 
-A native mod is a **bundle** for [horizon-mixins](https://github.com/horizon-rust/horizon-mixins), a tool made for Horizon: a manifest, `horizon-mixin.toml`, and a few `.rs` files. Before the game is compiled, horizon-mixins adds your code to Horizon's own source and calls it from the places the manifest names. The result is an ordinary Horizon game with your mod built in.
+A native mod is a **bundle** for [horizon-mixins](https://github.com/sunrise-org/horizon-mixins), a tool made for Sunrise: a manifest, `horizon-mixin.toml`, and a few `.rs` files. Before the game is compiled, horizon-mixins adds your code to Sunrise's own source and calls it from the places the manifest names. The result is an ordinary Sunrise game with your mod built in.
 
-Horizon keeps a set of **hook points** for this: empty functions the game calls at fixed places (every tick, every frame, when it draws the HUD, when a key goes down, when the player types a command, when Options > Mods lists the mods), and helpers to read the player, draw text and keep settings. A mod that hooks only these builds on every later version of Horizon too, so it doesn't need a new release for each Nightly. Horizon's own Zoom, FPS Counter, Keystrokes and Minimap are made this way.
+Sunrise keeps a set of **hook points** for this: empty functions the game calls at fixed places (every tick, every frame, when it draws the HUD, when a key goes down, when the player types a command, when Options > Mods lists the mods), and helpers to read the player, draw text and keep settings. A mod that hooks only these builds on every later version of Sunrise too, so it doesn't need a new release for each Nightly. Sunrise's own Zoom, FPS Counter, Keystrokes and Minimap are made this way.
 
 There is a second way to write the code, the [typed API](/docs/mod-code#the-typed-api): one Rust crate that implements a trait, with a method for each hook point and a typed event for each. Nightlies since 2026-11-03 have it. This guide's example uses helpers, which work on every release.
 
@@ -34,7 +34,7 @@ Players never compile anything by hand. They install the mod from the launcher's
 2. **[The bundle](/docs/mod-manifest)**: the manifest, what a mod builds on, and the `.hnmod` file.
 3. **[Hook points and helpers](/docs/mod-code)**: what your code can hook and call, and a worked example.
 4. **[Content mods](/docs/content-mods)**: blocks, items, recipes and textures from data files, with no code at all.
-5. **[Test it](/docs/test-a-mod)**: unit tests, a check against Horizon's source, and the game with your mod in it.
+5. **[Test it](/docs/test-a-mod)**: unit tests, a check against Sunrise's source, and the game with your mod in it.
 6. **[Publish it](/docs/publish-a-mod)**: package it and submit it to the registry.
 
 ## Install the tools
@@ -43,11 +43,11 @@ For a native mod you need:
 
 - **[Rust](https://rustup.rs)**, the stable toolchain, and **Git**.
 - **Python 3.11** or later, and `rsync` (on Windows, use WSL for the checks below).
-- **[horizon-rust/horizon-mods](https://github.com/horizon-rust/horizon-mods)**, the registry's repository. Its `native/tools/native.py` applies your bundle to Horizon's source, checks and builds the game with it, and packages the `.hnmod`. It is what Horizon's own native mods use.
+- **[sunrise-org/horizon-mods](https://github.com/sunrise-org/horizon-mods)**, the registry's repository. Its `native/tools/native.py` applies your bundle to Sunrise's source, checks and builds the game with it, and packages the `.hnmod`. It is what Sunrise's own native mods use.
 - **The launcher**, a current one ([Install](/docs/install)): 0.2.37 or later builds [typed mods](/docs/mod-code#the-typed-api) too. Prepare the game at least once, to play with your mod.
 
 ```sh
-git clone https://github.com/horizon-rust/horizon-mods
+git clone https://github.com/sunrise-org/horizon-mods
 ```
 
 ## The files of a native mod
@@ -66,9 +66,9 @@ playtime/
     └── …
 ```
 
-Start from the example, or copy one of Horizon's own mods from [horizon-mods' `native/` folder](https://github.com/horizon-rust/horizon-mods/tree/main/native): `fps-overlay` is the smallest. [horizon-native-mod-template](https://github.com/horizon-rust/horizon-native-mod-template) shows the other way, a mod that hooks one of the game's own functions instead of a hook point ([the bundle](/docs/mod-manifest#hook-points-or-a-pinned-commit) says what that costs).
+Start from the example, or copy one of Sunrise's own mods from [horizon-mods' `native/` folder](https://github.com/sunrise-org/horizon-mods/tree/main/native): `fps-overlay` is the smallest. [horizon-native-mod-template](https://github.com/sunrise-org/horizon-native-mod-template) shows the other way, a mod that hooks one of the game's own functions instead of a hook point ([the bundle](/docs/mod-manifest#hook-points-or-a-pinned-commit) says what that costs).
 
-## Check it against Horizon
+## Check it against Sunrise
 
 From your clone of horizon-mods, give `native.py` the path to your mod's folder:
 
@@ -77,7 +77,7 @@ cd horizon-mods
 python3 native/tools/native.py check /path/to/playtime
 ```
 
-It downloads Horizon's source at the commit your `compatibility.json` names (once), applies your bundle with horizon-mixins, and runs `cargo check` on the game. A mistake in your manifest is a horizon-mixins error; a mistake in your code is an ordinary Rust error, with the file and line. The first run compiles Horizon's dependencies and takes several minutes; later ones take seconds to a minute.
+It downloads Sunrise's source at the commit your `compatibility.json` names (once), applies your bundle with horizon-mixins, and runs `cargo check` on the game. A mistake in your manifest is a horizon-mixins error; a mistake in your code is an ordinary Rust error, with the file and line. The first run compiles Sunrise's dependencies and takes several minutes; later ones take seconds to a minute.
 
 ## See it in the game
 

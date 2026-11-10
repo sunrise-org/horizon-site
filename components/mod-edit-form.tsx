@@ -18,7 +18,7 @@ import {
 import { CARD, Field, GHOST_SM, INPUT, LINK, PRIMARY } from "@/components/staff/ui";
 
 const API = "/api/mods";
-const PAGES = "https://horizon-rust.github.io/horizon-mods/";
+const PAGES = "https://sunrise-org.github.io/horizon-mods/";
 
 /** The page fields of a listed project, as the index has them. */
 export type EditableProject = {

@@ -1,6 +1,6 @@
 # Logs, crashes and bug reports
 
-When something breaks, Horizon writes down what happened. Send us that and the bug is much easier to fix. This page says where it is and how to report it.
+When something breaks, Sunrise writes down what happened. Send us that and the bug is much easier to fix. This page says where it is and how to report it.
 
 ## If the game crashes
 
@@ -28,7 +28,7 @@ The launcher's **Settings** page has a **Logs** row with an **Open** button. On 
 
 ## What to try first
 
-- **The game does not start, or crashes straight away.** Update the launcher and Horizon, and your graphics drivers. On Windows, try **Graphics API: DirectX 12** (see [Settings](/docs/settings#graphics-api-on-windows)).
+- **The game does not start, or crashes straight away.** Update the launcher and Sunrise, and your graphics drivers. On Windows, try **Graphics API: DirectX 12** (see [Settings](/docs/settings#graphics-api-on-windows)).
 - **"Not prepared" or "Minecraft 26.3 was not found".** Sign in with a Microsoft account that owns Java Edition and press Play: with no Minecraft installed, the launcher downloads 26.3 from Mojang for your account and prepares it. To use an install you already have, point the launcher at your Minecraft folder (**Choose…** next to Minecraft folder on the Play page), then choose **Prepare** again.
 - **Preparation says Java 25 is needed.** Update the launcher: it then uses the Java the Minecraft launcher downloaded for 26.3, or downloads it from Mojang. If it still can't (no internet, say), install a Java 25 JDK, for example Eclipse Temurin 25.
 - **Slow or stuttering.** Lower the render distance, turn LOD off, or pick the **Performance** preset. The performance overlay (Video, Advanced, Overlay) shows what is slow.
@@ -36,19 +36,16 @@ The launcher's **Settings** page has a **Logs** row with an **Open** button. On 
 
 ## Reporting a bug
 
-Good places, in this order:
-
-1. **GitHub issues:** [github.com/horizon-rust/horizon/issues](https://github.com/horizon-rust/horizon/issues). Search first; someone may have reported it already.
-2. **Discord:** the bugs channel on [our Discord server](https://discord.gg/HcTeMZxe5E), if you would rather talk it through.
+Report it in **GitHub issues**: [github.com/sunrise-org/horizon/issues](https://github.com/sunrise-org/horizon/issues). Search first; someone may have reported it already.
 
 Include:
 
 - what you did and what you expected;
-- your Horizon version (shown on the launcher's Play page) and the launcher's version;
+- your Sunrise version (shown on the launcher's Play page) and the launcher's version;
 - your system and graphics card;
 - the crash report, or the end of `latest.log`, if there is one. Read it first: logs can hold your player name and server addresses, and lines of chat.
 
-A Horizon bug is any place where it differs from vanilla 26.3, so "vanilla does X and Horizon does Y" is the best report there is.
+A Sunrise bug is any place where it differs from vanilla 26.3, so "vanilla does X and Sunrise does Y" is the best report there is.
 
 ## Data the launcher can send
 

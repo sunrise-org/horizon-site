@@ -659,7 +659,7 @@ function Stats({ s }: { s: TeamStats }) {
   return (
     <div className="space-y-6">
       <p className="text-[15px] text-white/60">
-        GitHub counts for horizon-rust/horizon over the last 12 weeks, and Discord counters (counts only, no messages). Updated {relative(Date.parse(s.generatedAt))}.
+        GitHub counts for sunrise-org/horizon over the last 12 weeks, and Discord counters (counts only, no messages). Updated {relative(Date.parse(s.generatedAt))}.
       </p>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Tile value={fmt(pr.ready)} label="pull requests ready for review" note={`${fmt(pr.drafts)} drafts${pr.oldestReadyDays != null ? ` · oldest ${pr.oldestReadyDays} d` : ""}`} />

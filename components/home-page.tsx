@@ -6,7 +6,7 @@ import { getReleases } from "@/components/github-releases";
 import { Hero } from "@/components/hero";
 import { getMessages, type Locale } from "@/components/i18n";
 import { JsonLd } from "@/components/json-ld";
-import { DOWNLOAD_URL, GITHUB_URL } from "@/components/links";
+import { DOWNLOAD_URL, GITHUB_URL, UPSTREAM_URL } from "@/components/links";
 import { Parity } from "@/components/parity";
 import {
   absolute,
@@ -51,7 +51,6 @@ export async function HomePage({ locale }: { locale: Locale }) {
               name: SITE_NAME,
               url: SITE_URL,
               logo: absolute("/icon-512.png"),
-              founder: AUTHOR,
               sameAs: SAME_AS,
             },
             {
@@ -73,6 +72,7 @@ export async function HomePage({ locale }: { locale: Locale }) {
               isAccessibleForFree: true,
               license: "https://opensource.org/license/mit",
               author: AUTHOR,
+              isBasedOn: { "@type": "SoftwareApplication", name: "Horizon", url: UPSTREAM_URL },
               publisher: { "@id": ORGANIZATION_ID },
               sameAs: [GITHUB_URL],
             },

@@ -1,6 +1,6 @@
 # Test a mod
 
-A few checks catch most mistakes before players see them. For a native mod: unit tests for your own logic, a check against Horizon's source, and the game with your mod built in. For a content mod: the game with your mod as a dev mod. Both end with `cargo horizon-mod check`, which runs the registry's own checks.
+A few checks catch most mistakes before players see them. For a native mod: unit tests for your own logic, a check against Sunrise's source, and the game with your mod built in. For a content mod: the game with your mod as a dev mod. Both end with `cargo horizon-mod check`, which runs the registry's own checks.
 
 ## Native mods
 
@@ -12,16 +12,16 @@ Code that doesn't call the game (formatting, maths, parsing a command's argument
 cargo test
 ```
 
-### Check it against Horizon
+### Check it against Sunrise
 
-From your clone of [horizon-mods](https://github.com/horizon-rust/horizon-mods):
+From your clone of [horizon-mods](https://github.com/sunrise-org/horizon-mods):
 
 ```sh
 python3 native/tools/native.py check /path/to/playtime
 python3 native/tools/native.py check /path/to/playtime --horizon latest
 ```
 
-`check` downloads Horizon's source at the commit in your `compatibility.json`, applies your bundle with horizon-mixins and runs `cargo check` on the game, with warnings as errors. It fails when the source has fewer hook points than your mod needs, when horizon-mixins refuses the bundle (a wrong target or binding, with the reason in one line), and on any Rust error in your code. `--horizon latest` does the same on the newest Nightly, and `--horizon <commit>` on any commit: run it when a Nightly comes out, to know your mod still builds before players find out.
+`check` downloads Sunrise's source at the commit in your `compatibility.json`, applies your bundle with horizon-mixins and runs `cargo check` on the game, with warnings as errors. It fails when the source has fewer hook points than your mod needs, when horizon-mixins refuses the bundle (a wrong target or binding, with the reason in one line), and on any Rust error in your code. `--horizon latest` does the same on the newest Nightly, and `--horizon <commit>` on any commit: run it when a Nightly comes out, to know your mod still builds before players find out.
 
 Several mods at once, as a player's set is built:
 
@@ -35,7 +35,7 @@ python3 native/tools/native.py check /path/to/playtime zoom fps-overlay
 python3 native/tools/native.py build /path/to/playtime
 ```
 
-builds the game with your mod (Horizon's `fast` profile) and prints where it is. Start it with `--resources` pointing at prepared game files: each version the launcher installed has them in its `.local/horizon-client/26.3` folder. Or build with the launcher, as players do, and play the instance it builds for (the one picked in the launcher, or `--instance NAME`):
+builds the game with your mod (Sunrise's `fast` profile) and prints where it is. Start it with `--resources` pointing at prepared game files: each version the launcher installed has them in its `.local/horizon-client/26.3` folder. Or build with the launcher, as players do, and play the instance it builds for (the one picked in the launcher, or `--instance NAME`):
 
 ```sh
 horizon-launcher native-build /path/to/playtime/mixins/playtime --trust-native-code

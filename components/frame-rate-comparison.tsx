@@ -116,7 +116,7 @@ export function FrameRateComparison({ t }: { t: Messages["home"]["frameRate"] })
         <div>
           <Readout
             icon={<HorizonMark className="size-4" />}
-            label="Horizon"
+            label="Sunrise"
             value={horizon}
             strong
             className={overloaded ? "overload-shake" : ""}

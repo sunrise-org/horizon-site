@@ -99,7 +99,7 @@ Everything else uses vanilla 26.3's own formats, so the [Minecraft Wiki's](https
 - **Block states, models, item models and textures** in `assets/<id>/`, as in a resource pack. Models can use vanilla's parents, such as `minecraft:block/cube_all`.
 - **Names** in `assets/<id>/lang/en_us.json`: `"block.ruby.ruby_block": "Block of Ruby"`, `"item.ruby.ruby": "Ruby"`.
 
-**Structures.** A content mod can also carry structures, template pools and structure sets in its namespace, and add its own pieces to vanilla's villages or to another mod's pools. The [mod design page](https://github.com/horizon-rust/horizon/blob/main/docs/mods.md#content-mods-api-02) has the details.
+**Structures.** A content mod can also carry structures, template pools and structure sets in its namespace, and add its own pieces to vanilla's villages or to another mod's pools. The [mod design page](https://github.com/sunrise-org/horizon/blob/main/docs/mods.md#content-mods-api-02) has the details.
 
 ## Namespaces
 
@@ -119,7 +119,7 @@ A mod made from a Java mod whose files use other names lists them in its manifes
 Install `cargo horizon-mod`, the tool that makes, builds and checks content mods. It needs [Rust](https://rustup.rs) to install, and builds from source in a few minutes; run it again later to update it:
 
 ```sh
-cargo install --git https://github.com/horizon-rust/horizon cargo-horizon-mod
+cargo install --git https://github.com/sunrise-org/horizon cargo-horizon-mod
 cargo horizon-mod new my-blocks --template content
 ```
 

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { getBenchmarks, type BenchMachine, type Distance, type GameRun } from "@/components/bench-data";
+import { gameBlob } from "@/components/game-repo";
 import { BenchEstimator } from "@/components/bench-estimator";
 import { BenchExplorer } from "@/components/bench-explorer";
 import { benchNumbers } from "@/components/bench-format";
@@ -166,7 +167,7 @@ export async function BenchmarksPage({ locale }: { locale: Locale }) {
               <p>
                 {rich(t.method.p3, {
                   link: (text) => (
-                    <a href="https://github.com/horizon-rust/horizon/blob/main/docs/benchmark.md" className="text-[#c4b5ff] underline underline-offset-4 hover:text-white">
+                    <a href={gameBlob("docs/benchmark.md")} className="text-[#c4b5ff] underline underline-offset-4 hover:text-white">
                       {text}
                     </a>
                   ),

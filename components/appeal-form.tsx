@@ -5,7 +5,7 @@ import { useEffect, useState, useSyncExternalStore, type FormEvent } from "react
 import { api } from "@/components/staff/api";
 import { AREA, CARD, Field, INPUT, LINK, PRIMARY, SECONDARY, Status } from "@/components/staff/ui";
 
-// /hub/appeal: for people banned from Horizon's Discord (they can't see the server) and players banned from the official
+// /hub/appeal: for people banned from Sunrise's Discord (they can't see the server) and players banned from the official
 // Minecraft server. Timeouts and quarantines are appealed inside Discord. Who you are comes from the link Kira DMs before a
 // ban, or from signing in with Discord. Kira's side: src/features/modcases.js (routes appeal/*).
 
@@ -111,7 +111,7 @@ export function AppealForm() {
         {note ? <p>{NOTES[note]}</p> : null}
         {error ? <p>{error}</p> : null}
         <p>
-          This page is for people banned from Horizon&apos;s Discord server, and for players banned from the official Minecraft server. A timeout or a
+          This page is for people banned from Sunrise&apos;s Discord server, and for players banned from the official Minecraft server. A timeout or a
           quarantine is appealed on Discord: the <strong className="text-white">Open appeal</strong> button in Kira&apos;s DM, or in #appeal.
         </p>
         <p>{signIn ? "Sign in with Discord so the mods know who is appealing, or open the link Kira sent you in a DM." : "Open the link Kira sent you in a DM: it says who is appealing."}</p>

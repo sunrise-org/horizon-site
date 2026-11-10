@@ -5,13 +5,13 @@ import { getModPolicy } from "@/components/mods-data";
 import { pageMetadata } from "@/components/site";
 
 export const metadata = pageMetadata({
-  title: "Mod policy · Horizon mods",
+  title: "Mod policy · Sunrise mods",
   description:
-    "Who owns and answers for the projects in Horizon's registry, what authors promise, and how to ask for a takedown.",
+    "Who owns and answers for the projects in Sunrise's registry, what authors promise, and how to ask for a takedown.",
   path: "/mods/policy",
 });
 
-const SOURCE = "https://github.com/horizon-rust/horizon-mods/blob/main/MOD-POLICY.md";
+const SOURCE = "https://github.com/sunrise-org/horizon-mods/blob/main/MOD-POLICY.md";
 const LINK = "text-[#c4b5ff] underline decoration-[#c4b5ff]/40 underline-offset-4 transition-colors hover:text-white";
 
 export default async function PolicyPage() {
@@ -41,7 +41,7 @@ export default async function PolicyPage() {
           MOD-POLICY.md
         </a>
         . To ask for a takedown:{" "}
-        <a href="https://github.com/horizon-rust/horizon-mods/issues/new?template=takedown.yml" className={LINK}>
+        <a href="https://github.com/sunrise-org/horizon-mods/issues/new?template=takedown.yml" className={LINK}>
           the takedown form
         </a>
         , or privately through{" "}

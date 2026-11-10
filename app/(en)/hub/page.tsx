@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import { getContributors } from "@/components/contributors";
 import { getReleases } from "@/components/github-releases";
 import { getBoard, getHubIssues, getRoadmap } from "@/components/hub-data";
-import { journalAnchor, journalFrom, REPO } from "@/components/hub-logic";
+import { fileUrl, journalAnchor, journalFrom } from "@/components/hub-logic";
 import { BoardPanel, ContributePanel, JournalPanel, OverviewPanel, PeoplePanel, RoadmapPanel } from "@/components/hub-panels";
 import { getOrgChart } from "@/components/org-chart";
 import { HubShell } from "@/components/hub-shell";
@@ -10,9 +10,9 @@ import { PixelAurora } from "@/components/pixel-aurora";
 import { pageMetadata } from "@/components/site";
 
 export const metadata = pageMetadata({
-  title: "Horizon hub: roadmap, progress and how to help",
+  title: "Sunrise hub: roadmap, progress and how to help",
   description:
-    "Where Horizon is: what is being done now, what comes next, what shipped, and how to help, in plain words or in technical detail.",
+    "Where Sunrise is: what is being done now, what comes next, what shipped, and how to help, in plain words or in technical detail.",
   path: "/hub",
 });
 
@@ -59,7 +59,7 @@ export default async function HubPage() {
             className="rise mt-5 font-display text-[clamp(2.5rem,7vw,4.75rem)] leading-[1.02] font-semibold tracking-[-0.035em] text-white"
             style={delay(80)}
           >
-            <span className="block">Where Horizon</span>
+            <span className="block">Where Sunrise</span>
             <span className="text-accent block pb-1">is going.</span>
           </h1>
           <p className="rise mt-6 max-w-2xl text-lg leading-relaxed text-white/70" style={delay(160)}>
@@ -82,7 +82,7 @@ export default async function HubPage() {
         <div className="mx-auto w-full max-w-6xl px-6 pb-24 lg:px-10">
           <p className="max-w-xl text-[15px] leading-relaxed text-white/60">
             The roadmap couldn&apos;t be loaded from GitHub just now. It&apos;s in the repository as{" "}
-            <a href={`https://github.com/${REPO}/blob/main/ROADMAP.md`} className="text-[#a98fff] underline underline-offset-4">
+            <a href={fileUrl("ROADMAP.md")} className="text-[#a98fff] underline underline-offset-4">
               ROADMAP.md
             </a>
             .

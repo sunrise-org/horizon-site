@@ -55,6 +55,7 @@ export function ArtistsPage({ locale }: { locale: Locale }) {
               ),
             })}
           </p>
+          {DISCORD_URL && (
           <p className="pt-2">
             <a
               href={DISCORD_URL}
@@ -67,6 +68,7 @@ export function ArtistsPage({ locale }: { locale: Locale }) {
               <span className="sr-only">{t.newTab}</span>
             </a>
           </p>
+          )}
         </Part>
       </article>
     </main>

@@ -13,7 +13,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/docs/[...slug]">): Promise<Metadata> {
   const { slug } = await params;
   const found = await getDoc(slug.join("/"));
-  if (!found) return { title: "Not found · Horizon docs", robots: { index: false } };
+  if (!found) return { title: "Not found · Sunrise docs", robots: { index: false } };
   return docMetadata(found.doc);
 }
 

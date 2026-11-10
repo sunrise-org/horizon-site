@@ -59,7 +59,7 @@ export async function Hero({ locale }: { locale: Locale }) {
             className="rise mt-5 font-display text-[clamp(2rem,10.4cqi,4.75rem)] leading-[1.02] font-semibold tracking-[-0.035em] text-white"
             style={delay(80)}
           >
-            <span className="sr-only">Horizon: </span>
+            <span className="sr-only">Sunrise: </span>
             <span className="block">{t.title}</span>
             <span className="text-accent block pb-1">{t.titleAccent}</span>
           </h1>

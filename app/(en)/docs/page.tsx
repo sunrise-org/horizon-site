@@ -6,7 +6,7 @@ import { DocJsonLd, docMetadata } from "@/components/docs-seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const found = await getDoc("index");
-  if (!found) return { title: "Horizon docs" };
+  if (!found) return { title: "Sunrise docs" };
   return docMetadata(found.doc);
 }
 

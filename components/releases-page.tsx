@@ -133,7 +133,7 @@ export async function ReleasesPage({ locale }: { locale: Locale }) {
               <Dot />
               <span className="inline-flex items-center gap-2">
                 <GitHubIcon className="size-3.5" />
-                horizon-rust/horizon
+                sunrise-org/horizon
               </span>
             </p>
             <h1

@@ -9,7 +9,7 @@ const OG_HEIGHT = 630;
 const DEFAULT_FOOTER = "Free and open source · Windows, macOS and Linux";
 const MAX_ICON_BYTES = 512 * 1024;
 const ALLOWED_ICON_HOSTS = new Set([
-  "horizon-rust.github.io",
+  "sunrise-org.github.io",
   "cdn.modrinth.com",
   "raw.githubusercontent.com",
   "media.forgecdn.net",
@@ -161,7 +161,7 @@ export async function ogCard({ kicker, title, accent, footer = DEFAULT_FOOTER, i
               <path fill="#ffffff" fillOpacity={0.4} d="M4 8h2v4H4zM10 8h2v4h-2z" />
               <path fill="#a98fff" d="M1 7h14v1H1z" />
             </svg>
-            <span style={{ fontSize: 40, fontWeight: 600, letterSpacing: -0.8 }}>Horizon</span>
+            <span style={{ fontSize: 40, fontWeight: 600, letterSpacing: -0.8 }}>Sunrise</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 36 }}>
             {iconData ? (

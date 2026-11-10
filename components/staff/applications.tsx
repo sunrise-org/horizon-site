@@ -5,7 +5,7 @@ import { useState, type FormEvent } from "react";
 import { api, left, safeGithubUrl, when, type Application, type Choice, type Dashboard, type People } from "@/components/staff/api";
 import { AREA, BADGE, Empty, Field, GHOST_SM, Guard, LINK, Lines, PRIMARY, SECONDARY, Status } from "@/components/staff/ui";
 
-export const ROLE: Record<string, string> = { mod: "Mod", support: "Support", team: "Horizon Team" };
+export const ROLE: Record<string, string> = { mod: "Mod", support: "Support", team: "Sunrise Team" };
 export const CHOICE: Record<Choice, string> = { for: "For", against: "Against", abstain: "Abstain" };
 export const FINAL = ["accepted", "declined"];
 const ACTION: Record<string, string> = {

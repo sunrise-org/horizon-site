@@ -3,18 +3,20 @@
 Every file the site serves, where it comes from and the terms it is used under. The build
 copies this file to `/LEGAL.md` on the site.
 
-Horizon is not an official Minecraft product. It is not approved by or associated with
+Sunrise is not an official Minecraft product. It is not approved by or associated with
 Mojang or Microsoft. Minecraft is a trademark of Mojang Synergies AB.
+
+Sunrise is a community fork of Horizon, and this site comes from Horizon's. Where this file says "Horizon", the asset or text is Horizon's own work, used under its MIT licence.
 
 ## Code
 
 | File | Source | Licence |
 | --- | --- | --- |
-| `src/*.html`, `src/*.css`, `src/*.js`, `build.mjs`, `serve.mjs`, `scripts/*`, `Caddyfile`, `Dockerfile` | Written for this site | MIT, as the rest of Horizon ([LICENSE](https://github.com/horizon-rust/horizon/blob/main/LICENSE)) |
+| `src/*.html`, `src/*.css`, `src/*.js`, `build.mjs`, `serve.mjs`, `scripts/*`, `Caddyfile`, `Dockerfile` | Written for this site | MIT, as the rest of Horizon ([LICENSE](https://github.com/sunrise-org/horizon/blob/release/sunrise/LICENSE)) |
 
 The site loads no third-party code at runtime: no frameworks, CDNs, analytics, trackers or
 cookies. The only requests to other hosts are the browser's calls to `api.github.com`
-(releases and patch notes) and `raw.githubusercontent.com` (`launcher/links.json`), both on Horizon's own repository.
+(releases and patch notes) and `raw.githubusercontent.com` (`launcher/links.json`), both on the game's repository, `sunrise-org/horizon`.
 
 ## Fonts
 
@@ -24,7 +26,7 @@ cookies. The only requests to other hosts are the browser's calls to `api.github
 | Bricolage Grotesque (headings, `app/layout.tsx`) | Bricolage Grotesque by The Bricolage Grotesque Project Authors (github.com/ateliertriay/bricolage), through `next/font/google` | SIL Open Font License 1.1 |
 | `assets/fonts/BricolageGrotesque-Medium.ttf`, `BricolageGrotesque-SemiBold.ttf` (share cards, `components/og-card.tsx`) | Bricolage Grotesque 1.001, as published on Google Fonts | SIL Open Font License 1.1, shipped as `assets/fonts/OFL-BricolageGrotesque.txt` |
 
-The fonts are self-hosted: `next/font` downloads them when the site is built and serves them from playhorizon.dev, so
+The fonts are self-hosted: `next/font` downloads them when the site is built and serves them from playsunrise.net, so
 browsers fetch nothing from a font service.
 
 ## Icons and the social preview

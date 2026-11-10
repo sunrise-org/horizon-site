@@ -14,7 +14,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/mods/[id]/edit">): Promise<Metadata> {
   const { id } = await params;
   const p = await getMod(id);
-  return { title: p ? `Edit ${p.name} · Horizon mods` : "Not in the registry · Horizon mods", robots: { index: false } };
+  return { title: p ? `Edit ${p.name} · Sunrise mods` : "Not in the registry · Sunrise mods", robots: { index: false } };
 }
 
 async function EditContent({ params }: Pick<PageProps<"/mods/[id]/edit">, "params">) {

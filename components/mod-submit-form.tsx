@@ -19,8 +19,8 @@ import { AREA, CARD, Field, GHOST_SM, INPUT, LINK, PRIMARY, SECONDARY_SM } from 
 import { zipKind } from "@/components/zip-kind";
 
 const API = "/api/mods";
-const REGISTRY = "https://github.com/horizon-rust/horizon-mods";
-const INDEX = "https://horizon-rust.github.io/horizon-mods/index.json";
+const REGISTRY = "https://github.com/sunrise-org/horizon-mods";
+const INDEX = "https://sunrise-org.github.io/horizon-mods/index.json";
 const MAX_FILE = 64 << 20;
 // Each extension and the kinds it can be. A .zip is one of three: the form reads its folders, or asks.
 const EXTENSIONS: Record<string, string[]> = {
@@ -35,7 +35,7 @@ const KIND_OPTIONS: Record<string, string> = {
   "native-mod": "Native mod (.hnmod)",
   modpack: "Modpack (.hpack)",
   resourcepack: "Resource pack (.zip)",
-  shader: "Shader pack (.hshader, Horizon's own format)",
+  shader: "Shader pack (.hshader, Sunrise's own format)",
   shaderpack: "Shader pack (.zip with a shaders/ folder)",
   datapack: "Data pack (.zip)",
 };
@@ -337,7 +337,7 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
                 <code className={code}>data/</code>) or a shader pack with a <code className={code}>shaders/</code> folder. At most 64 MB. Run{" "}
                 <code className={code}>cargo horizon-mod check</code> on a mod first. A .hshader is what <code className={code}>horizon-shader pack</code> makes (
                 <Link href="/docs/api/shaders" className={LINK}>
-                  Horizon&apos;s own format
+                  Sunrise&apos;s own format
                 </Link>
                 ).
               </Hint>
@@ -355,7 +355,7 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
                   className="mt-1 size-4 accent-[#a98fff]"
                 />
                 <span>
-                  I made this pack and its licence allows Horizon&apos;s registry to distribute it.
+                  I made this pack and its licence allows Sunrise&apos;s registry to distribute it.
                   <Problem id="own-problem" text={problems.own} />
                 </span>
               </label>

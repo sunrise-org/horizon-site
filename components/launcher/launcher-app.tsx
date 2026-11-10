@@ -94,7 +94,7 @@ function gameScript(instance: Instance, world: string | null, data: LauncherData
     return mod ? `${id} ${mod.version}` : id;
   });
   return [
-    { at: 0, line: `INFO horizon: ${nightly?.title ?? "Horizon"}` },
+    { at: 0, line: `INFO horizon: ${nightly?.title ?? "Sunrise"}` },
     { at: 0.06, line: "INFO horizon::gpu: Vulkan 1.3.296 · AMD Radeon RX 7800 XT (RADV NAVI32)" },
     { at: 0.12, line: "INFO horizon::files: checking the prepared 26.3 files" },
     { at: 0.3, line: "INFO horizon::files: 4,812 textures and 1,906 models ready in 0.41 s" },
@@ -372,7 +372,7 @@ export function LauncherApp({ data }: { data: LauncherData }) {
 
   const stop = () => {
     if (!launch) return;
-    const name = instances.find((i) => i.id === launch.instanceId)?.name ?? "Horizon";
+    const name = instances.find((i) => i.id === launch.instanceId)?.name ?? "Sunrise";
     setLaunch(null);
     say(`${name} closed after ${elapsed < 60 ? `${elapsed} s` : `${Math.floor(elapsed / 60)} min`}`);
   };
@@ -672,6 +672,7 @@ export function LauncherApp({ data }: { data: LauncherData }) {
               <Bar value={selfUpdate} className="mt-2.5" />
             )}
           </div>
+          {DISCORD_URL && (
           <a
             href={DISCORD_URL}
             target="_blank"
@@ -681,6 +682,7 @@ export function LauncherApp({ data }: { data: LauncherData }) {
             <DiscordLogo className="size-[18px]" />
             Join the Discord
           </a>
+          )}
           <nav aria-label="Links" className="mt-2 flex flex-col">
             <a href={SPONSOR_URL} target="_blank" rel="noreferrer" className={SIDE_LINK}>
               <Icon icon={FavouriteIcon} size={17} />

@@ -46,7 +46,7 @@ export function ApplyForm() {
   }, [token]);
 
   useEffect(() => {
-    if (invite) document.title = `Apply for ${invite.roleName} · Horizon`;
+    if (invite) document.title = `Apply for ${invite.roleName} · Sunrise`;
   }, [invite]);
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
@@ -66,7 +66,7 @@ export function ApplyForm() {
     }
   };
 
-  const title = invite ? `Apply for ${invite.roleName}` : "Apply to help run Horizon";
+  const title = invite ? `Apply for ${invite.roleName}` : "Apply to help run Sunrise";
   let body;
   if (sent) {
     body = (
@@ -84,7 +84,7 @@ export function ApplyForm() {
   } else if (!token) {
     body = (
       <p className="max-w-2xl text-lg leading-relaxed text-white/70">
-        To apply for Support or Mod, run <code className="font-mono text-[#e7e1ff]">/apply</code> on Horizon&apos;s Discord server: Kira DMs you a link to this form.
+        To apply for Support or Mod, run <code className="font-mono text-[#e7e1ff]">/apply</code> on Sunrise&apos;s Discord server: Kira DMs you a link to this form.
       </p>
     );
   } else if (error || !invite) {
@@ -104,7 +104,7 @@ export function ApplyForm() {
             <>
               {" "}
               If you linked your GitHub account with <code className="font-mono text-[#e7e1ff]">/link-github</code> and proved it with{" "}
-              <code className="font-mono text-[#e7e1ff]">/verify-github</code>, your merged pull requests in Horizon are shown with your application.
+              <code className="font-mono text-[#e7e1ff]">/verify-github</code>, your merged pull requests in Sunrise are shown with your application.
             </>
           )}
         </p>

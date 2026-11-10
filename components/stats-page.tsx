@@ -1,3 +1,4 @@
+import { gameBlob } from "@/components/game-repo";
 import { getMessages, rich, type Locale } from "@/components/i18n";
 import { PixelFire } from "@/components/pixel-fire";
 import { PlayersStats } from "@/components/players-stats";
@@ -23,7 +24,7 @@ export function StatsPage({ locale }: { locale: Locale }) {
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
             {rich(t.lead, {
               link: (text) => (
-                <a href="https://playhorizon.dev/privacy#the-im-playing-ping" className={LINK}>
+                <a href={gameBlob("docs/telemetry.md")} className={LINK}>
                   {text}
                 </a>
               ),

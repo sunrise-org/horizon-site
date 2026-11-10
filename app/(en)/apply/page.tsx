@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ApplyForm } from "@/components/apply-form";
 
 export const metadata: Metadata = {
-  title: "Apply · Horizon",
+  title: "Apply · Sunrise",
   robots: { index: false, follow: false },
   referrer: "no-referrer",
 };

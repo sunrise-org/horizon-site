@@ -3,8 +3,8 @@ import { SITE_DESCRIPTION } from "@/components/site";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Horizon: Minecraft Java Edition rewritten in Rust",
-    short_name: "Horizon",
+    name: "Sunrise: Minecraft Java Edition rewritten in Rust",
+    short_name: "Sunrise",
     description: SITE_DESCRIPTION,
     start_url: "/",
     display: "browser",

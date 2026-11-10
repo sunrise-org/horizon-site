@@ -34,6 +34,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/:path*", has: [{ type: "host", value: "[^.]+\\.up\\.railway\\.app" }], destination: `${process.env.SITE_URL || "https://playsunrise.net"}/:path*`, permanent: true },
+      { source: "/docs/how-horizon-is-built", destination: "/docs/how-sunrise-is-built", permanent: true },
       { source: "/server", destination: "/docs/hosting", permanent: true },
       { source: "/server.html", destination: "/docs/hosting", permanent: true },
       { source: "/roadmap", destination: "/hub#roadmap", permanent: true },

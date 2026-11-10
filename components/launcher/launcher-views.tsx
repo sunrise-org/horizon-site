@@ -871,7 +871,7 @@ export function ModsView({ api }: { api: Api }) {
           value={source}
           onChange={setSource}
           options={[
-            { id: "horizon", label: "Horizon" },
+            { id: "horizon", label: "Sunrise" },
             { id: "modrinth", label: "Modrinth" },
             { id: "curseforge", label: "CurseForge", disabled: true, hint: "soon" },
           ]}
@@ -884,7 +884,7 @@ export function ModsView({ api }: { api: Api }) {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder={source === "horizon" ? `Search ${data.mods.length} Horizon mods` : "Search resource packs and modpacks"}
+              placeholder={source === "horizon" ? `Search ${data.mods.length} Sunrise mods` : "Search resource packs and modpacks"}
               className="h-full min-w-0 flex-1 bg-transparent text-[14px] text-white outline-none"
               aria-label="Search mods"
             />
@@ -938,7 +938,7 @@ export function ModsView({ api }: { api: Api }) {
               <p className="mt-1 text-[13px] text-white/55">{entry.kind} on Modrinth</p>
               <p className="mt-4 text-[14px] leading-[1.6] text-white/70">{entry.summary}</p>
               <p className={`mt-4 text-[14px] font-medium ${entry.compat === "works" ? "text-(--live)" : entry.compat === "partly" ? "text-(--warn)" : "text-white/55"}`}>
-                {COMPAT_LABEL[entry.compat]} in Horizon
+                {COMPAT_LABEL[entry.compat]} in Sunrise
               </p>
               <button
                 type="button"
@@ -1136,7 +1136,7 @@ export function VersionsView({ api }: { api: Api }) {
   const { data, instances } = api;
   return (
     <>
-      <PageHead title="Versions" note="Horizon's Nightly builds, newest first. Your worlds live in the game folder, so removing a version never touches them.">
+      <PageHead title="Versions" note="Sunrise's Nightly builds, newest first. Your worlds live in the game folder, so removing a version never touches them.">
         <label className="flex items-center gap-3 text-[14px] text-white/85">
           Install new versions automatically
           <Toggle on={api.prefs.autoUpdate} onChange={(autoUpdate) => api.setPrefs({ autoUpdate })} label="Install new versions automatically" />
@@ -1414,7 +1414,7 @@ export function SettingsView({ api }: { api: Api }) {
                   <MicrosoftLogo className="size-[18px]" />
                   Sign in with Microsoft
                 </button>
-                <p className="mt-3 text-[12px] leading-[1.5] text-white/45">Microsoft&apos;s own page opens in your browser. Horizon never sees your password.</p>
+                <p className="mt-3 text-[12px] leading-[1.5] text-white/45">Microsoft&apos;s own page opens in your browser. Sunrise never sees your password.</p>
               </div>
             </div>
           </SettingsSection>
@@ -1508,7 +1508,7 @@ export function SettingsView({ api }: { api: Api }) {
             <SettingRow title="Show the opening" note="The wordmark, while the release list loads.">
               <Toggle on={prefs.opening} onChange={(opening) => setPrefs({ opening })} label="Show the opening" />
             </SettingRow>
-            <SettingRow title="Reset the launcher's look" note="Accent colour, glass, blur, language and the options above go back to how Horizon ships.">
+            <SettingRow title="Reset the launcher's look" note="Accent colour, glass, blur, language and the options above go back to how Sunrise ships.">
               <button
                 type="button"
                 onClick={() => {
@@ -1546,7 +1546,7 @@ export function SettingsView({ api }: { api: Api }) {
 
           <SettingsSection id="about">
             <div className="grid gap-2 sm:grid-cols-3">
-              <AboutTile lead={<MarkTile size={42} />} title="Horizon" note={data.nightlies[0]?.title ?? "Nightly"}>
+              <AboutTile lead={<MarkTile size={42} />} title="Sunrise" note={data.nightlies[0]?.title ?? "Nightly"}>
                 <p className="flex items-center gap-2 text-[13px] text-(--live)">
                   <Dot tone="live" />
                   Up to date

@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { ChipIcon, CodeIcon, DriveIcon, ExternalLinkIcon, HorizonLogo } from "@/components/icons";
 import { getMessages, type Locale } from "@/components/i18n";
-import { CONTRIBUTORS_URL } from "@/components/links";
+import { rich } from "@/components/i18n-text";
+import { CONTRIBUTORS_URL, UPSTREAM_URL } from "@/components/links";
 
 const POINTS = [
   { icon: DriveIcon, key: "copy" },
@@ -32,6 +33,16 @@ export function About({ locale }: { locale: Locale }) {
           <div className="reveal relative z-20 mt-5 lg:col-span-3 lg:col-start-1 lg:row-start-2 lg:mt-0 lg:pt-8">
             <p className="text-lg leading-relaxed text-pretty text-white/65">
               {t.lead}
+            </p>
+            <p className="mt-3 text-[15px] leading-relaxed text-pretty text-white/55">
+              {rich(t.fork, {
+                upstream: (text) => (
+                  <a href={UPSTREAM_URL} target="_blank" rel="noreferrer" className="underline decoration-white/25 underline-offset-4 transition-colors hover:text-white">
+                    {text}
+                    <span className="sr-only"> {common.newTab}</span>
+                  </a>
+                ),
+              })}
             </p>
             <a
               href={CONTRIBUTORS_URL}

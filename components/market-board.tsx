@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-// The Official Horizon SMP's market (/hub/market): the page the SMP mod writes once a minute (horizon-mods
+// The Official Sunrise SMP's market (/hub/market): the page the SMP mod writes once a minute (horizon-mods
 // native/smp README, "web/market.json"), through Kira and /api/market.
 type Series = { step: number; t: number[]; price: number[]; volume: number[] };
 type Item = {

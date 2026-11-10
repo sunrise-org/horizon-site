@@ -47,7 +47,7 @@ export function Gallery({ locale }: { locale: Locale }) {
             <p className="flex items-center gap-2.5 text-sm font-medium text-white/60">
               {t.eyebrow}
               <HorizonLogo className="h-4 w-auto" />
-              <span className="sr-only">Horizon</span>
+              <span className="sr-only">Sunrise</span>
             </p>
             <h2
               id="gallery-title"

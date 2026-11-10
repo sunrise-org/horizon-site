@@ -6,18 +6,18 @@ import { pageMetadata } from "@/components/site";
 
 export const metadata = {
   ...pageMetadata({
-    title: "Your mods on Horizon's registry",
-    description: "The mods you submitted to Horizon's registry: their versions, whether they still build on the newest Nightly, and what waits for review.",
+    title: "Your mods on Sunrise's registry",
+    description: "The mods you submitted to Sunrise's registry: their versions, whether they still build on the newest Nightly, and what waits for review.",
     path: "/mods/mine",
   }),
   robots: { index: false },
 };
 
-/** What Horizon a version is made for, from its `api` line (`native-1/<commit>/<mixins>`) or hook points. */
+/** What Sunrise a version is made for, from its `api` line (`native-1/<commit>/<mixins>`) or hook points. */
 function madeFor(v: ModProject["versions"][number]): string {
-  if (typeof v.hooks === "number") return `Any Horizon with hook points v${v.hooks}`;
+  if (typeof v.hooks === "number") return `Any Sunrise with hook points v${v.hooks}`;
   const pin = v.api?.startsWith("native-1/") ? v.api.split("/")[1] : "";
-  if (pin) return `Horizon ${pin.slice(0, 7)}`;
+  if (pin) return `Sunrise ${pin.slice(0, 7)}`;
   return v.api ? `Minecraft ${v.game}, API ${v.api}` : `Minecraft ${v.game}`;
 }
 

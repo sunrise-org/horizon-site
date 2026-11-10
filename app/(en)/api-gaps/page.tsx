@@ -4,8 +4,8 @@ import { getEvidence, getSync } from "@/lib/api-gaps/live";
 
 export const metadata = {
   ...pageMetadata({
-    title: "Native mod API gaps · Horizon",
-    description: "Which native mod API capabilities are on Horizon's main, which have work in review, and where to start on a gap.",
+    title: "Native mod API gaps · Sunrise",
+    description: "Which native mod API capabilities are on the arismoko/horizon main, which have work in review, and where to start on a gap.",
     path: "/api-gaps",
   }),
   robots: { index: false, follow: false },

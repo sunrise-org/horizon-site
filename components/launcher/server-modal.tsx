@@ -299,7 +299,7 @@ export function ServerModal({
               <div>
                 <p className="text-[15px] font-semibold">Check Minecraft accounts</p>
                 <p className="mt-0.5 max-w-[60ch] text-[13px] leading-[1.5] text-white/55">
-                  Off for Horizon players, who can&apos;t sign in with Microsoft yet. Turn it on only if every player signs in.
+                  Off for Sunrise players, who can&apos;t sign in with Microsoft yet. Turn it on only if every player signs in.
                 </p>
               </div>
               <Toggle on={checkAccounts} onChange={setCheckAccounts} label="Check Minecraft accounts" />

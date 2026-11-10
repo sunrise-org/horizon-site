@@ -85,7 +85,7 @@ function Login({ onSignedIn }: { onSignedIn: (who: Who) => void }) {
         Sign in
       </h2>
       <p className="text-[15px] leading-relaxed text-white/65">
-        For the Horizon Team and the Mods. Your username is your Discord username. No password yet, or forgot it? Run <code className="font-mono text-[#e7e1ff]">/staff password</code> on
+        For the Sunrise Team and the Mods. Your username is your Discord username. No password yet, or forgot it? Run <code className="font-mono text-[#e7e1ff]">/staff password</code> on
         Discord: Kira DMs you a link to set one.
       </p>
       <form onSubmit={submit} className={`${CARD} mt-6 space-y-4`}>
@@ -191,7 +191,7 @@ function Help() {
   return (
     <section className="max-w-3xl">
       <p className="text-lg leading-relaxed text-white/70">
-        The Horizon Team and the Mods run these two dashboards together. Here is how they work.{" "}
+        The Sunrise Team and the Mods run these two dashboards together. Here is how they work.{" "}
         <Link href="/hub/sign-in" className={LINK}>
           Back to the dashboards
         </Link>
@@ -203,7 +203,7 @@ function Help() {
       <HelpList
         items={[
           <>
-            Run <code className={code}>/staff password</code> on Horizon&apos;s Discord: Kira DMs you a link that works once, for 30 minutes. Choose a password of 12
+            Run <code className={code}>/staff password</code> on Sunrise&apos;s Discord: Kira DMs you a link that works once, for 30 minutes. Choose a password of 12
             characters or more.
           </>,
           <>
@@ -307,7 +307,7 @@ function Signed({ view, who, onSignedOut }: { view: Dashboard; who: Who; onSigne
       </div>
       {!who.dashboards.includes(view) ? (
         <p className="text-lg text-white/70">
-          This dashboard is for the {view === "team" ? "Horizon Team" : "Mods"}.{" "}
+          This dashboard is for the {view === "team" ? "Sunrise Team" : "Mods"}.{" "}
           {who.dashboards.map((d, i) => (
             <span key={d}>
               {i > 0 && " or "}
@@ -358,7 +358,7 @@ export function StaffApp({ view }: { view: string }) {
 
   useEffect(() => {
     const [, title] = TITLES[view] ?? TITLES["sign-in"];
-    document.title = `${title} · Horizon hub`;
+    document.title = `${title} · Sunrise hub`;
   }, [view]);
 
   const signOut = async (all: boolean) => {
