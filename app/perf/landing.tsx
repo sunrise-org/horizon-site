@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { PROFILER_HELPER_URL } from "@/components/links";
 import { t } from "@/lib/perf/i18n";
 import styles from "./page.module.css";
 
@@ -52,6 +53,11 @@ export function Landing({ ready, dragging, problem, onChoose }: Props) {
           </details>
         </aside>
       </div>
+      <p className={styles.privacyNote}>
+        {t("landing.thanks").split("{name}")[0]}
+        <a href={PROFILER_HELPER_URL} target="_blank" rel="noreferrer">gigger</a>
+        {t("landing.thanks").split("{name}")[1]}
+      </p>
     </section>
   );
 }
