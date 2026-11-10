@@ -98,7 +98,7 @@ export const PLAYER = "Player46008";
 export const playerHead = (name: string, size = 64) => `https://mc-heads.net/avatar/${encodeURIComponent(name)}/${size}`;
 
 const SHOTS: Shot[] = [
-  { src: "/media/bench/village.webp", name: "2026-10-17_19.04.12.png" },
+  { src: "/media/village.webp", name: "2026-10-17_19.04.12.png" },
   { src: "/media/underwater.webp", name: "2026-10-17_19.21.40.png" },
   { src: "/media/nether.webp", name: "2026-10-17_19.36.05.png" },
   { src: "/media/night-800.webp", name: "2026-10-17_20.02.51.png" },

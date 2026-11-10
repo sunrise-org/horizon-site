@@ -48,104 +48,6 @@ select optgroup {
   animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--delay, 0ms) backwards;
 }
 
-.stat-bar {
-  clip-path: inset(0 calc(100% - var(--fill)) 0 0 round 2px);
-  transition: clip-path 0.45s ease-out;
-  animation: stat-bar var(--dur) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)) var(--delay) backwards;
-}
-
-@keyframes stat-bar {
-  from {
-    clip-path: inset(0 100% 0 0 round 2px);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-.fps-range {
-  appearance: none;
-  background: transparent;
-  cursor: pointer;
-  animation: fade-in 0.4s ease var(--delay, 0ms) backwards;
-}
-
-.fps-range:focus {
-  outline: none;
-}
-
-.fps-range::-webkit-slider-runnable-track {
-  height: 100%;
-  background: transparent;
-}
-
-.fps-range::-moz-range-track {
-  background: transparent;
-}
-
-.fps-range::-webkit-slider-thumb {
-  appearance: none;
-  width: 6px;
-  height: 20px;
-  margin-top: 2px;
-  border-radius: 2px;
-  background: #fff;
-  cursor: ew-resize;
-}
-
-.fps-range::-moz-range-thumb {
-  width: 6px;
-  height: 20px;
-  border: 0;
-  border-radius: 2px;
-  background: #fff;
-  cursor: ew-resize;
-}
-
-.fps-range:focus-visible::-webkit-slider-thumb {
-  outline: 2px solid #a98fff;
-  outline-offset: 2px;
-}
-
-.fps-range:focus-visible::-moz-range-thumb {
-  outline: 2px solid #a98fff;
-  outline-offset: 2px;
-}
-
-@keyframes overload-shake {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  25% {
-    translate: calc(var(--amp) * -1px) calc(var(--amp) * 0.6px);
-  }
-  50% {
-    translate: calc(var(--amp) * 0.8px) calc(var(--amp) * -0.6px);
-  }
-  75% {
-    translate: calc(var(--amp) * -0.5px) calc(var(--amp) * -0.4px);
-  }
-}
-
-.overload-shake {
-  animation: overload-shake var(--shake, 0.2s) linear infinite;
-}
-
-@keyframes overload-flow {
-  to {
-    background-position: 160px 0;
-  }
-}
-
-.overload-flow {
-  background: linear-gradient(90deg, #6b4bff, #c9bbff 25%, #7c5cff 50%, #e4dcff 75%, #6b4bff) 0 0 / 160px 100%;
-  animation: overload-flow var(--flow, 1s) linear infinite;
-}
-
 @supports (animation-timeline: view()) {
   .reveal {
     animation: rise linear both;
@@ -546,31 +448,10 @@ select optgroup {
   margin: 2.5em 0;
 }
 
-@keyframes race {
-  from {
-    transform: scaleX(0);
-  }
-}
-
-.race-fill {
-  transform-origin: left center;
-  animation: race var(--dur, 1s) linear both;
-}
-
-.race-time {
-  animation: fade-in 0.35s ease var(--dur, 0ms) both;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .logo-float,
-  .rise,
-  .stat-bar,
-  .fps-range,
-  .overload-shake,
-  .overload-flow,
-  .race-fill,
-  .race-time {
+  .rise {
     animation: none;
     transition: none;
   }

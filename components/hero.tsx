@@ -1,6 +1,5 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
-import { FrameRateComparison } from "@/components/frame-rate-comparison";
 import { HorizonScene } from "@/components/horizon-scene";
 import { AppleIcon, DownloadIcon, GitHubIcon, LinuxIcon, RustIcon, WindowsIcon } from "@/components/icons";
 import { getLauncherDownloads, getReleases, launcherBuild } from "@/components/github-releases";
@@ -116,8 +115,6 @@ export async function Hero({ locale }: { locale: Locale }) {
             </span>
           </div>
         </div>
-
-        <FrameRateComparison t={home.frameRate} />
       </div>
 
       <div aria-hidden className="h-[clamp(180px,30svh,320px)] shrink-0" />

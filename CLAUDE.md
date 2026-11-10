@@ -28,8 +28,8 @@ dev server. Doc share cards are served by `app/og/docs/[...slug]/route.ts` inste
 - **GitHub's API**: releases, contributors, the roadmap's issues and pull requests. Each loader has a cache tag (`components/github-fresh.ts`) that Kira revalidates through `POST /api/revalidate` when GitHub's webhook says it changed.
 - **Other services**: the mod registry (`REGISTRY_UPSTREAM`), Kira's staff service (`STAFF_UPSTREAM`), the telemetry
   server (`telemetry.playsunrise.net`).
-- **This repository**: the pages (`app/`, `components/`), the player docs (`content/docs/`), our benchmark runs
-  (`content/benchmarks/`, `public/benchmarks.json`), assets (`public/`).
+- **This repository**: the pages (`app/`, `components/`), the player docs (`content/docs/`),
+  assets (`public/`).
 
 ## Kira's journal
 
@@ -43,7 +43,7 @@ Railway project `horizon-site`, service `site`, environment `production`: every 
 minutes (Dockerfile: `next build`, then `next start` on `$PORT`). When the files above change on the game's branch,
 the site is redeployed from source: for now by `~/code/horizon-parity/tools/site_redeploy_watch.sh` on the Mac mini
 (every 10 minutes), later by the game repository's `site-redeploy.yml` workflow. A failed build keeps the previous
-deployment live. After a deploy, check https://playsunrise.net (/, /hub, /mods, /docs, /releases, /benchmarks,
+deployment live. After a deploy, check https://playsunrise.net (/, /hub, /mods, /docs, /releases,
 /data/roadmap.json, /data/journal.json).
 
 ## Text and translations

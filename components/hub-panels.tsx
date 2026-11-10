@@ -473,11 +473,6 @@ const WAYS = [
     body: "On Discord, /agent connect gives your coding agent a personal token for Kira's MCP server: it reads the work board, claims tasks and posts its progress in your name.",
     actions: DISCORD_URL ? [{ label: "Join the Discord", href: DISCORD_URL }] : [],
   },
-  {
-    title: "Benchmark your computer",
-    body: "Run the built-in benchmark and share the report: every new machine makes the performance work more accurate. No coding needed.",
-    actions: [{ label: "How to", href: "/docs/performance" }],
-  },
 ];
 
 const RULES = [

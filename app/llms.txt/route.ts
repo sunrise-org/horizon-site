@@ -4,7 +4,6 @@ import { absolute, SITE_URL } from "@/components/site";
 
 const PAGES = [
   ["Download and releases", "/releases", "every game, launcher and nightly release, with notes and downloads"],
-  ["Benchmarks", "/benchmarks", "Sunrise against Minecraft: Java Edition 26.3 on a ThinkPad, a Mac mini and a gaming desktop"],
   ["Mods", "/mods", "mods, modpacks and resource packs made for Sunrise, each reviewed before it was listed"],
   ["Hub", "/hub", "what is being built now, what comes next and what shipped"],
   ["Players", "/stats", "how many people play Sunrise right now"],
