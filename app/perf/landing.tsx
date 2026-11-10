@@ -1,68 +1,69 @@
 "use client";
 
+import Link from "next/link";
 import { t } from "@/lib/perf/i18n";
 import styles from "./page.module.css";
-
-const WAYS = [
-  { name: "landing.way.game", how: "/profiler start" },
-  { name: "landing.way.ctl", how: "horizon-ctl profile start | stop" },
-  { name: "landing.way.server", how: "horizon-report 60" },
-];
-
-const READS = ["tick", "functions", "slow", "compare"];
 
 interface Props {
   ready: boolean;
   dragging: boolean;
   problem: string | null;
+  link: string;
+  linkError: string | null;
   onChoose: () => void;
+  onLinkChange: (link: string) => void;
+  onOpenLink: () => void;
 }
 
-/** What someone sees before a capture is open: what this is, how to get a capture, and the way in. */
-export function Landing({ ready, dragging, problem, onChoose }: Props) {
+export function Landing({ ready, dragging, problem, link, linkError, onChoose, onLinkChange, onOpenLink }: Props) {
   return (
-    <>
-      <section className={dragging ? styles.landingActive : styles.landing}>
+    <section className={styles.landing}>
+      <nav className={styles.breadcrumb} aria-label={t("landing.navigation")}>
+        <Link href="/docs">{t("landing.docs")}</Link>
+        <span aria-hidden="true">/</span>
+        <span>{t("landing.title")}</span>
+      </nav>
+      <header className={styles.landingHeader}>
         <h1 className={styles.display}>{t("landing.title")}</h1>
         <p className={styles.lede}>{t("landing.lede")}</p>
-        {problem ? <p className={styles.error}>{problem}</p> : null}
-        <div className={styles.actions}>
-          <button type="button" className={styles.button} onClick={onChoose} disabled={!ready}>
-            {ready ? t("app.choose") : t("app.loadingReader")}
-          </button>
-          <span className={styles.muted}>{t("app.dropHint")}</span>
-        </div>
-        <p className={styles.note}>{t("app.privacy")}</p>
-
-        <div className={styles.landingLists}>
-          <section>
-            <h2 className={styles.landingHeading}>{t("landing.get")}</h2>
-            <ul className={styles.landingList}>
-              {WAYS.map(({ name, how }) => (
-                <li key={name} className={styles.landingRow}>
-                  <span>{t(name)}</span>
-                  <code className={styles.landingCode}>{how}</code>
-                </li>
-              ))}
-            </ul>
-            <p className={styles.note}>{t("landing.where")}</p>
-          </section>
-          <section>
-            <h2 className={styles.landingHeading}>{t("landing.reads")}</h2>
-            <ul className={styles.landingList}>
-              {READS.map((id) => (
-                <li key={id} className={styles.landingRow}>
-                  <span>{t(`landing.read.${id}`)}</span>
-                  <span className={styles.muted}>{t(`landing.read.${id}.note`)}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        </div>
-      </section>
-      <div className={styles.wordmark} aria-hidden="true">
-        Horizon
+      </header>
+      <div className={styles.landingGrid}>
+        <section className={styles.openPanel} aria-labelledby="open-capture-heading">
+          <div className={dragging ? styles.dropZoneActive : styles.dropZone}>
+            <span className={styles.fileType} aria-hidden="true">.hzperf</span>
+            <h2 id="open-capture-heading" className={styles.landingHeading}>{t("landing.open")}</h2>
+            <p className={styles.muted}>{t("app.dropHint")}</p>
+            <button type="button" className={styles.button} onClick={onChoose} disabled={!ready}>
+              {ready ? t("app.choose") : t("app.loadingReader")}
+            </button>
+          </div>
+          {problem ? <p className={styles.error} role="alert">{problem}</p> : null}
+          <form className={styles.openLinkForm} onSubmit={(event) => { event.preventDefault(); onOpenLink(); }}>
+            <label htmlFor="capture-link">{t("share.openLink")}</label>
+            <div className={styles.linkControls}>
+              <input id="capture-link" className={styles.input} type="url" required value={link} onChange={(event) => onLinkChange(event.target.value)} placeholder={t("share.linkPlaceholder")} />
+              <button className={styles.buttonSmall} type="submit" disabled={!ready}>{t("share.open")}</button>
+            </div>
+            {linkError ? <p className={styles.error} role="alert">{linkError}</p> : null}
+          </form>
+          <p className={styles.privacyNote}>{t("app.privacy")}</p>
+        </section>
+        <aside className={styles.recordPanel} aria-labelledby="record-heading">
+          <h2 id="record-heading" className={styles.landingHeading}>{t("landing.get")}</h2>
+          <p>{t("landing.way.game")}</p>
+          <code className={styles.commandBlock}>/profiler start</code>
+          <p>{t("landing.recordHint")}</p>
+          <code className={styles.commandBlock}>/profiler stop</code>
+          <p className={styles.note}>{t("landing.where")}</p>
+          <details className={styles.recordDetails}>
+            <summary>{t("landing.otherWays")}</summary>
+            <p>{t("landing.way.ctl")}</p>
+            <code className={styles.commandBlock}>horizon-ctl profile start | stop</code>
+            <p>{t("landing.way.server")}</p>
+            <code className={styles.commandBlock}>horizon-report 60</code>
+          </details>
+        </aside>
       </div>
-    </>
+    </section>
   );
 }
