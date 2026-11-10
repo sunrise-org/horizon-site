@@ -43,12 +43,14 @@ function Tile({
   value,
   unit,
   rows,
+  note,
   children,
 }: {
   title: string;
   value: string;
   unit?: string;
   rows: [string, string][];
+  note?: string;
   children?: ReactNode;
 }) {
   return (
@@ -67,6 +69,7 @@ function Tile({
           </div>
         ))}
       </dl>
+      {note ? <p className={styles.cardNote}>{note}</p> : null}
     </section>
   );
 }
@@ -210,6 +213,19 @@ export function SummaryView({ capture, data, text }: ViewProps) {
   const side = capture.side;
   const meta = capture.meta.rows.find((row) => row.side === side);
 
+  const timing = meta?.timing;
+  const lowRows: [string, string][] = [
+    [t("health.low1"), withUnit(timing?.low_1pct, t(side === "server" ? "health.unitTps" : "health.unitFps"))],
+    [t("health.low01"), withUnit(timing?.low_01pct, t(side === "server" ? "health.unitTps" : "health.unitFps"))],
+  ];
+  const tailRows: [string, string][] = [
+    [t("health.tail1"), withUnit(timing?.slowest_1pct_ms, "ms")],
+    [t("health.tail01"), withUnit(timing?.slowest_01pct_ms, "ms")],
+  ];
+  const lowNote = timing
+    ? t(side === "server" ? "health.tickLowsNote" : "health.frameLowsNote", { count: grouped(timing.count) })
+    : t("health.lowsUnavailable");
+
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(text);
@@ -285,10 +301,11 @@ export function SummaryView({ capture, data, text }: ViewProps) {
             title={t("health.tps")}
             value={num(tps?.mean ?? null, 1)}
             unit={t("health.unitTps")}
-            rows={windowsWithin(data.seconds).map((window, index): [string, string] => [
+            note={lowNote}
+            rows={[...lowRows, ...windowsWithin(data.seconds).map((window, index): [string, string] => [
               t(window.label),
               withUnit(data.trailing[index], t("health.unitTps")),
-            ])}
+            ])]}
           >
             <Spark values={fields.get("h:tps")?.values ?? []} label={t("health.tps")} />
           </Tile>
@@ -297,7 +314,9 @@ export function SummaryView({ capture, data, text }: ViewProps) {
             title={t("health.fps")}
             value={num(fps?.mean ?? null, 1)}
             unit={t("health.unitFps")}
+            note={lowNote}
             rows={[
+              ...lowRows,
               [t("health.min"), withUnit(fps?.min, t("health.unitFps"))],
               [t("health.median"), withUnit(fps?.median, t("health.unitFps"))],
               [t("health.max"), withUnit(fps?.max, t("health.unitFps"))],
@@ -316,6 +335,7 @@ export function SummaryView({ capture, data, text }: ViewProps) {
               [t("health.min"), withUnit(mspt?.min, "ms")],
               [t("health.median"), withUnit(mspt?.median, "ms")],
               [t("health.worstP95"), withUnit(worstSecond?.max, "ms")],
+              ...tailRows,
               [t("health.max"), withUnit(peak?.max, "ms")],
             ]}
           >
@@ -329,6 +349,7 @@ export function SummaryView({ capture, data, text }: ViewProps) {
             rows={[
               [t("health.p50"), withUnit(frameP50?.median, "ms")],
               [t("health.p99"), withUnit(frameP99?.median, "ms")],
+              ...tailRows,
               [t("health.max"), withUnit(frameMax?.max, "ms")],
               ...(frameCpu ? ([[t("health.cpu"), withUnit(frameCpu.median, "ms")]] as [string, string][]) : []),
               ...(frameGpu ? ([[t("health.gpu"), withUnit(frameGpu.median, "ms")]] as [string, string][]) : []),

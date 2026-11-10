@@ -32,6 +32,7 @@ function Frames({ row, title }: { row: BenchRow; title: string }) {
               <th>{t("bench.frameCount")}</th>
               <th>{t("bench.fps")}</th>
               <th>{t("bench.low1")}</th>
+              <th>{t("bench.low01")}</th>
               <th>{t("bench.median")}</th>
               <th>{t("bench.p95")}</th>
               <th>{t("bench.p99")}</th>
@@ -56,6 +57,7 @@ function Frames({ row, title }: { row: BenchRow; title: string }) {
                   <td>{grouped(f.frames)}</td>
                   <td>{num(f.avg_fps, 1)}</td>
                   <td>{num(f.low_1pct_fps, 1)}</td>
+                  <td>{num(f.low_01pct_fps, 1)}</td>
                   <td>{num(f.p50_ms, 2)} ms</td>
                   <td>{num(f.p95_ms, 2)} ms</td>
                   <td>{num(f.p99_ms, 2)} ms</td>

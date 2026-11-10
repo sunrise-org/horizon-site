@@ -8,14 +8,10 @@ interface Props {
   ready: boolean;
   dragging: boolean;
   problem: string | null;
-  link: string;
-  linkError: string | null;
   onChoose: () => void;
-  onLinkChange: (link: string) => void;
-  onOpenLink: () => void;
 }
 
-export function Landing({ ready, dragging, problem, link, linkError, onChoose, onLinkChange, onOpenLink }: Props) {
+export function Landing({ ready, dragging, problem, onChoose }: Props) {
   return (
     <section className={styles.landing}>
       <nav className={styles.breadcrumb} aria-label={t("landing.navigation")}>
@@ -38,14 +34,6 @@ export function Landing({ ready, dragging, problem, link, linkError, onChoose, o
             </button>
           </div>
           {problem ? <p className={styles.error} role="alert">{problem}</p> : null}
-          <form className={styles.openLinkForm} onSubmit={(event) => { event.preventDefault(); onOpenLink(); }}>
-            <label htmlFor="capture-link">{t("share.openLink")}</label>
-            <div className={styles.linkControls}>
-              <input id="capture-link" className={styles.input} type="url" required value={link} onChange={(event) => onLinkChange(event.target.value)} placeholder={t("share.linkPlaceholder")} />
-              <button className={styles.buttonSmall} type="submit" disabled={!ready}>{t("share.open")}</button>
-            </div>
-            {linkError ? <p className={styles.error} role="alert">{linkError}</p> : null}
-          </form>
           <p className={styles.privacyNote}>{t("app.privacy")}</p>
         </section>
         <aside className={styles.recordPanel} aria-labelledby="record-heading">
