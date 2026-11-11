@@ -26,7 +26,7 @@ const NAV: { key: NavKey; href: string }[] = [
   { key: "faq", href: "/faq" },
 ];
 
-const NAV_LINK = "inline-flex items-center gap-1.5 transition-colors hover:text-white";
+const NAV_LINK = "nav-link inline-flex items-center gap-1.5 transition-colors hover:text-foreground";
 
 const subscribe = (onChange: () => void) => {
   window.addEventListener("scroll", onChange, { passive: true });
@@ -74,9 +74,9 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, pathname 
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter] duration-300 ${
-        menuOpen ? "bg-[#100a1f]" : scrolled ? "bg-[#100a1f]/75 backdrop-blur-md" : ""
-      }`}
+      className="glass-panel glass-chrome fixed inset-x-0 top-0 z-50 border-b border-line/70"
+      data-scrolled={scrolled || undefined}
+      data-menu-open={menuOpen || undefined}
     >
       <HeaderExtras />
       <div className="mx-auto flex h-18 w-full max-w-6xl items-center gap-8 px-6 xl:gap-12 lg:px-10">
@@ -84,20 +84,20 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, pathname 
           <span className="font-display text-[19px] font-semibold tracking-[-0.02em]">Sunrise</span>
         </LogoLink>
 
-        <nav aria-label={t.mainNav} className={`hidden items-center text-sm text-white/65 lg:flex gap-5 xl:gap-8`}>
+        <nav aria-label={t.mainNav} className={`hidden items-center text-sm text-muted lg:flex gap-5 xl:gap-8`}>
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               aria-current={isCurrent(item.href) ? "page" : undefined}
-              className={isCurrent(item.href) ? `${NAV_LINK} text-white` : NAV_LINK}
+              className={isCurrent(item.href) ? `${NAV_LINK} text-foreground` : NAV_LINK}
             >
               {t.nav[item.key]}
               {item.key === "releases" && unseen > 0 && (
                 <>
                   <span
                     aria-hidden
-                    className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#a98fff] px-1 text-[10px] leading-none font-semibold text-background tabular-nums shadow-[0_0_10px_rgba(169,143,255,0.7)]"
+                    className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-lavender px-1 text-[10px] leading-none font-semibold text-foreground tabular-nums shadow-[0_0_10px_rgba(255,90,168,0.7)]"
                   >
                     {unseen > 9 ? "9+" : unseen}
                   </span>
@@ -111,14 +111,14 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, pathname 
         <div className="ml-auto flex items-center gap-1.5">
           <a
             href={GITHUB_URL}
-            className="hidden h-9 items-center gap-2 px-3 text-sm text-white/65 transition-colors hover:text-white sm:inline-flex lg:hidden xl:inline-flex"
+            className="hidden h-9 items-center gap-2 px-3 text-sm text-muted transition-colors hover:text-foreground sm:inline-flex lg:hidden xl:inline-flex"
           >
             <GitHubIcon className="size-4" />
             GitHub
           </a>
           <LauncherLink
             build={launcher}
-            className="inline-flex h-9 items-center rounded-lg bg-white/10 px-4 text-sm font-medium text-white transition-colors hover:bg-white/15"
+            className="sun-button soft-press inline-flex h-9 items-center rounded-lg px-4 text-sm font-medium text-white"
           >
             {t.download}
           </LauncherLink>
@@ -131,7 +131,7 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, pathname 
               setMenuOpen((o) => !o);
               setMenuPath(pathname);
             }}
-            className="ml-1 inline-flex size-9 items-center justify-center rounded-lg bg-white/[0.06] text-white/80 transition-colors hover:bg-white/10 hover:text-white lg:hidden"
+            className="ml-1 inline-flex size-9 items-center justify-center rounded-lg bg-lavender text-muted transition-colors hover:bg-lavender hover:text-foreground lg:hidden"
           >
             {menuOpen ? <XIcon className="size-[18px]" /> : <MenuIcon className="size-[18px]" />}
           </button>
@@ -147,19 +147,19 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, pathname 
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
                   aria-current={isCurrent(item.href) ? "page" : undefined}
-                  className={`flex h-12 items-center justify-between rounded-lg px-3 text-[17px] transition-colors hover:bg-white/[0.05] ${
-                    isCurrent(item.href) ? "bg-white/[0.06] text-white" : "text-white/75"
+                  className={`flex h-12 items-center justify-between rounded-lg px-3 text-[17px] transition-colors hover:bg-surface/80 ${
+                    isCurrent(item.href) ? "bg-lavender text-foreground" : "text-muted"
                   }`}
                 >
                   {t.nav[item.key]}
                   {item.key === "releases" && unseen > 0 && (
-                    <span className="text-sm text-[#c4b5ff]">{format(t.unseenMenu, { n: unseen > 9 ? "9+" : unseen })}</span>
+                    <span className="text-sm text-accent-ink">{format(t.unseenMenu, { n: unseen > 9 ? "9+" : unseen })}</span>
                   )}
                 </Link>
               </li>
             ))}
             <li>
-              <a href={GITHUB_URL} className="flex h-12 items-center gap-2.5 rounded-lg px-3 text-[17px] text-white/75 transition-colors hover:bg-white/[0.05]">
+              <a href={GITHUB_URL} className="flex h-12 items-center gap-2.5 rounded-lg px-3 text-[17px] text-muted transition-colors hover:bg-surface/80">
                 <GitHubIcon className="size-4" />
                 GitHub
               </a>

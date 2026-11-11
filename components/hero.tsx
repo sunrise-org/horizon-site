@@ -11,7 +11,7 @@ const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
 
 function Dot({ className = "mx-2" }: { className?: string }) {
   return (
-    <span aria-hidden className={`text-white/30 ${className}`}>
+    <span aria-hidden className={`text-muted ${className}`}>
       ·
     </span>
   );
@@ -29,7 +29,7 @@ export async function Hero({ locale }: { locale: Locale }) {
 
       <div className="mx-auto grid w-full max-w-6xl flex-1 content-center items-start gap-x-16 gap-y-16 px-6 pt-12 pb-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:items-center lg:px-10 xl:gap-x-20">
         <div className="@container max-w-2xl">
-          <p className="rise flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm font-medium text-white/60" style={delay(0)}>
+          <p className="rise flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm font-medium text-muted" style={delay(0)}>
             <span className="inline-flex items-center gap-2">
               <Image src="/minecraft.webp" alt="" width={64} height={71} className="h-[18px] w-auto" />
               Minecraft: Java Edition 26.3
@@ -44,7 +44,7 @@ export async function Hero({ locale }: { locale: Locale }) {
                       href={RUST_WIKI_URL}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-white/80 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60"
+                      className="text-muted underline decoration-accent/40 underline-offset-4 transition-colors hover:text-foreground hover:decoration-accent/40"
                     >
                       {chunks}
                     </a>
@@ -55,7 +55,7 @@ export async function Hero({ locale }: { locale: Locale }) {
           </p>
 
           <h1
-            className="rise mt-5 font-display text-[clamp(2rem,10.4cqi,4.75rem)] leading-[1.02] font-semibold tracking-[-0.035em] text-white"
+            className="rise mt-5 font-display text-[clamp(2rem,10.4cqi,4.75rem)] leading-[1.02] font-semibold tracking-[-0.035em] text-foreground"
             style={delay(80)}
           >
             <span className="sr-only">Sunrise: </span>
@@ -63,38 +63,38 @@ export async function Hero({ locale }: { locale: Locale }) {
             <span className="text-accent block pb-1">{t.titleAccent}</span>
           </h1>
 
-          <p className="rise mt-6 max-w-xl text-lg leading-relaxed text-white/70" style={delay(160)}>
+          <p className="rise mt-6 max-w-xl text-lg leading-relaxed text-muted" style={delay(160)}>
             {t.lead}
           </p>
 
           <div className="rise mt-9 flex flex-col gap-3 sm:flex-row sm:items-center" style={delay(240)}>
             <LauncherLink
               build={launcher}
-              className="inline-flex h-12 items-center justify-center gap-2.5 rounded-[10px] bg-[#6b4bff] px-5 text-[15px] font-medium text-white transition-colors hover:bg-[#7a5dff]"
+              className="sun-button soft-press inline-flex h-12 items-center justify-center gap-2.5 rounded-[10px] bg-brand px-5 text-[15px] font-medium text-white hover:bg-brand-hover"
             >
               <DownloadIcon className="size-[18px]" />
               {t.download}
             </LauncherLink>
             <a
               href={GITHUB_URL}
-              className="inline-flex h-12 items-center justify-center gap-2.5 rounded-[10px] bg-white/[0.08] px-5 text-[15px] font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/[0.14]"
+              className="glass-panel soft-press inline-flex h-12 items-center justify-center gap-2.5 rounded-[10px] border border-line px-5 text-[15px] font-medium text-foreground"
             >
               <GitHubIcon className="size-[17px]" />
               {t.github}
             </a>
           </div>
 
-          <div className="rise mt-5 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm text-white/50" style={delay(300)}>
+          <div className="rise mt-5 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm text-muted" style={delay(300)}>
             <span className="flex items-center gap-4">
-              <LauncherLink build={launcher} os="windows" className="inline-flex items-center gap-2 text-white/75 transition-colors hover:text-white">
+              <LauncherLink build={launcher} os="windows" className="inline-flex items-center gap-2 text-muted transition-colors hover:text-foreground">
                 <WindowsIcon className="size-3.5" />
                 Windows
               </LauncherLink>
-              <LauncherLink build={launcher} os="macos" className="inline-flex items-center gap-2 text-white/75 transition-colors hover:text-white">
+              <LauncherLink build={launcher} os="macos" className="inline-flex items-center gap-2 text-muted transition-colors hover:text-foreground">
                 <AppleIcon className="size-4" />
                 macOS
               </LauncherLink>
-              <LauncherLink build={launcher} os="linux" className="inline-flex items-center gap-2 text-white/75 transition-colors hover:text-white">
+              <LauncherLink build={launcher} os="linux" className="inline-flex items-center gap-2 text-muted transition-colors hover:text-foreground">
                 <LinuxIcon className="size-4" />
                 Linux
               </LauncherLink>

@@ -103,7 +103,7 @@ export function ReleaseViews({ id, t, numberLocale }: { id: number; t: ListText;
   const n = all[id] ?? 0;
   return (
     <>
-      <span aria-hidden className="mx-2 text-white/30">
+      <span aria-hidden className="mx-2 text-muted">
         ·
       </span>
       <span className="tabular-nums">
@@ -141,12 +141,12 @@ export function ReleaseList({ t, entries, children }: { t: ListText; entries: { 
                 type="button"
                 aria-pressed={active}
                 onClick={() => setFilter(tab)}
-                className={`inline-flex h-9 items-center gap-2 rounded-lg px-3.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-[#a98fff] focus-visible:outline-none ${
-                  active ? "bg-white text-background" : "bg-white/[0.06] text-white/70 hover:bg-white/[0.1] hover:text-white"
+                className={`inline-flex h-9 items-center gap-2 rounded-lg px-3.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none ${
+                  active ? "bg-sky-surface text-foreground" : "bg-lavender text-muted hover:bg-lavender hover:text-foreground"
                 }`}
               >
                 {t.tabs[tab]}
-                <span className={`tabular-nums ${active ? "text-background/55" : "text-white/40"}`}>{count}</span>
+                <span className={`tabular-nums ${active ? "text-muted" : "text-muted"}`}>{count}</span>
               </button>
             );
           })}
@@ -154,7 +154,7 @@ export function ReleaseList({ t, entries, children }: { t: ListText; entries: { 
 
         <div className="flex items-center gap-4 text-sm">
           {seen && (
-            <span aria-live="polite" className={unseen.length ? "font-medium text-[#a98fff]" : "text-white/50"}>
+            <span aria-live="polite" className={unseen.length ? "font-medium text-accent-ink" : "text-muted"}>
               {unseen.length ? format(t.newCount, { n: unseen.length }) : t.caughtUp}
             </span>
           )}
@@ -162,14 +162,14 @@ export function ReleaseList({ t, entries, children }: { t: ListText; entries: { 
             type="button"
             disabled={!unseen.length}
             onClick={() => markSeen(unseen.map((e) => e.id))}
-            className="rounded-md text-white/70 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white disabled:pointer-events-none disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-[#a98fff] focus-visible:outline-none"
+            className="rounded-md text-muted underline decoration-accent/40 underline-offset-4 transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
           >
             {t.markAllSeen}
           </button>
         </div>
       </div>
 
-      <ul data-filter={filter} className="release-list mt-6 border-t border-white/[0.08]">
+      <ul data-filter={filter} className="release-list mt-6 border-t border-line">
         {children}
       </ul>
     </>
@@ -203,24 +203,24 @@ export function ReleaseItem({ id, t, summary, children }: { id: number; t: ListT
       }}
       className="group scroll-mt-24"
     >
-      <summary className="flex cursor-pointer list-none items-start gap-4 rounded-md py-5 outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff] [&::-webkit-details-marker]:hidden">
+      <summary className="flex cursor-pointer list-none items-start gap-4 rounded-md py-5 outline-none focus-visible:ring-2 focus-visible:ring-accent [&::-webkit-details-marker]:hidden">
         <span
           aria-hidden
-          className={`mt-2 size-2 shrink-0 rounded-full transition-colors ${seen && !isSeen ? "bg-[#a98fff] shadow-[0_0_10px_#a98fff]" : "bg-white/10"}`}
+          className={`mt-2 size-2 shrink-0 rounded-full transition-colors ${seen && !isSeen ? "bg-lavender shadow-[0_0_10px_#ff8fc4]" : "bg-lavender"}`}
         />
         <span className="min-w-0 flex-1">{summary}</span>
         {seen &&
           (isSeen ? (
-            <span className="mt-0.5 inline-flex shrink-0 items-center gap-1 text-xs text-white/40">
+            <span className="mt-0.5 inline-flex shrink-0 items-center gap-1 text-xs text-muted">
               <CheckIcon className="size-3.5" />
               {t.seen}
             </span>
           ) : (
-            <span className="mt-0.5 shrink-0 rounded-md bg-[#a98fff]/15 px-2 py-0.5 text-xs font-medium text-[#c9bbff]">
+            <span className="mt-0.5 shrink-0 rounded-md bg-lavender/15 px-2 py-0.5 text-xs font-medium text-accent-ink">
               {t.new}
             </span>
           ))}
-        <ChevronDownIcon className="mt-1 size-4 shrink-0 text-white/40 transition-transform group-open:rotate-180" />
+        <ChevronDownIcon className="mt-1 size-4 shrink-0 text-muted transition-transform group-open:rotate-180" />
       </summary>
 
       <div className="pb-8 pl-6">
@@ -229,7 +229,7 @@ export function ReleaseItem({ id, t, summary, children }: { id: number; t: ListT
           <button
             type="button"
             onClick={() => markUnseen(id)}
-            className="mt-4 block rounded-md text-sm text-white/45 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white focus-visible:ring-2 focus-visible:ring-[#a98fff] focus-visible:outline-none"
+            className="mt-4 block rounded-md text-sm text-muted underline decoration-accent/40 underline-offset-4 transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
           >
             {t.markUnseen}
           </button>

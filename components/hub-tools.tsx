@@ -33,7 +33,7 @@ export function CopyCommand({ command, label, text, copied: done = "Copied" }: {
       type="button"
       onClick={async () => setCopied(await copyText(command))}
       aria-label={label}
-      className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-lg bg-white/[0.06] px-2.5 text-[13px] font-medium text-white/80 transition-colors outline-none hover:bg-white/[0.11] hover:text-white focus-visible:ring-2 focus-visible:ring-[#a98fff]"
+      className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-lg bg-lavender px-2.5 text-[13px] font-medium text-muted transition-colors outline-none hover:bg-lavender hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent"
     >
       {copied ? <CheckIcon className="size-3.5 text-emerald-300" /> : null}
       {copied ? done : (text ?? command)}
@@ -45,7 +45,7 @@ export function CopyCommand({ command, label, text, copied: done = "Copied" }: {
 }
 
 const FIELD =
-  "w-full rounded-lg bg-white/[0.06] px-3.5 text-[15px] text-white placeholder:text-white/35 outline-none transition-colors focus:bg-white/[0.09] focus-visible:ring-2 focus-visible:ring-[#a98fff]";
+  "w-full rounded-lg bg-lavender px-3.5 text-[15px] text-foreground placeholder:text-muted outline-none transition-colors focus:bg-lavender focus-visible:ring-2 focus-visible:ring-accent";
 
 type Report = { title: string; did: string; happened: string; expected: string; version: string; system: string };
 
@@ -74,8 +74,8 @@ function reportBody(r: Report) {
 function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
   return (
     <label className="block">
-      <span className="block text-sm font-medium text-white/80">{label}</span>
-      {hint && <span className="mt-0.5 block text-[13px] text-white/45">{hint}</span>}
+      <span className="block text-sm font-medium text-muted">{label}</span>
+      {hint && <span className="mt-0.5 block text-[13px] text-muted">{hint}</span>}
       <span className="mt-2 block">{children}</span>
     </label>
   );
@@ -122,7 +122,7 @@ export function BugReport({ version }: { version: string }) {
   const search = `${REPO_URL}/issues?${new URLSearchParams({ q: `is:issue ${title.trim()}`.trim() })}`;
 
   return (
-    <form ref={form} onSubmit={onSubmit} className="mt-6 max-w-3xl rounded-2xl bg-white/[0.035] p-5 sm:p-6" aria-describedby={`${id}-note`}>
+    <form ref={form} onSubmit={onSubmit} className="mt-6 max-w-3xl rounded-2xl bg-surface/80 p-5 sm:p-6" aria-describedby={`${id}-note`}>
       <div className="grid gap-5">
         <Field label="What is broken, in a few words">
           <input
@@ -161,7 +161,7 @@ export function BugReport({ version }: { version: string }) {
       <div className="mt-6 flex flex-wrap items-center gap-2">
         <button
           type="submit"
-          className="inline-flex h-10 items-center gap-2 rounded-lg bg-[#6b4bff] px-4 text-sm font-medium text-white transition-colors outline-none hover:bg-[#7a5dff] focus-visible:ring-2 focus-visible:ring-[#a98fff]"
+          className="inline-flex h-10 items-center gap-2 rounded-lg bg-brand px-4 text-sm font-medium text-white transition-colors outline-none hover:bg-brand-hover focus-visible:ring-2 focus-visible:ring-accent"
         >
           Open the issue on GitHub
           <ExternalLinkIcon className="size-3.5 opacity-70" />
@@ -169,7 +169,7 @@ export function BugReport({ version }: { version: string }) {
         <button
           type="button"
           onClick={onCopy}
-          className="inline-flex h-10 items-center gap-2 rounded-lg bg-white/[0.07] px-4 text-sm font-medium text-white/85 transition-colors outline-none hover:bg-white/[0.12] hover:text-white focus-visible:ring-2 focus-visible:ring-[#a98fff]"
+          className="inline-flex h-10 items-center gap-2 rounded-lg bg-lavender px-4 text-sm font-medium text-foreground transition-colors outline-none hover:bg-sky-surface hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent"
         >
           {copied && <CheckIcon className="size-4 text-emerald-300" />}
           Copy for Discord
@@ -178,7 +178,7 @@ export function BugReport({ version }: { version: string }) {
           href={search}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-10 items-center gap-1.5 px-2 text-sm font-medium text-[#c4b5ff] transition-colors hover:text-white"
+          className="inline-flex h-10 items-center gap-1.5 px-2 text-sm font-medium text-accent-ink transition-colors hover:text-foreground"
         >
           {title.trim() ? "Search for this bug first" : "Search the open bugs first"}
           <ExternalLinkIcon className="size-3.5 opacity-60" />
@@ -187,9 +187,9 @@ export function BugReport({ version }: { version: string }) {
       <p className="mt-3 min-h-5 text-sm text-emerald-200/90" role="status">
         {status}
       </p>
-      <p id={`${id}-note`} className="mt-1 text-[13px] leading-relaxed text-white/45">
+      <p id={`${id}-note`} className="mt-1 text-[13px] leading-relaxed text-muted">
         Issues are public, so leave out passwords and personal details. A screenshot or your log file helps: add it once the issue is open (
-        <Link href="/docs/troubleshooting" className="text-white/70 underline underline-offset-4 hover:text-white">
+        <Link href="/docs/troubleshooting" className="text-muted underline underline-offset-4 hover:text-foreground">
           where the log is
         </Link>
         ). No GitHub account? Copy it for Discord and post it in #horizon-bugs, where Kira turns it into an issue.
@@ -198,9 +198,9 @@ export function BugReport({ version }: { version: string }) {
   );
 }
 
-const CHIP_BUTTON = "h-8 rounded-lg px-3 text-[13px] font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff]";
-const CHIP_ON = "bg-[#6b4bff]/30 text-[#e4dcff] ring-1 ring-[#a98fff]/40 ring-inset";
-const CHIP_OFF = "bg-white/[0.05] text-white/60 hover:bg-white/[0.09] hover:text-white";
+const CHIP_BUTTON = "h-8 rounded-lg px-3 text-[13px] font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent";
+const CHIP_ON = "bg-brand/30 text-accent-ink ring-1 ring-accent/40 ring-inset";
+const CHIP_OFF = "bg-surface/80 text-muted hover:bg-lavender hover:text-foreground";
 
 export function BoardFilter({ items }: { items: { id: string; title: string }[] }) {
   const root = useRef<HTMLDivElement>(null);
@@ -254,7 +254,7 @@ export function BoardFilter({ items }: { items: { id: string; title: string }[] 
         </select>
       )}
       {shown !== null && (
-        <p className="text-sm text-white/50 sm:ml-2" role="status">
+        <p className="text-sm text-muted sm:ml-2" role="status">
           {shown} {shown === 1 ? "card matches" : "cards match"}
         </p>
       )}

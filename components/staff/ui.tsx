@@ -4,23 +4,23 @@ import { Component, useRef, type KeyboardEvent, type ReactNode } from "react";
 import { safeLink } from "@/components/staff/api";
 
 export const FIELD =
-  "w-full rounded-lg bg-white/[0.06] px-3.5 text-[15px] text-white placeholder:text-white/35 outline-none transition-colors focus:bg-white/[0.09] focus-visible:ring-2 focus-visible:ring-[#a98fff]";
+  "w-full rounded-lg bg-lavender px-3.5 text-[15px] text-foreground placeholder:text-muted outline-none transition-colors focus:bg-lavender focus-visible:ring-2 focus-visible:ring-accent";
 export const INPUT = `${FIELD} h-10`;
 export const AREA = `${FIELD} py-2.5 leading-relaxed`;
-const BASE = "inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff] disabled:cursor-not-allowed disabled:opacity-50";
-export const PRIMARY = `${BASE} h-10 bg-white px-4 text-sm text-[#100a1f] hover:bg-white/90`;
-export const PRIMARY_SM = `${BASE} h-8 bg-white px-3 text-[13px] text-[#100a1f] hover:bg-white/90`;
-export const SECONDARY = `${BASE} h-10 bg-white/10 px-4 text-sm text-white hover:bg-white/15`;
-export const SECONDARY_SM = `${BASE} h-8 bg-white/10 px-3 text-[13px] text-white hover:bg-white/15`;
-export const GHOST_SM = `${BASE} h-8 px-2.5 text-[13px] text-white/60 hover:bg-white/[0.06] hover:text-white`;
-export const CARD = "rounded-2xl bg-[#18112c] p-5 sm:p-6";
-export const LINK = "text-[#c4b5ff] underline decoration-[#c4b5ff]/40 underline-offset-4 transition-colors hover:text-white";
-export const BADGE = "inline-flex items-center rounded-md bg-white/[0.07] px-2 py-0.5 text-xs font-medium text-white/75";
+const BASE = "inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-50";
+export const PRIMARY = `${BASE} h-10 bg-sky-surface px-4 text-sm text-foreground hover:bg-accent/25`;
+export const PRIMARY_SM = `${BASE} h-8 bg-sky-surface px-3 text-[13px] text-foreground hover:bg-accent/25`;
+export const SECONDARY = `${BASE} h-10 bg-lavender px-4 text-sm text-foreground hover:bg-sky-surface`;
+export const SECONDARY_SM = `${BASE} h-8 bg-lavender px-3 text-[13px] text-foreground hover:bg-sky-surface`;
+export const GHOST_SM = `${BASE} h-8 px-2.5 text-[13px] text-muted hover:bg-lavender hover:text-foreground`;
+export const CARD = "rounded-2xl bg-surface p-5 sm:p-6";
+export const LINK = "text-accent-ink underline decoration-accent/40 underline-offset-4 transition-colors hover:text-foreground";
+export const BADGE = "inline-flex items-center rounded-md bg-lavender px-2 py-0.5 text-xs font-medium text-muted";
 
 export function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-[13px] font-medium text-white/70">{label}</span>
+      <span className="mb-1.5 block text-[13px] font-medium text-muted">{label}</span>
       {children}
     </label>
   );
@@ -44,16 +44,16 @@ export function Lines({ text, className = "" }: { text?: string | null; classNam
 }
 
 export function Note({ children }: { children: ReactNode }) {
-  return <p className="text-[15px] leading-relaxed text-white/60">{children}</p>;
+  return <p className="text-[15px] leading-relaxed text-muted">{children}</p>;
 }
 
 export function Empty({ children }: { children: ReactNode }) {
-  return <p className="rounded-xl bg-white/[0.03] px-4 py-6 text-center text-sm text-white/50">{children}</p>;
+  return <p className="rounded-xl bg-surface/80 px-4 py-6 text-center text-sm text-muted">{children}</p>;
 }
 
 export function Status({ text }: { text?: string }) {
   return (
-    <span role="status" className="text-[13px] text-white/55">
+    <span role="status" className="text-[13px] text-muted">
       {text}
     </span>
   );
@@ -70,7 +70,7 @@ export class Guard extends Component<{ what: string; children: ReactNode }, { er
   render() {
     if (this.state.error) {
       return (
-        <p role="alert" className="rounded-xl bg-[#f07a6a]/10 px-4 py-3 text-sm text-[#f7b2a8]">
+        <p role="alert" className="rounded-xl bg-[#f07a6a]/10 px-4 py-3 text-sm text-danger-ink">
           {this.props.what} couldn&apos;t be shown ({this.state.error.message}). The rest of the dashboard works; tell the Team if this stays.
         </p>
       );
@@ -106,12 +106,12 @@ export function Tabs({ tabs, active, onSelect, label }: { tabs: Tab[]; active: s
             aria-controls={`panel-${t.id}`}
             tabIndex={on ? 0 : -1}
             onClick={() => onSelect(t.id)}
-            className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-3.5 text-sm font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff] ${
-              on ? "bg-white text-[#100a1f]" : "text-white/65 hover:bg-white/[0.08] hover:text-white"
+            className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-3.5 text-sm font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+              on ? "bg-sky-surface text-foreground" : "text-muted hover:bg-lavender hover:text-foreground"
             }`}
           >
             {t.label}
-            {t.count ? <span className={`rounded-md px-1.5 text-xs tabular-nums ${on ? "bg-[#100a1f]/10" : "bg-[#a98fff]/20 text-[#d8ceff]"}`}>{t.count}</span> : null}
+            {t.count ? <span className={`rounded-md px-1.5 text-xs tabular-nums ${on ? "bg-background/10" : "bg-lavender/20 text-accent-ink"}`}>{t.count}</span> : null}
           </button>
         );
       })}

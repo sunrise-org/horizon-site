@@ -54,6 +54,20 @@
   box-sizing: inherit;
 }
 
+.page:has(.landing) {
+  --page: var(--background);
+  --plate-soft: var(--lavender);
+  --plate: var(--sky-surface);
+  --surface: var(--lavender);
+  --rule: var(--line);
+  --ink: var(--foreground);
+  --ink-soft: #ddd4f5;
+  --muted: #c4bbd8;
+  --accent: #bba8ff;
+  --on-accent: var(--background);
+  --danger: var(--danger-ink);
+}
+
 .page :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;

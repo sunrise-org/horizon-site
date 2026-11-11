@@ -1,115 +1,121 @@
-# The bundle
+# The manifest and the .hmod file
 
-A native mod is a bundle for [horizon-mixins](https://github.com/sunrise-org/horizon-mixins): the manifest `horizon-mixin.toml`, the mod's own code, and one small helper for each place it hooks. This page explains the manifest, what Sunrise a mod builds on, and the `.hnmod` file players install. Content mods have a different manifest, on [their own page](/docs/content-mods#the-manifest).
+Every mod has one manifest, `horizon-mod.toml`, at the root of its folder. It is the only source of the mod's id and version, for content and code alike. This page lists its fields and what the packed `.hmod` holds. The complete rules are in the book's [Mod files](/docs/modding/reference/manifest) reference.
 
-## The manifest
+## The folder and the file
 
-Playtime's `mixins/playtime/horizon-mixin.toml`, shortened to two hooks:
+The project folder and the `.hmod` have the same flat layout. `cargo horizon-mod build` zips the folder's mod files into `target/horizon-mod/<id>.hmod`:
+
+```text
+my_mod.hmod
+├── horizon-mod.toml
+├── icon.png                # optional
+├── assets/my_mod/
+├── data/my_mod/
+├── Cargo.toml              # code mods only
+├── Cargo.lock              # code mods with crates.io dependencies
+├── src/lib.rs              # code mods only
+└── mod.wasm                # wasm mods only
+```
+
+- **Content only:** no `Cargo.toml` and no `[native]`. Nothing compiles.
+- **Native code:** `Cargo.toml` and `src/` at the root, and `[native]` in the manifest. The launcher builds it into the game.
+- **Wasm code:** `mod.wasm` at the root, declared by `[wasm]`, beside the source it was built from.
+
+There is no folder named after the mod inside the file, no `native/` or `rust/` folder, and no second manifest. A file whose code and declarations disagree is refused: `Cargo.toml` without `[native]`, `mod.wasm` that `[wasm]` doesn't declare, or any other executable.
+
+## Shared fields
 
 ```toml
-[mod]
-id = "playtime"
+id = "my_mod"
+name = "My mod"
 version = "0.1.0"
-priority = 100
-
-# The commit it was tested on.
-[compatibility]
-horizon_revision = "6f8c7a0e5d531d3834c4d0be4659a1db8e7e5c2a"
-
-# runtime.rs becomes the module crate::game::playtime.
-[[module]]
-id = "runtime"
-file = "crates/horizon-client/src/game.rs"
-name = "playtime"
-source = "runtime.rs"
-
-[[injection]]
-id = "tick"
-kind = "HEAD"
-target = "horizon_client::game::native_hooks::Game<'_>::native_tick"
-helper = "tick.rs"
-bindings = [
-  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
-]
-
-[[injection]]
-id = "command"
-kind = "HEAD"
-target = "horizon_client::game::native_hooks::Game<'_>::native_command"
-helper = "command.rs"
-bindings = [
-  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
-  { name = "command", ty = "&str", value = "command" },
-  { name = "ran", ty = "&mut bool", value = "&mut *ran" },
-]
+description = "..."
+authors = ["..."]
+license = "MIT"
+homepage = "https://..."
+issues = "https://..."
+api = "0.2"
+side = "both"
+capabilities = ["registries"]
 ```
 
-| Part | What it is |
+| Field | Rule |
 | --- | --- |
-| `[mod] id` | The mod's id: `a-z`, `0-9` and `_`. It names its row in Options > Mods, its settings folder and its keys. Keep it once you have published the mod. |
-| `[mod] version` | Your mod's version, such as `0.1.0`. Each version you publish needs a new one. |
-| `[mod] priority` | Orders the mods that hook the same function ([horizon-mixins' README](https://github.com/sunrise-org/horizon-mixins) has the rules). `100`, as Sunrise's own mods, unless you need another. |
-| `[compatibility] horizon_revision` | The Sunrise commit the mod was made and tested on ([below](#hook-points-or-a-pinned-commit)). |
-| `[[module]]` | A file of yours added to the game as a module: `source` becomes `crate::game::<name>`. Your state, your logic and your tests go there. |
-| `[[injection]]` | One hook: `target` is the function, `kind` where in it your code runs (`HEAD`: first), `helper` the file with your code, and `bindings` what it receives. |
-| `hook`, `hook_version` | In an `[[injection]]`, in place of `target`: a hook point by its name in Sunrise's catalog, `native-hooks.json` (`hook = "tick"`, `hook_version = 1`). horizon-mixins 0.6.0 or later. |
-| `[api]` | `path = "engine"`: the folder of the mod's [typed API](/docs/mod-code#the-typed-api) crate. The launcher links it into the game and calls its `hooks()`. |
-| `[dependencies]` | Other typed mods this one calls, by id and version requirement: `base_mod = "^1"`, or `{ version = "^2", optional = true }`. |
-| `[[crate]]` | A Cargo package of the bundle that the game depends on, for a big mod's heavy code: helpers call it, and Cargo compiles it once. It may use only crates in Sunrise's `Cargo.lock`. |
-| `[[post_build]]` | A program of one of your crates that runs after the game is built. |
+| `id` | 1 to 64 characters of `a-z`, `0-9` and `_`. It is also the namespace of the mod's blocks, items and files. Keep it once you have published. |
+| `name`, `description`, `authors` | What the game's Mods screen shows. |
+| `version` | The mod's version. Each published version needs a new one. Cargo's version is ignored. |
+| `license`, `license_url`, `credits`, `homepage`, `issues` | Optional. They fill the Mods screen. Links must be `http` or `https`. |
+| `api` | Exactly `"0.2"`. |
+| `side` | `"client"` (the default) or `"both"`. A mod that adds blocks or runs on servers says `"both"`: its id and version must then match between a server and its players. |
+| `capabilities` | `["registries"]`. |
+| `namespaces` | Optional: more namespaces the mod's files use. |
 
-**Helpers.** A helper file holds one function, whose parameters are the bindings in order. Keep it short: read what the hook gives, call into your module, and write back what the hook asks for. Playtime's `command.rs`:
+Unknown keys are refused, so a typo is an error and not a silently ignored setting.
 
-```rust
-// /playtime says it in chat; /playtime reset starts over.
-fn playtime_command(game: &mut crate::game::Game<'_>, command: &str, ran: &mut bool) {
-    use crate::game::playtime as m;
-    let Some(args) = command.strip_prefix("playtime") else {
-        return;
-    };
-    ...
-}
+## Native code: [native]
+
+`cargo horizon-mod new --template native` writes this section, and `cargo horizon-mod update` moves it to a newer game:
+
+```toml
+[native]
+game = "26.3"
+horizon = "<40-character Horizon commit>"
+mixins = "<40-character horizon-mixins commit>"
 ```
 
-A binding's `value` is an expression in the hooked function: `&mut *self` for the game, a parameter by its name. Module and helper files can't use inner attributes or `//!` comments, other files through `mod` or `include!`: use ordinary comments and inline modules. horizon-mixins refuses a bundle that breaks a rule, with the reason in one line.
-
-`HEAD` is enough for the hook points. horizon-mixins has other kinds (`RETURN`, `BEFORE_CALL`, `MODIFY_ARG`, `OVERWRITE` and more) for hooking the game's own functions; [its README](https://github.com/sunrise-org/horizon-mixins) lists them all.
-
-## Hook points or a pinned commit
-
-Sunrise changes every day, and a hook names a function of its source. What a mod builds on depends on what it hooks:
-
-- **Only Sunrise's hook points** (`native_tick`, `native_hud` and the others in [hook points and helpers](/docs/mod-code)). These keep their names and parameters from release to release, and new ones are only ever added. Each addition raises the hook points' version. Your mod names the version it needs, and the launcher builds it on the game the player plays, as long as that game has at least that version. **This is the way to make a mod**: it keeps working on new Nightlies without a new release. A [typed mod](/docs/mod-code#the-typed-api) counts as one when it uses only the catalog's hooks and `Host`: later Horizons only add event fields, trait methods and `Host` methods.
-- **The game's own functions**, such as `Game::break_block`. Those can change in any Nightly, so the mod builds only on the commit it pins in `horizon_revision`, a Nightly's. Every Nightly's commit is kept, so a pinned mod still builds after its Nightly is replaced, but the player plays that Nightly's game with it, and all the pinned mods of one build must pin the same commit. The launcher says which mod pins which when they don't.
-
-## compatibility.json
-
-`native.py` reads the mod's facts from `compatibility.json`, beside the `mixins/` folder:
-
-```json
-{
-  "game": "26.3",
-  "hooks": 1,
-  "horizon_repository": "https://github.com/sunrise-org/horizon",
-  "horizon_revision": "6f8c7a0e5d531d3834c4d0be4659a1db8e7e5c2a",
-  "horizon_mixins_repository": "https://github.com/sunrise-org/horizon-mixins",
-  "horizon_mixins_revision": "0d6b103c70633d8fd9443d8d0acd3aadaacedb06"
-}
-```
-
-| Key | What it is |
+| Field | Rule |
 | --- | --- |
-| `game` | The Minecraft version: `26.3`. |
-| `hooks` | The [API version](/docs/mod-code#api-versions) the mod needs: the newest hook point or helper it uses. [API versions](/docs/mod-code#api-versions) says where to find the current Nightly's. |
-| `horizon_revision` | The commit the mod was tested on: the same as in `horizon-mixin.toml`. Take a Nightly's ([Releases](/releases)). |
-| `horizon_mixins_revision` | The horizon-mixins the mod was made with. Use the one Sunrise's own mods use, in [horizon-mods' `native/`](https://github.com/sunrise-org/horizon-mods/tree/main/native). |
+| `game` | The Minecraft version, `"26.3"`. |
+| `horizon` | The exact Horizon commit the mod builds against: 40 lowercase hex characters. |
+| `mixins` | The exact horizon-mixins commit: 40 lowercase hex characters. |
+| `[[native.module]]` | Optional support modules: an `id`, the game `file` that receives it, a module `name`, and a `source` file under `src/`. |
 
-## The .hnmod file
+Raw injections, for the moment no hook covers, are top-level `[[inject]]` tables in the same manifest: [Injections](/docs/modding/injections).
 
-What players install, and what you submit to the registry, is one `.hnmod` file: a zip holding `horizon-native.json` (the id, the version, the game, the commits and the hook points' version) and your bundle's `.rs` and `.toml` files, nothing else. The `.hnmod` *is* the source: the launcher compiles it on the player's computer, and a reviewer reads all of it before the registry lists it. `native.py package` makes it ([Publish](/docs/publish-a-mod#package-a-native-mod)).
+## Wasm code: [wasm]
 
-## What a native mod can do
+`cargo horizon-mod build --wasm` writes this section. Don't write it by hand:
 
-Anything Rust can. A native mod is compiled into the game, so it isn't held to a list of permissions and nothing stops it from reading files or using the network. That is why players build native mods only after a warning, why the registry reviews every line, and why the launcher builds them only into the instance the player installed them in. Keep your mod to what its page says it does.
+| Field | Rule |
+| --- | --- |
+| `sha512` | The SHA-512 of `mod.wasm`. The game refuses a file that doesn't match. |
+| `toolchain` | The Rust toolchain it was built with. |
+| `linked` | Optional: each dependency's id and the hash of the `mod.wasm` it was linked against. |
 
-Next: [hook points and helpers](/docs/mod-code).
+`mod.wasm` is at most 64 MiB.
+
+## Dependencies
+
+```toml
+[dependencies]
+base = "^1.2"
+extra = { version = "^2", optional = true }
+```
+
+Each key is another mod's id, and each version a semver requirement on that mod's `horizon-mod.toml` version. A missing required dependency, an incompatible version or a cycle stops the game from starting, with the reason. An absent optional dependency is ignored. Content loads after the content it depends on.
+
+## Java jars as a source of assets
+
+A mod can use the assets and data of an original Java mod's jar without copying them:
+
+```sh
+cargo horizon-mod use-jar /path/to/original-mod.jar
+```
+
+adds a `[[jar]]` table with the jar's id, version and SHA-512. The jar stays outside the `.hmod`, and only its `assets/` and `data/` are read: no Java code runs. [Java jars as external assets](/docs/modding/how-to/content-mods#java-jars-as-external-assets) has the details.
+
+## The icon
+
+`icon.png` at the root is optional and has no manifest key: a square PNG, at most 512 × 512 pixels and 256 KiB.
+
+## Limits
+
+| What | Limit |
+| --- | --- |
+| A registry file, as downloaded | 64 MiB |
+| Native source files | 511 files, 64 MiB unpacked |
+| Content files | 65,536 files, 16 MiB each, 512 MiB in total |
+| `icon.png` | 256 KiB, 512 × 512 pixels |
+
+Next: [test it](/docs/test-a-mod).

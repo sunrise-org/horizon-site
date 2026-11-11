@@ -20,18 +20,18 @@ function mix(a: number, b: number, t: number) {
 const rgba = (c: number, a: number) => `rgba(${c & 0xff},${(c >>> 8) & 0xff},${(c >>> 16) & 0xff},${a})`;
 
 const SKY = [
-  "#0a0919", "#0f0c28", "#151136", "#1d1444", "#281850", "#361b5b",
-  "#481e66", "#5d236e", "#752873", "#902f76", "#ab3a75", "#c64a71",
-  "#de5f6a", "#ef7c63", "#f89d62",
+  "#120a16", "#170c1b", "#1e0f22", "#26122a", "#301531", "#3b1838",
+  "#481b3e", "#571f44", "#68244a", "#7b2a4f", "#913254", "#a93d59",
+  "#c4505f", "#e06f69", "#ffb27e",
 ].map(hex);
 const SKY_STEPS = SKY.length - 4;
-const SUN = ["#fff5d2", "#ffe4a0", "#ffca78", "#ffac5f", "#ff8c58", "#fb6c62", "#ee5277"].map(hex);
-const HALO = hex("#ff8d6a");
-const FOG = hex("#e0697c");
-const RIM = hex("#ffb27c");
-const CLOUD_HIGH = hex("#5f2c7c");
-const CLOUD_LOW = hex("#c95985");
-const CLOUD_TOP = hex("#f3a6bd");
+const SUN = ["#fff7dc", "#ffecb0", "#ffdc90", "#ffc67c", "#ffad72", "#ff9070", "#f2727c"].map(hex);
+const HALO = hex("#ffb08a");
+const FOG = hex("#d88aa2");
+const RIM = hex("#ffc6b4");
+const CLOUD_HIGH = hex("#7c4772");
+const CLOUD_LOW = hex("#c06a86");
+const CLOUD_TOP = hex("#ffc9c4");
 const FIREFLY = hex("#ffd98c");
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
@@ -287,9 +287,9 @@ function buildScene(
   };
 
   const ridges = [
-    ridge(11, horizon, land * 0.3, 2, 170, 0.2, 0.25, "#3f1f5c", "#c45a7f", 1),
-    ridge(23, horizon + land * 0.22, land * 0.36, 3, 130, 0.35, 0.55, "#25123e", "#7a3068", 0.8),
-    ridge(37, horizon + land * 0.5, land * 0.38, 4, 100, 0.5, 1, "#100a1f", "#2c1640", 0.6),
+    ridge(11, horizon, land * 0.3, 2, 170, 0.2, 0.25, "#4a2346", "#c87897", 1),
+    ridge(23, horizon + land * 0.22, land * 0.36, 3, 130, 0.35, 0.55, "#321a34", "#83456a", 0.8),
+    ridge(37, horizon + land * 0.5, land * 0.38, 4, 100, 0.5, 1, "#170c19", "#532545", 0.6),
   ];
 
   const near = ridges[2];
@@ -354,7 +354,7 @@ function renderSky(ctx: CanvasRenderingContext2D, s: Scene, time: number, view: 
     if (alpha < 0.04) continue;
     const x = star.x + shift;
     ctx.globalAlpha = alpha;
-    ctx.fillStyle = star.cool ? "#d2c8ff" : "#fff3e4";
+    ctx.fillStyle = star.cool ? "#ffd6e8" : "#fff3e4";
     ctx.beginPath();
     ctx.arc(x, star.y, star.size / 2, 0, Math.PI * 2);
     ctx.fill();
@@ -614,7 +614,7 @@ export function HorizonScene({ className, landscape, sunX, wideSun, sun = true, 
     <div
       ref={wrapRef}
       aria-hidden
-      className={`group overflow-hidden bg-[linear-gradient(to_bottom,#0a0919_0%,#151136_38%,#361b5b_62%,#902f76_80%,#100a1f_86%)] ${className ?? ""}`}
+      className={`group overflow-hidden bg-[linear-gradient(to_bottom,#120a16_0%,#26122a_38%,#481b3e_62%,#913254_80%,#170c19_86%)] ${className ?? ""}`}
     >
       <canvas
         ref={skyRef}

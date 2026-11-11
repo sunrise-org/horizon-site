@@ -12,21 +12,21 @@ export const metadata = pageMetadata({
 });
 
 const SOURCE = "https://github.com/sunrise-org/horizon-mods/blob/main/MOD-POLICY.md";
-const LINK = "text-[#c4b5ff] underline decoration-[#c4b5ff]/40 underline-offset-4 transition-colors hover:text-white";
+const LINK = "text-[#ffd2e4] underline decoration-[#ffd2e4]/40 underline-offset-4 transition-colors hover:text-white";
 
 export default async function PolicyPage() {
   const policy = await getModPolicy();
   return (
     <main className="mx-auto w-full max-w-3xl px-6 pt-32 pb-24 sm:pt-36 lg:px-10">
-      <Link href="/mods" className="text-sm font-medium text-white/60 transition-colors hover:text-white">
+      <Link href="/mods" className="text-sm font-medium text-muted transition-colors hover:text-foreground">
         ← Every mod
       </Link>
-      <h1 className="mt-5 font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-white">Mod policy</h1>
+      <h1 className="mt-5 font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-foreground">Mod policy</h1>
       <div className="mt-8">
         {policy ? (
           <DocsProse html={markdown(policy.replace(/^#\s.*\n+/, ""))} />
         ) : (
-          <p className="text-lg text-white/70">
+          <p className="text-lg text-muted">
             Read it in the registry:{" "}
             <a href={SOURCE} className={LINK}>
               MOD-POLICY.md
@@ -35,7 +35,7 @@ export default async function PolicyPage() {
           </p>
         )}
       </div>
-      <p className="mt-10 text-sm leading-relaxed text-white/50">
+      <p className="mt-10 text-sm leading-relaxed text-muted">
         The source of this page:{" "}
         <a href={SOURCE} className={LINK}>
           MOD-POLICY.md

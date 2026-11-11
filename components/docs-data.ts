@@ -1,15 +1,17 @@
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { readFileSync } from "node:fs";
 import { join, posix } from "node:path";
 import { cacheLife, cacheTag } from "next/cache";
 import { rawGameUrl, TAGS } from "@/components/github-fresh";
 import { gameBlob } from "@/components/game-repo";
 import { inline, markdown, plainText, type DocHeading } from "@/components/docs-markdown";
+import { book, type Book, type BookSource } from "@/components/modding-docs";
 
 const CONTENT = join(process.cwd(), "content", "docs");
 const PUBLIC = join(process.cwd(), "public");
 
-export type DocGroup = { group: string; pages: string[] };
+// `section` is the tab of the docs menu the group shows under; `parents` maps a chapter to the page it belongs to.
+export type DocGroup = { group: string; section: string; pages: string[]; parents?: Record<string, string> };
 export type Doc = {
   slug: string;
   path: string;
@@ -21,6 +23,8 @@ export type Doc = {
   headings: DocHeading[];
   source: string;
   api: boolean;
+  // Where the page is read and edited on GitHub, when it comes from another repository.
+  sourceUrl: string | null;
   missing: boolean;
 };
 export type DocIndexEntry = { path: string; title: string; group: string; lede: string; headings: { id: string; text: string }[] };
@@ -91,15 +95,28 @@ async function parityNumbers() {
   }
 }
 
+// The modding book: a copy of the game's docs/modding/src at one commit (scripts/sync-modding-docs.mjs).
+async function getBook(): Promise<{ book: Book; source: BookSource }> {
+  "use cache";
+  const root = join(CONTENT, "modding");
+  const names = (await readdir(root, { recursive: true })).filter((f) => f.endsWith(".md"));
+  const files = await Promise.all(names.map(async (f) => [f.replaceAll("\\", "/"), await readFile(join(root, f), "utf8")]));
+  const source: BookSource = JSON.parse(await readFile(join(root, "source.json"), "utf8"));
+  return { book: book(Object.fromEntries(files), source), source };
+}
+
 export async function getDocsNav(): Promise<DocGroup[]> {
   "use cache";
-  return JSON.parse(await readFile(join(CONTENT, "nav.json"), "utf8"));
+  const nav: (DocGroup | { book: string; section: string })[] = JSON.parse(await readFile(join(CONTENT, "nav.json"), "utf8"));
+  const { book } = await getBook();
+  return nav.flatMap((g) => ("book" in g ? book.groups.map((b) => ({ ...b, section: g.section, parents: book.parents })) : [g]));
 }
 
 export async function getDocs(): Promise<Doc[]> {
   "use cache";
   cacheTag(TAGS.main);
   const nav = await getDocsNav();
+  const { book, source: bookSource } = await getBook();
   const slugs = new Set(nav.flatMap((g) => g.pages));
   const { harnesses } = await parityNumbers();
   let failed = false;
@@ -107,11 +124,13 @@ export async function getDocs(): Promise<Doc[]> {
     nav.flatMap(({ group, pages }) =>
       pages.map(async (slug): Promise<Doc> => {
         const api = isApi(slug);
-        const source = api ? apiSource(slug) : `docs/${slug}.md`;
+        const page = book.pages.get(slug);
+        const source = api ? apiSource(slug) : page ? `${bookSource.path}/${page.file}` : `docs/${slug}.md`;
+        const sourceUrl = api ? gameBlob(source) : page ? `https://github.com/${bookSource.repo}/blob/${bookSource.commit}/${source}` : null;
         const path = docPath(slug);
         let text: string;
         try {
-          text = api ? await repoFile(source) : await readFile(join(CONTENT, `${slug}.md`), "utf8");
+          text = api ? await repoFile(source) : (page?.text ?? (await readFile(join(CONTENT, `${slug}.md`), "utf8")));
         } catch (error) {
           console.error(`Couldn't load ${source}:`, error);
           failed = true;
@@ -128,14 +147,16 @@ export async function getDocs(): Promise<Doc[]> {
             headings: [],
             source,
             api,
+            sourceUrl,
             missing: true,
           };
         }
         text = text.replace(/\r\n?/g, "\n");
         if (api) text = apiLinks(text.replace(/^<!--[\s\S]*?-->\n/, ""), source, slugs);
         text = text.replaceAll("{{HARNESSES}}", harnesses);
-        const m = text.match(/^# (.+)\n\n((?:[^\n]+\n)+)\n/);
-        const title = m ? m[1].replace(/`/g, "").trim() : (API_TITLES[slug] ?? slug);
+        // The lede is the paragraph under the title, when the page starts with one.
+        const m = text.match(/^# (.+)\n\n((?![#|>`~<\s]|[-*+] |\d+[.)] )(?:[^\n]+\n)+)\n/);
+        const title = (m?.[1] ?? text.match(/^# (.+)\n/)?.[1])?.replace(/`/g, "").trim() ?? API_TITLES[slug] ?? slug;
         const lede = m ? m[2].trim().replace(/\n/g, " ") : "";
         const body = m ? text.slice(m[0].length) : text.replace(/^# .+\n/, "");
         const headings: DocHeading[] = [];
@@ -151,6 +172,7 @@ export async function getDocs(): Promise<Doc[]> {
           headings,
           source,
           api,
+          sourceUrl,
           missing: false,
         };
       }),
@@ -174,7 +196,8 @@ export function searchIndex(docs: Doc[]): DocIndexEntry[] {
     title: d.title,
     group: d.group,
     lede: d.description,
-    headings: d.headings.map((h) => ({ id: h.id, text: h.text })),
+    // Deeper headings are found through the section index, which the search loads when it opens.
+    headings: d.headings.filter((h) => h.level === 2).map((h) => ({ id: h.id, text: h.text })),
   }));
 }
 
@@ -194,9 +217,9 @@ function htmlToText(html: string) {
 export function sectionIndex(docs: Doc[]): DocSection[] {
   const out: DocSection[] = [];
   for (const doc of docs) {
-    const parts = doc.html.split(/(?=<h[23] id=")/);
+    const parts = doc.html.split(/(?=<h[234] id=")/);
     for (const part of parts) {
-      const id = part.match(/^<h[23] id="([^"]+)">([\s\S]*?)<\/h[23]>/);
+      const id = part.match(/^<h[234] id="([^"]+)">([\s\S]*?)<\/h[234]>/);
       const heading = id ? htmlToText(id[2]) : doc.title;
       const text = htmlToText(id ? part.slice(id[0].length) : `${doc.lede} ${part}`);
       if (text) out.push({ href: id ? `${doc.path}#${id[1]}` : doc.path, page: doc.title, heading, text });

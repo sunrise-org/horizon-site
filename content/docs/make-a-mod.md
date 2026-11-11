@@ -1,102 +1,61 @@
 # Make a mod
 
-This guide takes you from nothing to a mod that other players can install from [playsunrise.net/mods](/mods). Sunrise has two kinds of mod, and the first step is to pick the right one. You need no Minecraft modding experience.
+A mod is one project folder with one manifest, `horizon-mod.toml`, and it ships as one file, `<id>.hmod`. That is true whether it adds a block from data files, runs Rust code in the game, or both. This page gets the tool installed and points you at the first thing to build.
 
-## Two kinds of mod
+## One mod, one file
 
-| | Content mod | Native mod |
+| Kind | What the folder holds | How it runs |
 | --- | --- | --- |
-| **What it is** | Data and assets: blocks, items, recipes, loot tables, tags, models, textures, names, structures | Rust code that hooks into the game: a HUD, keys, commands, settings, new behaviour |
-| **File** | `.hmod` | `.hnmod` |
-| **Code** | None | Rust, compiled into the game |
-| **How players get it** | The game reads it when it starts | The launcher compiles a game with it, for the instance it is installed in |
-| **Safety** | Data only: it can't run anything | Not sandboxed: it can do anything the player can on their computer |
+| **Content** | `horizon-mod.toml`, `assets/`, `data/` | The game reads it when it starts. Nothing compiles. |
+| **Native** | The same, plus `Cargo.toml` and `src/lib.rs` | The launcher compiles the Rust into the game for one instance. |
+| **WebAssembly** | The same source, built to `mod.wasm` | The game runs it in its sandbox, with no rebuild of the game. |
 
-**Pick a content mod** when what you add is a block, an item, a recipe or a structure: no compiler, and it works on every computer as it is. [Content mods](/docs/content-mods) has the whole guide.
+Native and WebAssembly mods are written against the same API, `mod_api`. A mod with code can carry blocks and items in the same folder: there is no second file for the code and no second manifest. The older split between `.hmod` content and `.hnmod` native bundles is [legacy](/docs/what-changed#migrating-an-hnmod-mod).
 
-**Pick a native mod** when the mod has to do something: draw on the screen, react to a key, add a command, change how the game plays. The rest of this page and the two after it are about native mods.
+A Sunrise mod is not a Java mod. Fabric, NeoForge and Forge jars don't run, and Sunrise mods don't run in Java Minecraft. What carries over from a jar is its data and assets ([modpacks](/docs/modpacks)).
 
-A Sunrise mod is not a Java mod. Fabric, NeoForge and Forge jars don't run in Sunrise, and Sunrise mods don't run in Java Minecraft. What carries over from a Java mod is its data and assets ([modpacks](/docs/modpacks)).
+## Which build these guides follow
 
-## How a native mod works
+The guides follow the mod API on [Ari's Horizon](https://github.com/arismoko/horizon), where it is developed. They were checked against commit [`514ecf9`](https://github.com/arismoko/horizon/tree/514ecf9a966cdf2bc4f81f091827d81767756fd9) on 2026-11-11: the templates, commands and launcher steps were compared with that commit's source and documentation. `new`, `build` and `check` were last run for both examples at [`8fbf4ba`](https://github.com/arismoko/horizon/tree/8fbf4ba61b5a4676b606337ead882e4a003d447d), and their output is quoted as printed then; the tool's commands and output did not change between the two. The API is still moving: [What changed](/docs/what-changed) keeps track, and the [modding book](/docs/modding) is that repository's own documentation, copied at the same commit.
 
-A native mod is a **bundle** for [horizon-mixins](https://github.com/sunrise-org/horizon-mixins), a tool made for Sunrise: a manifest, `horizon-mixin.toml`, and a few `.rs` files. Before the game is compiled, horizon-mixins adds your code to Sunrise's own source and calls it from the places the manifest names. The result is an ordinary Sunrise game with your mod built in.
+Released Sunrise is older and still installs `.hnmod` bundles. If you maintain one, its pages are under [Legacy](/docs/legacy-native-mods).
 
-Sunrise keeps a set of **hook points** for this: empty functions the game calls at fixed places (every tick, every frame, when it draws the HUD, when a key goes down, when the player types a command, when Options > Mods lists the mods), and helpers to read the player, draw text and keep settings. A mod that hooks only these builds on every later version of Sunrise too, so it doesn't need a new release for each Nightly. Sunrise's own Zoom, FPS Counter, Keystrokes and Minimap are made this way.
+## Install the tool
 
-There is a second way to write the code, the [typed API](/docs/mod-code#the-typed-api): one Rust crate that implements a trait, with a method for each hook point and a typed event for each. Nightlies since 2026-11-03 have it. This guide's example uses helpers, which work on every release.
+You need [Rust](https://rustup.rs) and Git. `cargo horizon-mod` makes, packs and checks mods:
 
-Players never compile anything by hand. They install the mod from the launcher's Mods page, and the launcher compiles the game with it, with its own copy of Rust ([below](#what-players-see)).
+```sh
+cargo install --locked --git https://github.com/arismoko/horizon cargo-horizon-mod
+```
+
+It builds from source in a few minutes. Run the same command again later to update it. To get exactly the tool these pages were checked with, add `--rev 514ecf9a966cdf2bc4f81f091827d81767756fd9`.
+
+A content mod needs nothing else to build. To play it, and to build a native mod, you also need Ari's launcher and a prepared game: [Installing and using mods](/docs/modding/start/installing) in the book covers both.
+
+## Pick a first mod
+
+- **[Build your first block](/docs/build-your-first-block)**: a content mod. Data and assets only, about ten minutes.
+- **[Your first typed hook](/docs/mod-code#your-first-typed-hook)**: a native mod. One Rust file that greets a player.
+
+## The commands
+
+All of them run in the mod's folder.
+
+| Command | What it does |
+| --- | --- |
+| `cargo horizon-mod new <path> [--name "Name"]` | A content mod from the template: a manifest and one block with its model, loot table and recipe. |
+| `cargo horizon-mod new <path> --template native` | A native mod: `horizon-mod.toml` with `[native]`, `Cargo.toml` and `src/lib.rs`. It pins the newest prebuilt game, so the launcher downloads the game instead of building it. `--horizon <commit>` pins another. |
+| `cargo horizon-mod build` | Checks the project and packs it into `target/horizon-mod/<id>.hmod`. It does not compile code. `--wasm` builds the Rust to `mod.wasm` first. |
+| `cargo horizon-mod run [--game <horizon-client>]` | Builds, then starts the game with the mod turned on. |
+| `cargo horizon-mod check <file>` | Runs the registry's checks on a `.hmod`. `--json` prints JSON. |
+| `cargo horizon-mod update [--horizon <commit>]` | Moves a native mod's pins to a newer game. |
 
 ## The path
 
-1. **Set up** (this page): the tools, the files of a native mod, and your mod in the game.
-2. **[The bundle](/docs/mod-manifest)**: the manifest, what a mod builds on, and the `.hnmod` file.
-3. **[Hook points and helpers](/docs/mod-code)**: what your code can hook and call, and a worked example.
-4. **[Content mods](/docs/content-mods)**: blocks, items, recipes and textures from data files, with no code at all.
-5. **[Test it](/docs/test-a-mod)**: unit tests, a check against Sunrise's source, and the game with your mod in it.
-6. **[Publish it](/docs/publish-a-mod)**: package it and submit it to the registry.
+1. **[Build your first block](/docs/build-your-first-block)**: the content tutorial.
+2. **[The typed mod API](/docs/mod-code)**: hooks, the host, Parts and a first native mod.
+3. **[The manifest](/docs/mod-manifest)**: every field of `horizon-mod.toml` and what goes in the `.hmod`.
+4. **[Test a mod](/docs/test-a-mod)**: the checker, unit tests and the game.
+5. **[Publish a mod](/docs/publish-a-mod)**: sign it and submit it.
 
-## Install the tools
-
-For a native mod you need:
-
-- **[Rust](https://rustup.rs)**, the stable toolchain, and **Git**.
-- **Python 3.11** or later, and `rsync` (on Windows, use WSL for the checks below).
-- **[sunrise-org/horizon-mods](https://github.com/sunrise-org/horizon-mods)**, the registry's repository. Its `native/tools/native.py` applies your bundle to Sunrise's source, checks and builds the game with it, and packages the `.hnmod`. It is what Sunrise's own native mods use.
-- **The launcher**, a current one ([Install](/docs/install)): 0.2.37 or later builds [typed mods](/docs/mod-code#the-typed-api) too. Prepare the game at least once, to play with your mod.
-
-```sh
-git clone https://github.com/sunrise-org/horizon-mods
-```
-
-## The files of a native mod
-
-The guide's example, [Playtime](/docs/mod-code#a-worked-example-playtime), shows how long you have played in a corner of the screen. Its folder:
-
-```
-playtime/
-├── Cargo.toml                  runs the mod's unit tests: cargo test
-├── compatibility.json          the hook points it needs, and the commits it was tested on
-└── mixins/playtime/
-    ├── horizon-mixin.toml      the manifest: its id, its version, what it hooks
-    ├── runtime.rs              the mod's own code: becomes the module crate::game::playtime
-    ├── tick.rs                 one small helper for each hook it uses
-    ├── hud.rs
-    └── …
-```
-
-Start from the example, or copy one of Sunrise's own mods from [horizon-mods' `native/` folder](https://github.com/sunrise-org/horizon-mods/tree/main/native): `fps-overlay` is the smallest. [horizon-native-mod-template](https://github.com/sunrise-org/horizon-native-mod-template) shows the other way, a mod that hooks one of the game's own functions instead of a hook point ([the bundle](/docs/mod-manifest#hook-points-or-a-pinned-commit) says what that costs).
-
-## Check it against Sunrise
-
-From your clone of horizon-mods, give `native.py` the path to your mod's folder:
-
-```sh
-cd horizon-mods
-python3 native/tools/native.py check /path/to/playtime
-```
-
-It downloads Sunrise's source at the commit your `compatibility.json` names (once), applies your bundle with horizon-mixins, and runs `cargo check` on the game. A mistake in your manifest is a horizon-mixins error; a mistake in your code is an ordinary Rust error, with the file and line. The first run compiles Sunrise's dependencies and takes several minutes; later ones take seconds to a minute.
-
-## See it in the game
-
-The launcher builds a game with your mod from its folder:
-
-```sh
-horizon-launcher native-build /path/to/playtime/mixins/playtime --trust-native-code
-```
-
-It compiles the game with the launcher's own Rust, for the instance picked in the launcher (`--instance NAME` picks another), and that instance then plays the built game: press **Play**. The first build downloads Rust and takes 20 to 30 minutes; after a change to your mod, the next build compiles only what changed, a few minutes.
-
-**While you work on a mod**, run `horizon-launcher settings native-profile dev` once, or pick **Dev build** in the Mods page's native build row. It compiles the game unoptimized: a change to your mod rebuilds about six times faster, and the game runs up to about twice as slow. Switch back to `performance` to play.
-
-`--trust-native-code` is the same decision the launcher asks players for in red: the mods run with full access to the computer. Build only code you trust.
-
-## What players see
-
-A player installs a native mod from the launcher's Mods page into the instance picked on the left. The first time, the launcher says once that native mods aren't sandboxed and compile into a game of their own (the first build downloads Rust and can take 20 to 30 minutes). The Mods page then has a **Native build of {instance}** row: the player presses **Build**, reads the red warning that names the mods, and builds with **I trust these mods: build**. That instance then plays the built game. Native mods are always on in the launcher: there is no setting to turn them on.
-
-In the game, **Options > Mods** lists the mod with a switch and, when the mod has some, a **Settings** page and keys to rebind. A mod's settings live in `horizon-mods/.horizon-mod-data/<id>/` in the game folder, one file per setting.
-
-Next: [the bundle](/docs/mod-manifest).
+Next: [build your first block](/docs/build-your-first-block).

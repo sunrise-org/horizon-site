@@ -10,7 +10,7 @@ export const metadata = pageMetadata({
 });
 
 const LINK =
-  "text-[#c4b5ff] underline decoration-[#c4b5ff]/40 underline-offset-4 transition-colors hover:text-white";
+  "text-[#ffd2e4] underline decoration-[#ffd2e4]/40 underline-offset-4 transition-colors hover:text-white";
 
 function Part({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -26,9 +26,9 @@ function Part({ title, children }: { title: string; children: ReactNode }) {
 export default function PrivacyPage() {
   return (
     <main>
-      <article className="mx-auto w-full max-w-3xl px-6 pt-32 pb-20 text-[16px] leading-relaxed text-pretty text-white/70 sm:pt-40 sm:pb-28 lg:px-10">
-        <p className="text-sm font-medium text-white/60">Privacy</p>
-        <h1 className="mt-4 font-display text-[clamp(2.25rem,6vw,4rem)] leading-[1.04] font-semibold tracking-[-0.035em] text-white">
+      <article className="mx-auto w-full max-w-3xl px-6 pt-32 pb-20 text-[16px] leading-relaxed text-pretty text-muted sm:pt-40 sm:pb-28 lg:px-10">
+        <p className="text-sm font-medium text-muted">Privacy</p>
+        <h1 className="mt-4 font-display text-[clamp(2.25rem,6vw,4rem)] leading-[1.04] font-semibold tracking-[-0.035em] text-foreground">
           <span className="block">This site keeps</span>
           <span className="text-accent block pb-1">almost nothing.</span>
         </h1>
@@ -83,7 +83,7 @@ export default function PrivacyPage() {
         <Part title="Performance captures">
           <p>
             Opening a{" "}
-            <code className="font-mono text-[0.9em] text-[#e7e1ff]">
+            <code className="font-mono text-[0.9em] text-[#ffe6f0]">
               .hzperf
             </code>{" "}
             file on{" "}

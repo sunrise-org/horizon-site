@@ -23,7 +23,7 @@ cookies. The only requests to other hosts are the browser's calls to `api.github
 | File | Source | Licence |
 | --- | --- | --- |
 | Geist and Geist Mono (body text and code, `app/layout.tsx`) | Geist by The Geist Project Authors (github.com/vercel/geist-font), through `next/font/google` | SIL Open Font License 1.1 |
-| Bricolage Grotesque (headings, `app/layout.tsx`) | Bricolage Grotesque by The Bricolage Grotesque Project Authors (github.com/ateliertriay/bricolage), through `next/font/google` | SIL Open Font License 1.1 |
+| Sora (headings, `components/site-shell.tsx`) | Sora by The Sora Project Authors (github.com/sora-xor/sora-font), through `next/font/google` | SIL Open Font License 1.1 |
 | `assets/fonts/BricolageGrotesque-Medium.ttf`, `BricolageGrotesque-SemiBold.ttf` (share cards, `components/og-card.tsx`) | Bricolage Grotesque 1.001, as published on Google Fonts | SIL Open Font License 1.1, shipped as `assets/fonts/OFL-BricolageGrotesque.txt` |
 
 The fonts are self-hosted: `next/font` downloads them when the site is built and serves them from playsunrise.net, so

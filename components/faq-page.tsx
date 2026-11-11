@@ -8,7 +8,7 @@ import { UPSTREAM_URL } from "@/components/links";
 import { absolute } from "@/components/site";
 import { BOARD_URL } from "@/lib/api-gaps/links";
 
-const LINK = "text-[#c4b5ff] underline decoration-[#c4b5ff]/40 underline-offset-4 transition-colors hover:text-white";
+const LINK = "sun-link text-[#ffd2e4]";
 
 const plain = (text: string) => text.replace(/<\/?\w+>/g, "");
 
@@ -57,8 +57,8 @@ export function FaqPage({ locale }: { locale: Locale }) {
         <p className="mt-6 text-lg text-white/70">{t.lead}</p>
 
         {items.map((item) => (
-          <section key={item.q} className="mt-12">
-            <h2 className="font-display text-[1.6rem] leading-tight font-semibold tracking-[-0.02em] text-white">{item.q}</h2>
+          <section key={item.q} className="glass-panel soft-press mt-6 rounded-2xl border border-line/60 px-6 py-6 first-of-type:mt-12 sm:px-8 sm:py-7">
+            <h2 className="font-display text-[1.45rem] leading-tight font-semibold tracking-[-0.02em] text-white">{item.q}</h2>
             <p className="mt-4">
               {rich(item.a, {
                 horizon: out(UPSTREAM_URL),

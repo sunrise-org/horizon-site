@@ -86,7 +86,7 @@ function Contributor({ c }: { c: Application["contributor"] }) {
   if (!c) return null;
   if (!c.verified) return <span className={BADGE}>GitHub: {c.login} (not verified)</span>;
   return (
-    <span className={`${BADGE} bg-[#8be0b4]/15 text-[#bdf0d4]`}>
+    <span className={`${BADGE} bg-[#8be0b4]/15 text-success-ink`}>
       Contributor · {c.merged == null ? "pull requests unknown" : plural(c.merged, "merged PR")}
     </span>
   );
@@ -115,11 +115,11 @@ function Ballot({ a, dashboard, onDone }: { a: Application; dashboard: Dashboard
     }
   };
   return (
-    <form onSubmit={submit} className="mt-4 space-y-3 rounded-xl bg-white/[0.03] p-4">
+    <form onSubmit={submit} className="mt-4 space-y-3 rounded-xl bg-surface/80 p-4">
       <fieldset className="flex flex-wrap gap-2">
         <legend className="sr-only">Your vote</legend>
         {(Object.keys(CHOICE) as Choice[]).map((k) => (
-          <label key={k} className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-white/[0.06] px-3 py-2 text-sm text-white/85 has-[:checked]:bg-white has-[:checked]:text-[#100a1f]">
+          <label key={k} className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-lavender px-3 py-2 text-sm text-foreground has-[:checked]:bg-sky-surface has-[:checked]:text-foreground">
             <input type="radio" name="choice" value={k} defaultChecked={a.vote.mine?.choice === k} required className="sr-only" />
             {CHOICE[k]}
           </label>
@@ -179,40 +179,40 @@ function More({ a, people, dashboard, onDone }: { a: Application; people: People
   };
   return (
     <details className="mt-4 text-sm">
-      <summary className="cursor-pointer text-white/55 hover:text-white">More: votes, history{v.canVote ? ", recuse" : ""}</summary>
-      <div className="mt-3 space-y-3 text-white/70">
+      <summary className="cursor-pointer text-muted hover:text-foreground">More: votes, history{v.canVote ? ", recuse" : ""}</summary>
+      <div className="mt-3 space-y-3 text-muted">
         {v.ballots?.length ? (
           <div>
-            <h4 className="font-medium text-white">Votes</h4>
+            <h4 className="font-medium text-foreground">Votes</h4>
             <ul className="mt-1.5 space-y-1">
               {v.ballots.map((b, i) => (
                 <li key={i}>
-                  <strong className="text-white">{person(people, b.by)}</strong>: {CHOICE[b.choice]}
+                  <strong className="text-foreground">{person(people, b.by)}</strong>: {CHOICE[b.choice]}
                   {b.comment ? ` · ${b.comment}` : ""}
                 </li>
               ))}
             </ul>
           </div>
         ) : a.status === "open" ? (
-          <p className="text-white/50">{a.owner ? "Who voted what shows here when the vote closes." : "The others' votes show here once you vote (or when the vote closes)."}</p>
+          <p className="text-muted">{a.owner ? "Who voted what shows here when the vote closes." : "The others' votes show here once you vote (or when the vote closes)."}</p>
         ) : null}
         {(a.contributor?.prs?.length ?? 0) > 3 && (
           <p>
             More pull requests: <Prs prs={a.contributor?.prs?.slice(3)} />
           </p>
         )}
-        {!a.contributor && <p className="text-white/50">No GitHub account linked on Discord.</p>}
+        {!a.contributor && <p className="text-muted">No GitHub account linked on Discord.</p>}
         {v.canVote && (
           <p className="flex flex-wrap items-center gap-2">
             <button type="button" onClick={recuse} className={GHOST_SM}>
               Recuse myself
             </button>
-            <span className="text-white/45">You won&apos;t vote or see the votes on this one.</span>
+            <span className="text-muted">You won&apos;t vote or see the votes on this one.</span>
           </p>
         )}
         {a.audit?.length ? (
           <div>
-            <h4 className="font-medium text-white">History</h4>
+            <h4 className="font-medium text-foreground">History</h4>
             <ul className="mt-1.5 space-y-1">
               {a.audit.map((e, i) => (
                 <li key={i}>
@@ -224,7 +224,7 @@ function More({ a, people, dashboard, onDone }: { a: Application; people: People
             </ul>
           </div>
         ) : null}
-        <p className="text-white/45">Sent {when(a.submittedAt)}.</p>
+        <p className="text-muted">Sent {when(a.submittedAt)}.</p>
       </div>
     </details>
   );
@@ -240,52 +240,52 @@ function ApplicationCard({ a, people, dashboard, onDone }: { a: Application; peo
   if (r && r.dmSent === false) notes.push(`The DM was not sent${r.error ? `: ${r.error}` : ""}.`);
   if (a.revoked?.result?.error) notes.push(`Taking the role back: ${a.revoked.result.error}.`);
   return (
-    <article id={`application-${a.id}`} className="scroll-mt-28 rounded-2xl bg-[#18112c] p-5 sm:p-6">
+    <article id={`application-${a.id}`} className="scroll-mt-28 rounded-2xl bg-surface p-5 sm:p-6">
       <header className="flex flex-wrap items-start justify-between gap-3">
-        <h3 className="font-display text-xl font-semibold tracking-[-0.02em] text-white">{a.name || "Someone"}</h3>
+        <h3 className="font-display text-xl font-semibold tracking-[-0.02em] text-foreground">{a.name || "Someone"}</h3>
         <p className="flex flex-wrap items-center gap-2 text-sm">
           <span className={BADGE}>{ROLE[a.role] ?? a.role}</span>
           <Contributor c={a.contributor} />
           {a.contributor?.verified && a.contributor.prs?.length ? (
-            <span className="text-white/60">
+            <span className="text-muted">
               <Prs prs={a.contributor.prs.slice(0, 3)} />
             </span>
           ) : null}
         </p>
       </header>
-      <p className="mt-2 text-sm font-medium text-[#c4b5ff]">{standing(a)}</p>
+      <p className="mt-2 text-sm font-medium text-accent-ink">{standing(a)}</p>
       <dl className="mt-4 space-y-3">
         {(a.questions ?? [])
           .filter((q) => a.answers?.[q.id])
           .map((q) => (
             <div key={q.id}>
-              <dt className="text-[13px] font-medium text-white/55">{q.label}</dt>
-              <dd className="mt-0.5 text-[15px] leading-relaxed text-white/85">
+              <dt className="text-[13px] font-medium text-muted">{q.label}</dt>
+              <dd className="mt-0.5 text-[15px] leading-relaxed text-foreground">
                 <Lines text={a.answers?.[q.id]} />
               </dd>
             </div>
           ))}
       </dl>
       {tally && (
-        <p className="mt-4 text-sm text-white/75">
+        <p className="mt-4 text-sm text-muted">
           {a.status === "open" ? "So far" : "Result"}: {tally.for} for · {tally.against} against · {tally.abstain} abstain
         </p>
       )}
       {a.vote.againstComments?.length ? (
-        <div className="mt-3 rounded-xl bg-white/[0.03] p-3 text-sm">
-          <p className="text-white/50">Against, without names until the vote closes:</p>
-          <ul className="mt-1 list-disc space-y-1 pl-5 text-white/75">
+        <div className="mt-3 rounded-xl bg-surface/80 p-3 text-sm">
+          <p className="text-muted">Against, without names until the vote closes:</p>
+          <ul className="mt-1 list-disc space-y-1 pl-5 text-muted">
             {a.vote.againstComments.map((c, i) => (
               <li key={i}>{c}</li>
             ))}
           </ul>
         </div>
       ) : null}
-      {part && <p className={`mt-3 text-sm ${a.vote.canVote && !a.vote.mine ? "font-medium text-[#c4b5ff]" : "text-white"}`}>{part}</p>}
+      {part && <p className={`mt-3 text-sm ${a.vote.canVote && !a.vote.mine ? "font-medium text-accent-ink" : "text-foreground"}`}>{part}</p>}
       <Ballot a={a} dashboard={dashboard} onDone={onDone} />
       <OwnerButtons a={a} dashboard={dashboard} onDone={onDone} />
       {notes.length > 0 && (
-        <p className="mt-3 space-y-1 rounded-xl bg-[#f2c46b]/10 px-3 py-2 text-sm text-[#f6dca2]">
+        <p className="mt-3 space-y-1 rounded-xl bg-[#f2c46b]/10 px-3 py-2 text-sm text-warning-ink">
           {notes.map((n) => (
             <span key={n} className="block">
               {n}
@@ -303,7 +303,7 @@ export function Applications({ apps, people, dashboard, onDone }: { apps: Applic
   const done = apps.filter((a) => FINAL.includes(a.status));
   return (
     <div className="space-y-4">
-      <p className="text-[15px] text-white/60">
+      <p className="text-[15px] text-muted">
         Verified contributors come first.{" "}
         <Link href="/hub/staff-help#applications" className={LINK}>
           How the vote works
@@ -321,8 +321,8 @@ export function Applications({ apps, people, dashboard, onDone }: { apps: Applic
       )}
       {done.length > 0 && (
         <details className="pt-2">
-          <summary className="cursor-pointer font-display text-lg font-semibold text-white">
-            Decided <span className="text-sm font-normal text-white/45">{done.length}</span>
+          <summary className="cursor-pointer font-display text-lg font-semibold text-foreground">
+            Decided <span className="text-sm font-normal text-muted">{done.length}</span>
           </summary>
           <div className="mt-4 space-y-4">
             {done.map((a) => (

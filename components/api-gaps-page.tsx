@@ -40,7 +40,7 @@ function Chevron() {
 
 function RefChip({ base, live }: { base: RefBaseline; live: RefState | undefined }) {
   const state = live?.state ?? base.state;
-  const tone = state === "open" ? "text-emerald-200" : state === "merged" ? "text-[#c4b5ff]" : "text-white/55";
+  const tone = state === "open" ? "text-emerald-200" : state === "merged" ? "text-[#ffd2e4]" : "text-white/55";
   const holder = live ? (live.assignees.length ? `assigned to ${live.assignees.join(", ")}` : base.claim) : base.claim;
   return (
     <span className="ag-chip">
@@ -80,7 +80,7 @@ function CapabilityRow({ capability, sync, missing, refs }: { capability: Capabi
       ) : null}
       {reasons.length ? <p className="ag-wide text-sm text-amber-200/80">{reasons.join(". ")}.</p> : null}
       <details className="group ag-more">
-        <summary className="ag-sum text-[#c4b5ff]">
+        <summary className="ag-sum text-[#ffd2e4]">
           <Chevron />
           Sources and counterpart
         </summary>
@@ -153,13 +153,13 @@ export function ApiGapsView({ sync, evidence, teamPulls }: { sync: Sync; evidenc
           {curated.docs}
         </p>
 
-        <aside className="mt-8 flex flex-col gap-4 rounded-2xl border border-[#c4b5ff]/30 bg-[#c4b5ff]/[0.08] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        <aside className="mt-8 flex flex-col gap-4 rounded-2xl border border-[#ffd2e4]/30 bg-[#ffd2e4]/[0.08] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <p className="text-lg font-medium text-white">Want to help? Pick something from the project board and open a PR.</p>
           <a
             href={BOARD_URL}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex shrink-0 items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#171029] transition-colors hover:bg-[#e9e3ff]"
+            className="inline-flex shrink-0 items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#1d0f20] transition-colors hover:bg-[#ffe6f0]"
           >
             Open the project board<span className="sr-only"> (opens in a new tab)</span>
           </a>
@@ -254,7 +254,7 @@ export function ApiGapsView({ sync, evidence, teamPulls }: { sync: Sync; evidenc
             </summary>
             <nav aria-label="Capability areas" className="mt-3 flex flex-wrap gap-2">
               {curated.areas.map((area) => (
-                <a key={area.id} href={`#${area.id}`} className="rounded-md border border-white/12 px-2.5 py-1 text-sm text-white/75 transition-colors hover:border-[#c4b5ff]/60 hover:text-white">
+                <a key={area.id} href={`#${area.id}`} className="rounded-md border border-white/12 px-2.5 py-1 text-sm text-white/75 transition-colors hover:border-[#ffd2e4]/60 hover:text-white">
                   {area.name}
                 </a>
               ))}

@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import type { Status } from "@/lib/api-gaps/types";
 
-const FIELD = "rounded-lg border border-white/12 bg-white/[0.05] px-3 py-2 text-sm text-white outline-none transition-colors placeholder:text-white/35 focus-visible:border-[#c4b5ff]/70";
+const FIELD = "rounded-lg border border-white/12 bg-white/[0.05] px-3 py-2 text-sm text-white outline-none transition-colors placeholder:text-white/35 focus-visible:border-[#ffd2e4]/70";
 
 // Hides rows and empty areas of the server-rendered list (#api-gaps-areas) by search text and status.
 export function ApiGapsFilter({ statuses, total }: { statuses: readonly Status[]; total: number }) {
@@ -41,7 +41,7 @@ export function ApiGapsFilter({ statuses, total }: { statuses: readonly Status[]
 
   return (
     <>
-      <div className="sticky top-[4.5rem] z-10 mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-white/10 bg-[#171029]/90 p-3 backdrop-blur">
+      <div className="sticky top-[4.5rem] z-10 mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-white/10 bg-[#1d0f20]/90 p-3 backdrop-blur">
         <label className="flex min-w-0 flex-1 basis-56 items-center gap-2 text-sm text-white/60">
           <span className="sr-only sm:not-sr-only">Search</span>
           <input ref={search} type="search" onInput={apply} placeholder="Feature, file or issue" className={`${FIELD} min-w-0 flex-1`} />
@@ -58,7 +58,7 @@ export function ApiGapsFilter({ statuses, total }: { statuses: readonly Status[]
         <button type="button" onClick={reset} className={`${FIELD} cursor-pointer hover:border-white/30`}>
           Reset
         </button>
-        <span aria-live="polite" className="ml-auto text-sm font-medium text-[#c4b5ff]">
+        <span aria-live="polite" className="ml-auto text-sm font-medium text-[#ffd2e4]">
           {shown} {shown === 1 ? "feature" : "features"}
         </span>
       </div>

@@ -48,21 +48,21 @@ export default async function HubPage() {
       <section className="relative isolate overflow-hidden pt-36 pb-12 sm:pt-44 sm:pb-16">
         <PixelAurora moonTop={104} className="absolute top-0 left-0 -z-10" />
         <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
-          <p className="rise flex items-center text-sm font-medium text-white/60" style={delay(0)}>
+          <p className="rise flex items-center text-sm font-medium text-muted" style={delay(0)}>
             Hub
-            <span aria-hidden className="mx-2 text-white/30">
+            <span aria-hidden className="mx-2 text-muted">
               ·
             </span>
             Now, next and how to help
           </p>
           <h1
-            className="rise mt-5 font-display text-[clamp(2.5rem,7vw,4.75rem)] leading-[1.02] font-semibold tracking-[-0.035em] text-white"
+            className="rise mt-5 font-display text-[clamp(2.5rem,7vw,4.75rem)] leading-[1.02] font-semibold tracking-[-0.035em] text-foreground"
             style={delay(80)}
           >
             <span className="block">Where Sunrise</span>
             <span className="text-accent block pb-1">is going.</span>
           </h1>
-          <p className="rise mt-6 max-w-2xl text-lg leading-relaxed text-white/70" style={delay(160)}>
+          <p className="rise mt-6 max-w-2xl text-lg leading-relaxed text-muted" style={delay(160)}>
             What is being done, what comes next, what shipped and where you can help. No dates: things are Now, Next or
             Later. Read it in plain words, or switch to the technical picture.
           </p>
@@ -80,9 +80,9 @@ export default async function HubPage() {
         </HubShell>
       ) : (
         <div className="mx-auto w-full max-w-6xl px-6 pb-24 lg:px-10">
-          <p className="max-w-xl text-[15px] leading-relaxed text-white/60">
+          <p className="max-w-xl text-[15px] leading-relaxed text-muted">
             The roadmap couldn&apos;t be loaded from GitHub just now. It&apos;s in the repository as{" "}
-            <a href={fileUrl("ROADMAP.md")} className="text-[#a98fff] underline underline-offset-4">
+            <a href={fileUrl("ROADMAP.md")} className="text-accent-ink underline underline-offset-4">
               ROADMAP.md
             </a>
             .

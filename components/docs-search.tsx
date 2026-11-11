@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import type { DocIndexEntry, DocSection } from "@/components/docs-data";
+import { SearchIcon } from "@/components/icons";
 
 type Result = { href: string; title: string; context: string; rank: number; snippet?: string; term?: string };
 
@@ -31,7 +32,7 @@ function Snippet({ text, term }: { text: string; term: string }) {
   return (
     <>
       {text.slice(0, at)}
-      <span className="font-medium text-white/90">{text.slice(at, at + term.length)}</span>
+      <span className="font-medium text-foreground">{text.slice(at, at + term.length)}</span>
       {text.slice(at + term.length)}
     </>
   );
@@ -147,11 +148,12 @@ export function DocsSearch({ index, onNavigate }: { index: DocIndexEntry[]; onNa
         }}
         onBlur={() => setTimeout(() => setOpen(false), 120)}
         onKeyDown={onKeyDown}
-        className="h-10 w-full rounded-lg bg-white/[0.06] pr-10 pl-3.5 text-sm text-white placeholder:text-white/40 outline-none transition-colors focus:bg-white/[0.09] focus-visible:ring-2 focus-visible:ring-[#a98fff] [&::-webkit-search-cancel-button]:appearance-none"
+        className="docs-search-input h-10 w-full rounded-lg bg-lavender pr-10 pl-9 text-sm text-foreground placeholder:text-muted outline-none transition-colors focus:bg-lavender focus-visible:ring-2 focus-visible:ring-accent [&::-webkit-search-cancel-button]:appearance-none"
       />
+      <SearchIcon aria-hidden className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted" />
       <kbd
         aria-hidden
-        className="pointer-events-none absolute top-1/2 right-2.5 hidden h-5 min-w-5 -translate-y-1/2 items-center justify-center rounded bg-white/[0.08] px-1.5 font-sans text-[11px] font-medium text-white/50 lg:inline-flex"
+        className="pointer-events-none absolute top-1/2 right-2.5 hidden h-5 min-w-5 -translate-y-1/2 items-center justify-center rounded border border-line px-1.5 font-sans text-[11px] font-medium text-muted lg:inline-flex"
       >
         /
       </kbd>
@@ -160,7 +162,7 @@ export function DocsSearch({ index, onNavigate }: { index: DocIndexEntry[]; onNa
           id={listId}
           role="listbox"
           aria-label="Results"
-          className="absolute top-12 left-0 z-40 max-h-[65vh] w-full overflow-y-auto rounded-xl bg-[#1c1433] p-1.5 ring-1 ring-white/[0.08] lg:w-[30rem]"
+          className="glass-enter absolute top-12 left-0 z-40 max-h-[65vh] w-full overflow-y-auto rounded-xl bg-lavender p-1.5 shadow-2xl ring-1 ring-line lg:w-[30rem]"
         >
           {results.length ? (
             results.map((r, i) => (
@@ -174,19 +176,19 @@ export function DocsSearch({ index, onNavigate }: { index: DocIndexEntry[]; onNa
                   go(r);
                 }}
                 onMouseEnter={() => setActive(i)}
-                className={`cursor-pointer rounded-lg px-3 py-2 ${i === active ? "bg-white/[0.08]" : ""}`}
+                className={`cursor-pointer rounded-lg px-3 py-2 transition-colors ${i === active ? "bg-sky-surface" : ""}`}
               >
-                <span className="block text-sm font-medium text-white">{r.title}</span>
-                <span className="mt-0.5 block text-xs text-white/45">{r.context}</span>
+                <span className="block text-sm font-medium text-foreground">{r.title}</span>
+                <span className="mt-0.5 block text-xs text-muted">{r.context}</span>
                 {r.snippet && (
-                  <span className="mt-1 line-clamp-2 block text-xs leading-relaxed text-white/55">
+                  <span className="mt-1 line-clamp-2 block text-xs leading-relaxed text-muted">
                     <Snippet text={r.snippet} term={r.term ?? ""} />
                   </span>
                 )}
               </li>
             ))
           ) : (
-            <li className="px-3 py-2.5 text-sm text-white/55">Nothing matches &ldquo;{query.trim()}&rdquo;.</li>
+            <li className="px-3 py-2.5 text-sm text-muted">Nothing matches &ldquo;{query.trim()}&rdquo;.</li>
           )}
         </ul>
       )}

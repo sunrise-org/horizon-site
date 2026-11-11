@@ -23,7 +23,7 @@ function namesYou(d: Decision, names: string[]) {
 function Who({ a }: { a: Application }) {
   return (
     <>
-      <strong className="text-white">{a.name || "someone"}</strong>&apos;s {ROLE[a.role] ?? a.role} application
+      <strong className="text-foreground">{a.name || "someone"}</strong>&apos;s {ROLE[a.role] ?? a.role} application
     </>
   );
 }
@@ -194,8 +194,8 @@ export function Inbox({
   if (!groups.length) {
     return (
       <div className="space-y-2">
-        <p className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">Nothing needs you right now.</p>
-        <p className="text-sm text-white/55">
+        <p className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">Nothing needs you right now.</p>
+        <p className="text-sm text-muted">
           Votes waiting for you{cards ? ", your cards and decisions that name you" : ""} show up here.{" "}
           <a href="#applications" className={LINK}>
             {waiting ? `${waiting} application${waiting === 1 ? "" : "s"} in progress` : "No application in progress"}
@@ -207,22 +207,22 @@ export function Inbox({
   }
   return (
     <div className="space-y-8">
-      <p className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-white/60">
+      <p className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
         {groups.map((g) => (
-          <a key={g.id} href={`#inbox-${g.id}`} className="hover:text-white">
-            <strong className="text-white">{g.items.length}</strong> {g.short}
+          <a key={g.id} href={`#inbox-${g.id}`} className="hover:text-foreground">
+            <strong className="text-foreground">{g.items.length}</strong> {g.short}
           </a>
         ))}
       </p>
       {groups.map((g) => (
         <section key={g.id} id={`inbox-${g.id}`} className="scroll-mt-28">
-          <h2 className="font-display text-xl font-semibold tracking-[-0.02em] text-white">{g.title}</h2>
-          <ul className="mt-3 divide-y divide-white/[0.06] overflow-hidden rounded-2xl bg-[#18112c]">
+          <h2 className="font-display text-xl font-semibold tracking-[-0.02em] text-foreground">{g.title}</h2>
+          <ul className="mt-3 divide-y divide-line overflow-hidden rounded-2xl bg-surface">
             {g.items.map((it) => (
               <li key={it.key} className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0">
-                  <p className="text-[15px] text-white/85">{it.what}</p>
-                  <p className="mt-0.5 text-[13px] text-white/50">{it.detail}</p>
+                  <p className="text-[15px] text-foreground">{it.what}</p>
+                  <p className="mt-0.5 text-[13px] text-muted">{it.detail}</p>
                 </div>
                 <div className="flex shrink-0 flex-wrap gap-2">{it.actions}</div>
               </li>
