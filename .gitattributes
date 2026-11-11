@@ -1,0 +1,4 @@
+# These files are checked byte for byte by perf:check.
+lib/perf/generated/horizon_perf.js -text
+public/perf/fonts/OFL-Geist.txt -text
+vendor/perf/source.patch -text

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-const RAMP = ["#100a1f", "#151136", "#1d1444", "#281850", "#361b5b", "#481e66", "#5d236e", "#752873", "#902f76", "#ab3a75"];
+const RAMP = ["#170c19", "#1e0e20", "#281126", "#34142c", "#421631", "#541a36", "#6a1f3b", "#83263f", "#9e3044", "#bb3d48"];
 
 const BAYER = [
   0, 32, 8, 40, 2, 34, 10, 42, 48, 16, 56, 24, 50, 18, 58, 26, 12, 44, 4, 36, 14, 46, 6, 38, 60, 28, 52, 20, 62, 30,
@@ -18,24 +18,25 @@ function abgr(value: string) {
 const COLORS = RAMP.map(abgr);
 const TOP = COLORS.length - 1;
 
+// The square sun of the game's sky (the field keeps the name moon for its place).
 const MOON = [
-  "aaaaaaaaaaab",
-  "abbaaaaaaabb",
-  "abccbaaaabcb",
-  "abccbaaaaabb",
-  "aabbaaaaaaab",
-  "aaaaaabbaaab",
-  "aaaaabccbaab",
-  "abbaabccbaab",
-  "bccbaabbaabb",
-  "abbaaaaaabcb",
-  "aaaaaaaaaabb",
-  "abbbbbbbbbbb",
+  "cccccccccccc",
+  "cbbbbbbbbbbc",
+  "cbbaaaaaabbc",
+  "cbaaaaaaaabc",
+  "cbaaaaaaaabc",
+  "cbaaaaaaaabc",
+  "cbaaaaaaaabc",
+  "cbaaaaaaaabc",
+  "cbaaaaaaaabc",
+  "cbbaaaaaabbc",
+  "cbbbbbbbbbbc",
+  "cccccccccccc",
 ];
 const MOON_SIZE = MOON.length;
-const MOON_COLORS: Record<string, number> = { a: abgr("#fff3d6"), b: abgr("#e3d5b5"), c: abgr("#bfae90") };
-const STAR_BRIGHT = abgr("#e9e1ff");
-const STAR_DIM = abgr("#8f7fc4");
+const MOON_COLORS: Record<string, number> = { a: abgr("#fff6c8"), b: abgr("#ffd36e"), c: abgr("#ff9d4a") };
+const STAR_BRIGHT = abgr("#ffe9f2");
+const STAR_DIM = abgr("#b5708f");
 
 const ease = (v: number) => (v <= 0 ? 0 : v >= 1 ? 1 : v * v * (3 - 2 * v));
 

@@ -157,7 +157,7 @@ export async function ogCard({ kicker, title, accent, footer = DEFAULT_FOOTER, i
         <div style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%", height: "100%", padding: "64px 72px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <svg width={64} height={64} viewBox="0 0 16 16">
-              <path fill="#6f58d9" d="M1 12h14v1H1zM1 13h14v1H1z" />
+              <path fill="#e0458a" d="M1 12h14v1H1zM1 13h14v1H1z" />
               <path fill="#ffcf5c" d="M6 7h4v1H6zM4 8h8v1H4zM3 9h10v1H3z" />
               <path fill="#ffb48a" d="M3 10h10v1H3z" />
               <path fill="#ffe39a" d="M7 3h2v1H7zM7 4h2v1H7zM2 5h2v1H2zM12 5h2v1h-2zM2 6h2v1H2zM12 6h2v1h-2z" />
@@ -186,7 +186,7 @@ export async function ogCard({ kicker, title, accent, footer = DEFAULT_FOOTER, i
               <span style={{ fontSize: 30, fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>{kicker}</span>
               <div style={{ display: "flex", flexDirection: "column", marginTop: 18, fontSize, fontWeight: 600, lineHeight: 1.04, letterSpacing: -fontSize * 0.035 }}>
                 <span>{title}</span>
-                {accent ? <span style={{ color: "#a98fff" }}>{accent}</span> : null}
+                {accent ? <span style={{ color: "#ff8fc4" }}>{accent}</span> : null}
               </div>
             </div>
           </div>

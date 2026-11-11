@@ -3,7 +3,7 @@ import { GitHubIcon } from "@/components/icons";
 import { format } from "@/components/i18n-text";
 import { count, type Rating } from "@/components/mods-logic";
 
-const INKS = ["#a98fff", "#8be0b4", "#f2c46b", "#f07a6a"];
+const INKS = ["#ff8fc4", "#8be0b4", "#f2c46b", "#f07a6a"];
 
 function hash(text: string) {
   let h = 2166136261;
@@ -44,14 +44,14 @@ export function ModIcon({ id, icon, size = 48, className = "" }: { id: string; i
         width={size}
         height={size}
         unoptimized
-        className={`shrink-0 rounded-xl bg-[#221a3a] object-cover [image-rendering:pixelated] ${className}`}
+        className={`shrink-0 rounded-xl bg-lavender object-cover [image-rendering:pixelated] ${className}`}
         style={{ width: size, height: size }}
       />
     );
   }
   const ink = INKS[hash(id) % INKS.length];
   return (
-    <svg viewBox="-2 -2 14 14" width={size} height={size} aria-hidden shapeRendering="crispEdges" className={`shrink-0 rounded-xl bg-[#221a3a] ${className}`}>
+    <svg viewBox="-2 -2 14 14" width={size} height={size} aria-hidden shapeRendering="crispEdges" className={`shrink-0 rounded-xl bg-lavender ${className}`}>
       {pixels(id).map(({ x, y, half }) =>
         half ? (
           <g key={`${x}-${y}`} fill={ink}>
@@ -82,8 +82,8 @@ export function Stars({ rating, className = "", t = STARS_EN, comma = false }: {
   return (
     <span className={`inline-flex items-center gap-1.5 ${className}`} title={format(rating.count === 1 ? t.titleOne : t.title, { mean, n: rating.count })}>
       <span aria-hidden className="tracking-[0.05em]">
-        <span className="text-[#f2c46b]">{"★".repeat(on)}</span>
-        <span className="text-white/20">{"★".repeat(5 - on)}</span>
+        <span className="text-warning-ink">{"★".repeat(on)}</span>
+        <span className="text-muted">{"★".repeat(5 - on)}</span>
       </span>
       <span className="sr-only">{format(t.rated, { mean })}</span>
       <span className="tabular-nums">
@@ -109,7 +109,7 @@ export function GitHubStars({
   return (
     <span className={`inline-flex items-center gap-1 ${className}`} title={label}>
       <GitHubIcon className="size-3.5 opacity-80" />
-      <span aria-hidden className="text-[#f2c46b]">
+      <span aria-hidden className="text-warning-ink">
         ★
       </span>
       <span aria-hidden className="tabular-nums">

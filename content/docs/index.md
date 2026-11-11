@@ -1,6 +1,6 @@
-# What Sunrise is
+# Sunrise documentation
 
-Sunrise is Minecraft: Java Edition 26.3 rewritten in Rust. You install it with a small launcher, and it runs on the game files from your own copy of Minecraft. It is free, open source and unofficial.
+Find the guides for playing and hosting Sunrise, a fork of Horizon’s Rust rewrite of Minecraft: Java Edition. The modding guides take you from an empty folder to one `.hmod` file, and the modding book is the mod API’s own documentation.
 
 ## In one minute
 
@@ -29,5 +29,5 @@ There is no build for 32-bit systems or ARM Linux. The server can be built from 
 - **Playing:** [install and first launch](/docs/install), [settings worth knowing](/docs/settings), [multiplayer](/docs/multiplayer) and [what to do when something breaks](/docs/troubleshooting).
 - **Hosting:** [host a server](/docs/hosting), from the launcher or the command line.
 - **Going further:** [modpacks](/docs/modpacks), [mods and data packs](/docs/mods) and [performance](/docs/performance).
-- **Making mods:** [make a mod](/docs/make-a-mod), content or native, from the first file to the registry.
+- **Making mods:** [make a mod](/docs/make-a-mod), content or code, from the first file to the registry, and the [modding book](/docs/modding) for everything else.
 - **Helping out:** [contribute](/docs/contributing) and the [FAQ](/docs/faq).

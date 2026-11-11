@@ -7,7 +7,7 @@ Sunrise has its own mods, made for Sunrise and not compatible with Java mods. Da
 Sunrise has two kinds of mod:
 
 - **Content mods** (`.hmod`) add blocks and items from data and assets: models, textures, recipes, loot tables, tags and structures, with no code. They work in single player today. This is also what the launcher's [modpack](/docs/modpacks) carry-over produces.
-- **Native mods** (`.hnmod`) are Rust code built into the game: a HUD, keys, commands, settings, new behaviour. Sunrise's own Zoom, FPS Counter, Keystrokes and Minimap are native mods. They work in single player, on LAN and on servers (only what runs in your own game, on a server you join).
+- **Native mods** (`.hnmod` on released Sunrise; one `.hmod` with the [current mod API](/docs/make-a-mod)) are Rust code built into the game: a HUD, keys, commands, settings, new behaviour. Sunrise's own Zoom, FPS Counter, Keystrokes and Minimap are native mods. They work in single player, on LAN and on servers (only what runs in your own game, on a server you join).
 
 > **Early.** Reviewed mods are listed at [playsunrise.net/mods](/mods) and on the launcher's Mods page.
 

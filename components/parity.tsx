@@ -38,7 +38,7 @@ function Meter({ score }: { score: number }) {
   return (
     <span aria-hidden className="flex shrink-0 gap-0.5">
       {[0.25, 0.5, 0.75, 1].map((step) => (
-        <span key={step} className={`h-3 w-1.5 rounded-[1px] ${score >= step ? "bg-[#a98fff]" : "bg-white/12"}`} />
+        <span key={step} className={`h-3 w-1.5 rounded-[1px] ${score >= step ? "bg-accent-ink" : "bg-white/10"}`} />
       ))}
     </span>
   );
@@ -46,14 +46,14 @@ function Meter({ score }: { score: number }) {
 
 function Dot() {
   return (
-    <span aria-hidden className="mx-2 text-white/30">
+    <span aria-hidden className="mx-2 text-muted">
       ·
     </span>
   );
 }
 
 const LINK =
-  "text-white/75 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60";
+  "text-muted underline decoration-accent/40 underline-offset-4 transition-colors hover:text-foreground hover:decoration-accent/40";
 
 export function Parity({ locale }: { locale: Locale }) {
   const { common, home } = getMessages(locale);
@@ -61,14 +61,14 @@ export function Parity({ locale }: { locale: Locale }) {
   return (
     <section id="parity" aria-labelledby="parity-title" className="scroll-mt-14 pb-24 sm:pb-32">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
-        <p className="reveal text-sm font-medium text-white/60"></p>
+        <p className="reveal text-sm font-medium text-muted"></p>
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:items-end lg:gap-16">
           <div className="reveal">
             <p className="text-accent font-display text-[clamp(6rem,18vw,11rem)] leading-[0.82] font-semibold tracking-[-0.05em] tabular-nums">
               {HARNESSES}
             </p>
-            <p className="mt-6 max-w-sm text-lg leading-relaxed text-pretty text-white/70">
+            <p className="mt-6 max-w-sm text-lg leading-relaxed text-pretty text-muted">
               {t.harnesses}
             </p>
           </div>
@@ -76,14 +76,14 @@ export function Parity({ locale }: { locale: Locale }) {
           <div className="reveal">
             <h2
               id="parity-title"
-              className="font-display text-[clamp(2rem,3.6vw,3rem)] leading-[1.08] font-semibold tracking-[-0.03em] text-balance text-white"
+              className="font-display text-[clamp(2rem,3.6vw,3rem)] leading-[1.08] font-semibold tracking-[-0.03em] text-balance text-foreground"
             >
               {t.title}
             </h2>
-            <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-pretty text-white/60">
+            <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-pretty text-muted">
               {t.lead}
             </p>
-            <p className="mt-5 text-sm leading-relaxed text-white/50">
+            <p className="mt-5 text-sm leading-relaxed text-muted">
               {rich(t.audited, {
                 date: () => <time dateTime={AUDITED}>{AUDITED}</time>,
                 dot: () => <Dot />,
@@ -101,23 +101,23 @@ export function Parity({ locale }: { locale: Locale }) {
 
         <div className="mt-14 grid gap-x-12 lg:grid-cols-2">
           {[SUBSYSTEMS.slice(0, half), SUBSYSTEMS.slice(half)].map((column, c) => (
-            <ul key={c} className={`reveal border-white/[0.08] ${c === 0 ? "border-t" : "lg:border-t"}`}>
+            <ul key={c} className={`reveal border-line ${c === 0 ? "border-t" : "lg:border-t"}`}>
               {column.map((s) => (
-                <li key={s.number} className="border-b border-white/[0.08]">
+                <li key={s.number} className="border-b border-line">
                   <details className="group">
-                    <summary className="flex cursor-pointer list-none items-center gap-4 rounded-md py-4 outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff] [&::-webkit-details-marker]:hidden">
-                      <span className="w-6 shrink-0 text-xs font-medium text-white/35 tabular-nums">{s.number}</span>
-                      <span className="min-w-0 flex-1 text-[15px] font-medium text-white">{t.subsystems[s.key].name}</span>
+                    <summary className="flex cursor-pointer list-none items-center gap-4 rounded-md py-4 outline-none focus-visible:ring-2 focus-visible:ring-accent [&::-webkit-details-marker]:hidden">
+                      <span className="w-6 shrink-0 text-xs font-medium text-muted tabular-nums">{s.number}</span>
+                      <span className="min-w-0 flex-1 text-[15px] font-medium text-foreground">{t.subsystems[s.key].name}</span>
                       <Meter score={s.score} />
                       <span className="sr-only">{status(t, s.score)}</span>
-                      <ChevronDownIcon className="size-4 shrink-0 text-white/40 transition-transform group-open:rotate-180" />
+                      <ChevronDownIcon className="size-4 shrink-0 text-muted transition-transform group-open:rotate-180" />
                     </summary>
                     <div className="pr-8 pb-5 pl-10">
-                      <p className="flex items-center gap-1.5 text-xs font-medium text-[#a98fff]">
+                      <p className="flex items-center gap-1.5 text-xs font-medium text-accent-ink">
                         <CheckIcon className="size-3.5" />
                         {status(t, s.score)}
                       </p>
-                      <p className="mt-2 text-sm leading-relaxed text-pretty text-white/60">{t.subsystems[s.key].detail}</p>
+                      <p className="mt-2 text-sm leading-relaxed text-pretty text-muted">{t.subsystems[s.key].detail}</p>
                     </div>
                   </details>
                 </li>
@@ -126,14 +126,14 @@ export function Parity({ locale }: { locale: Locale }) {
           ))}
         </div>
 
-        <div className="reveal mt-10 text-sm leading-relaxed text-white/50">
+        <div className="reveal mt-10 text-sm leading-relaxed text-muted">
           <p>{t.scaleTitle}</p>
           <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
             {SCALE.map((score) => (
               <li key={score} className="flex items-center gap-2">
                 <Meter score={score} />
                 <span>
-                  <span className="text-white/75 tabular-nums">{score}</span> {t.scale[score]}
+                  <span className="text-muted tabular-nums">{score}</span> {t.scale[score]}
                 </span>
               </li>
             ))}

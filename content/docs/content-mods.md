@@ -119,8 +119,8 @@ A mod made from a Java mod whose files use other names lists them in its manifes
 Install `cargo horizon-mod`, the tool that makes, builds and checks content mods. It needs [Rust](https://rustup.rs) to install, and builds from source in a few minutes; run it again later to update it:
 
 ```sh
-cargo install --git https://github.com/sunrise-org/horizon cargo-horizon-mod
-cargo horizon-mod new my-blocks --template content
+cargo install --locked --git https://github.com/arismoko/horizon cargo-horizon-mod
+cargo horizon-mod new my-blocks
 ```
 
 makes a content mod with one block, Glowing Amethyst: an amethyst block that gives light, with its block state, model (using vanilla's amethyst texture), item model, name, loot table, a recipe (an amethyst block and glowstone dust) and the pickaxe tag. Rename and copy its files to add your own.
@@ -138,6 +138,6 @@ cargo horizon-mod check target/horizon-mod/ruby.hmod
 
 `build` checks the files as the game will and packs the manifest, `assets/` and `data/` into `target/horizon-mod/<id>.hmod`, with no compiler involved. `check` reads it as the registry does and says "no code: content only, nothing to run". Players put that file in their `horizon-mods` folder and turn it on in **Options, Mods...**, and you can [publish it](/docs/publish-a-mod) like any mod.
 
-A content mod has no code. For behaviour (a HUD, a command, a key), make a [native mod](/docs/make-a-mod); it can come beside a content mod that holds its blocks and items.
+A content mod has no code. For behaviour (a HUD, a command, a key), add Rust to the same folder: [the typed mod API](/docs/mod-code). The mod still ships as one `.hmod`.
 
 Next: [test it](/docs/test-a-mod).

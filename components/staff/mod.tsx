@@ -41,7 +41,7 @@ function Stats({ s }: { s: ModStats }) {
   const a = s.applications;
   return (
     <div className="space-y-6">
-      <p className="text-[15px] text-white/60">
+      <p className="text-[15px] text-muted">
         Kira&apos;s daily counters: counts only, nothing of what was said.{" "}
         {s.countingSince ? `Counting since ${longDay(s.countingSince)}.` : "Counting starts with the next event."}
       </p>
@@ -61,7 +61,7 @@ function Stats({ s }: { s: ModStats }) {
           note={`${fmt(a.accepted30)} accepted, ${fmt(a.declined30)} declined in 30 days`}
         />
       </div>
-      <p className="text-xs text-white/45">Counts only: Kira stores no list of who or what.</p>
+      <p className="text-xs text-muted">Counts only: Kira stores no list of who or what.</p>
       <div className="grid gap-4 lg:grid-cols-2">
         <BarChart title="Reports and mod-mail per week" weeks={w} series={[{ name: "Reports", values: col("reports") }, { name: "Mod-mail", values: col("modmail") }]} />
         <BarChart title="Warnings and timeouts per week" weeks={w} series={[{ name: "Warnings", values: col("warns") }, { name: "Timeouts", values: col("timeouts") }]} />
@@ -115,16 +115,16 @@ export function ModDashboard({ who }: { who: Who }) {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Tabs tabs={tabs} active={tab} onSelect={selectTab} label="Moderation dashboard" />
-        <Link href="/hub/staff-help" className="text-sm text-white/55 hover:text-white">
+        <Link href="/hub/staff-help" className="text-sm text-muted hover:text-foreground">
           How this works
         </Link>
       </div>
       {error ? (
-        <p role="alert" className="mt-6 text-[15px] text-white/70">
+        <p role="alert" className="mt-6 text-[15px] text-muted">
           {error}
         </p>
       ) : !apps ? (
-        <p className="mt-6 text-sm text-white/50">Loading…</p>
+        <p className="mt-6 text-sm text-muted">Loading…</p>
       ) : (
         <>
           <Panel id="inbox" active={tab}>
@@ -140,13 +140,13 @@ export function ModDashboard({ who }: { who: Who }) {
           </Panel>
           <Panel id="stats" active={tab}>
             {statsError ? (
-              <p className="text-[15px] text-white/70">{statsError}</p>
+              <p className="text-[15px] text-muted">{statsError}</p>
             ) : stats ? (
               <Guard what="The moderation numbers">
                 <Stats s={stats} />
               </Guard>
             ) : (
-              <p className="text-sm text-white/50">Loading…</p>
+              <p className="text-sm text-muted">Loading…</p>
             )}
           </Panel>
         </>

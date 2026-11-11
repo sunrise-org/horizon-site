@@ -12,16 +12,18 @@ import { getMessages, LOCALES, rich, type Locale } from "@/components/i18n";
 import { localePath } from "@/components/i18n-text";
 import { LanguageSwitch } from "@/components/language-switch";
 import { GITHUB_URL, UPSTREAM_URL } from "@/components/links";
+import { profileUrl, TEAM } from "@/components/team";
 
 const LEGAL = [{ href: "/privacy", key: "privacy" }] as const;
 
 const MORE = [
   { href: "/faq", key: "faq" },
   { href: "/api-gaps", key: "apiGaps" },
+  { href: "/modding-team", key: "moddingTeam" },
 ] as const;
 
 const LEGAL_LINK =
-  "font-medium text-white/80 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60";
+  "font-medium text-muted underline decoration-accent/40 underline-offset-4 transition-colors hover:text-foreground hover:decoration-accent/40";
 
 const GITHUB_PRIVACY_URL =
   "https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement";
@@ -40,7 +42,7 @@ function Out({
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="text-white/70 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60"
+      className="text-muted underline decoration-accent/40 underline-offset-4 transition-colors hover:text-foreground hover:decoration-accent/40"
     >
       {children}
       <span className="sr-only"> {newTab}</span>
@@ -49,7 +51,7 @@ function Out({
 }
 
 function Heading({ children }: { children: ReactNode }) {
-  return <h2 className="text-sm font-medium text-white/80">{children}</h2>;
+  return <h2 className="text-sm font-medium text-muted">{children}</h2>;
 }
 
 export function SiteFooter({ locale }: { locale: Locale }) {
@@ -74,7 +76,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
       );
     };
   return (
-    <footer className="mt-auto border-t border-white/[0.08]">
+    <footer className="footer-horizon glass-panel glass-chrome mt-auto">
       <div className="mx-auto w-full max-w-6xl px-6 pt-14 pb-10 lg:px-10">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-16">
           <Link
@@ -97,14 +99,16 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        <div className="mt-12 grid gap-10 text-sm leading-relaxed text-pretty text-white/50 md:grid-cols-3 md:gap-12">
+        <div className="mt-12 grid gap-10 text-sm leading-relaxed text-pretty text-muted md:grid-cols-3 md:gap-12">
           <div>
             <Heading>{t.whoTitle}</Heading>
             <p className="mt-3">
               {rich(t.who, {
+                members: () => new Intl.ListFormat(locale).format(TEAM.map(({ name }) => name)),
                 team: inner(localePath(locale, "/#about")),
                 horizon: out(UPSTREAM_URL),
-                dezerx: out("https://dezerx.com"),
+                umut: out(profileUrl("UMCEKO")),
+                xmilon: out(profileUrl("Xmilon")),
                 github: out(GITHUB_URL),
               })}
             </p>

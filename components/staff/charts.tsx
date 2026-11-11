@@ -29,10 +29,10 @@ export function BarChart({ title, weeks, series, unit = "" }: { title: string; w
   const slot = (W - left) / Math.max(1, weeks.length);
   const bar = Math.max(2, Math.min(18, (slot - 8 - 2 * (series.length - 1)) / series.length));
   return (
-    <figure className="rounded-2xl bg-[#18112c] p-4 sm:p-5">
-      <figcaption className="text-sm font-medium text-white">{title}</figcaption>
+    <figure className="rounded-2xl bg-surface p-4 sm:p-5">
+      <figcaption className="text-sm font-medium text-foreground">{title}</figcaption>
       {series.length > 1 && (
-        <p className="mt-2 flex flex-wrap gap-4 text-xs text-white/60">
+        <p className="mt-2 flex flex-wrap gap-4 text-xs text-muted">
           {series.map((s, k) => (
             <span key={s.name} className="inline-flex items-center gap-1.5">
               <i className="inline-block size-2.5 rounded-[3px]" style={{ background: COLORS[k] }} />
@@ -42,7 +42,7 @@ export function BarChart({ title, weeks, series, unit = "" }: { title: string; w
         </p>
       )}
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={title} className="mt-3 w-full">
-        <g className="text-white/40" fill="currentColor" stroke="currentColor">
+        <g className="text-muted" fill="currentColor" stroke="currentColor">
           {[0, max / 2, max].map((v) => (
             <g key={v}>
               <line x1={left} x2={W} y1={y(v)} y2={y(v)} strokeOpacity={0.25} />
@@ -66,7 +66,7 @@ export function BarChart({ title, weeks, series, unit = "" }: { title: string; w
                 return <rect key={s.name} x={x0 + k * (bar + 2)} y={y(0) - h} width={bar} height={h} rx={2} fill={COLORS[k]} />;
               })}
               {i % 2 === weeks.length % 2 ? null : (
-                <text x={left + i * slot + slot / 2} y={H - 6} textAnchor="middle" fontSize={11} className="fill-white/45">
+                <text x={left + i * slot + slot / 2} y={H - 6} textAnchor="middle" fontSize={11} className="fill-muted">
                   {weekLabel(w)}
                 </text>
               )}
@@ -75,7 +75,7 @@ export function BarChart({ title, weeks, series, unit = "" }: { title: string; w
         })}
       </svg>
       <details className="mt-2">
-        <summary className="cursor-pointer text-xs text-white/50 hover:text-white">Table</summary>
+        <summary className="cursor-pointer text-xs text-muted hover:text-foreground">Table</summary>
         <Table
           cols={["Week of", ...series.map((s) => s.name)]}
           rows={weeks.map((w, i) => [weekLabel(w), ...series.map((s) => fmt(s.values[i]))])}
@@ -88,22 +88,22 @@ export function BarChart({ title, weeks, series, unit = "" }: { title: string; w
 export function RankChart({ title, entries }: { title: string; entries: [string, number][] }) {
   const max = Math.max(1, ...entries.map(([, v]) => v));
   return (
-    <figure className="rounded-2xl bg-[#18112c] p-4 sm:p-5">
-      <figcaption className="text-sm font-medium text-white">{title}</figcaption>
+    <figure className="rounded-2xl bg-surface p-4 sm:p-5">
+      <figcaption className="text-sm font-medium text-foreground">{title}</figcaption>
       {entries.length ? (
         <ul className="mt-3 space-y-2 text-[13px]">
           {entries.map(([name, v]) => (
             <li key={name} className="grid grid-cols-[minmax(0,9rem)_minmax(0,1fr)_3rem] items-center gap-3">
-              <span className="truncate text-white/70">{name}</span>
-              <span className="h-2.5 rounded-[3px] bg-white/[0.06]">
-                <i className="block h-full rounded-[3px] bg-[#a98fff]" style={{ width: `${Math.round((v / max) * 100)}%` }} />
+              <span className="truncate text-muted">{name}</span>
+              <span className="h-2.5 rounded-[3px] bg-lavender">
+                <i className="block h-full rounded-[3px] bg-lavender" style={{ width: `${Math.round((v / max) * 100)}%` }} />
               </span>
-              <span className="text-right text-white/80 tabular-nums">{fmt(v)}</span>
+              <span className="text-right text-muted tabular-nums">{fmt(v)}</span>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="mt-3 text-sm text-white/50">None.</p>
+        <p className="mt-3 text-sm text-muted">None.</p>
       )}
     </figure>
   );
@@ -111,20 +111,20 @@ export function RankChart({ title, entries }: { title: string; entries: [string,
 
 export function Tile({ value, label, note }: { value: ReactNode; label: string; note?: ReactNode }) {
   return (
-    <div className="rounded-2xl bg-[#18112c] p-4 sm:p-5">
-      <span className="block font-display text-[1.75rem] leading-none font-semibold text-white tabular-nums">{value}</span>
-      <span className="mt-2 block text-sm text-white/70">{label}</span>
-      {note ? <span className="mt-1 block text-xs text-white/45">{note}</span> : null}
+    <div className="rounded-2xl bg-surface p-4 sm:p-5">
+      <span className="block font-display text-[1.75rem] leading-none font-semibold text-foreground tabular-nums">{value}</span>
+      <span className="mt-2 block text-sm text-muted">{label}</span>
+      {note ? <span className="mt-1 block text-xs text-muted">{note}</span> : null}
     </div>
   );
 }
 
 export function Table({ cols, rows }: { cols: string[]; rows: (string | number | null | undefined)[][] }) {
   return (
-    <div className="mt-3 overflow-x-auto rounded-xl bg-white/[0.03]">
+    <div className="mt-3 overflow-x-auto rounded-xl bg-surface/80">
       <table className="w-full text-left text-[13px]">
         <thead>
-          <tr className="text-white/50">
+          <tr className="text-muted">
             {cols.map((c) => (
               <th key={c} className="px-3 py-2 font-medium whitespace-nowrap">
                 {c}
@@ -134,9 +134,9 @@ export function Table({ cols, rows }: { cols: string[]; rows: (string | number |
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={i} className="odd:bg-white/[0.02]">
+            <tr key={i} className="odd:bg-surface/80">
               {r.map((v, k) => (
-                <td key={k} className="px-3 py-2 align-top text-white/80">
+                <td key={k} className="px-3 py-2 align-top text-muted">
                   {v == null ? "" : String(v)}
                 </td>
               ))}
@@ -174,8 +174,8 @@ export function DataSet({ id, title, rows, file }: { id: string; title: string; 
   return (
     <section id={`data-${id}`} className="scroll-mt-28">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-display text-xl font-semibold tracking-[-0.02em] text-white">
-          {title} <span className="text-sm font-normal text-white/45 tabular-nums">{rows.length}</span>
+        <h2 className="font-display text-xl font-semibold tracking-[-0.02em] text-foreground">
+          {title} <span className="text-sm font-normal text-muted tabular-nums">{rows.length}</span>
         </h2>
         <p className="flex gap-1.5">
           <button type="button" className={SECONDARY_SM} onClick={() => download(`${file}-${stamp()}.csv`, toCsv(rows), "text/csv")}>
@@ -186,7 +186,7 @@ export function DataSet({ id, title, rows, file }: { id: string; title: string; 
           </button>
         </p>
       </div>
-      {rows.length ? <Table cols={cols} rows={rows.map((r) => cols.map((c) => r[c]))} /> : <p className="mt-3 text-sm text-white/50">Nothing yet.</p>}
+      {rows.length ? <Table cols={cols} rows={rows.map((r) => cols.map((c) => r[c]))} /> : <p className="mt-3 text-sm text-muted">Nothing yet.</p>}
     </section>
   );
 }

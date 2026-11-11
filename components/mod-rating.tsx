@@ -51,22 +51,22 @@ export function ModRating({ id, owners }: { id: string; owners: string[] }) {
   };
 
   let body;
-  if (closed) body = <p className="text-[14px] text-white/55">Ratings aren&apos;t open right now.</p>;
-  else if (me === undefined) body = <p className="text-[14px] text-white/45">Checking…</p>;
+  if (closed) body = <p className="text-[14px] text-muted">Ratings aren&apos;t open right now.</p>;
+  else if (me === undefined) body = <p className="text-[14px] text-muted">Checking…</p>;
   else if (me === null)
     body = (
       <a
         href={`/api/mods/auth/login?back=/mods/${encodeURIComponent(id)}`}
-        className="inline-flex h-9 items-center rounded-lg bg-white/10 px-3.5 text-sm font-medium text-white transition-colors hover:bg-white/15"
+        className="inline-flex h-9 items-center rounded-lg bg-lavender px-3.5 text-sm font-medium text-foreground transition-colors hover:bg-sky-surface"
       >
         Sign in with GitHub to rate
       </a>
     );
-  else if (owners.some((o) => o.toLowerCase() === me.login.toLowerCase())) body = <p className="text-[14px] text-white/60">You publish it: players rate it.</p>;
+  else if (owners.some((o) => o.toLowerCase() === me.login.toLowerCase())) body = <p className="text-[14px] text-muted">You publish it: players rate it.</p>;
   else
     body = (
       <div>
-        <p className="text-[13px] text-white/50">{mine ? "Your rating" : "Rate it"}</p>
+        <p className="text-[13px] text-muted">{mine ? "Your rating" : "Rate it"}</p>
         <div role="group" aria-label="Your rating" className="mt-1.5 flex gap-1">
           {[1, 2, 3, 4, 5].map((n) => (
             <button
@@ -76,8 +76,8 @@ export function ModRating({ id, owners }: { id: string; owners: string[] }) {
               aria-pressed={mine === n}
               aria-label={`${n} star${n === 1 ? "" : "s"}`}
               onClick={() => rate(n)}
-              className={`grid size-9 place-items-center rounded-lg text-lg transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff] ${
-                n <= (mine ?? 0) ? "bg-[#f2c46b]/15 text-[#f2c46b]" : "bg-white/[0.06] text-white/30 hover:text-[#f2c46b]"
+              className={`grid size-9 place-items-center rounded-lg text-lg transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                n <= (mine ?? 0) ? "bg-[#f2c46b]/15 text-warning-ink" : "bg-lavender text-muted hover:text-warning-ink"
               }`}
             >
               ★
@@ -88,10 +88,10 @@ export function ModRating({ id, owners }: { id: string; owners: string[] }) {
     );
 
   return (
-    <div className="rounded-2xl bg-[#18112c] p-5 sm:p-6">
-      <h2 className="text-[17px] font-semibold text-white">Rating</h2>
+    <div className="rounded-2xl bg-surface p-5 sm:p-6">
+      <h2 className="text-[17px] font-semibold text-foreground">Rating</h2>
       <div className="mt-3">{body}</div>
-      <p role="status" className="mt-2 text-[13px] text-white/55">
+      <p role="status" className="mt-2 text-[13px] text-muted">
         {status}
       </p>
     </div>

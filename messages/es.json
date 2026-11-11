@@ -28,9 +28,9 @@
   "footer": {
     "disclaimer": "No es un producto oficial de Minecraft. No está aprobado por Mojang ni Microsoft ni asociado con ellos.",
     "whoTitle": "Quién lo hace",
-    "who": "Sunrise lo hace su equipo: Umut, Xmilon, Juan Luci y Ari, con <team>todas las personas que contribuyen</team>. Parte de <horizon>Horizon</horizon>, de Ludovic Marie y los contribuidores de horizon-rust, y este sitio parte del de Horizon, de Anthony S, de <dezerx>DezerX</dezerx>. Escríbenos en <github>GitHub</github>. Sunrise no contiene código, recursos ni datos de Minecraft, y este sitio no ofrece archivos del juego: necesitas tu propia copia legal de Minecraft: Java Edition. Minecraft es una marca de Mojang Synergies AB.",
+    "who": "Sunrise lo hace su equipo: <members>Sunrise</members>, con <team>todas las personas que contribuyen</team>. Parte de <horizon>Horizon</horizon>, de Ludovic Marie y los contribuidores de horizon-rust, y este sitio lo hacen <umut>Umut</umut> y <xmilon>Xmilon</xmilon>, y lo aloja <umut>Umut</umut>. Escríbenos en <github>GitHub</github>. Sunrise no contiene código, recursos ni datos de Minecraft, y este sitio no ofrece archivos del juego: necesitas tu propia copia legal de Minecraft: Java Edition. Minecraft es una marca de Mojang Synergies AB.",
     "licencesTitle": "Licencias",
-    "licences": "El código de Sunrise está bajo la <mit>licencia MIT</mit>, como el de Horizon. Las fuentes son Geist, Geist Mono y Bricolage Grotesque, bajo la <ofl>SIL Open Font License</ofl>. Todos los recursos de este sitio figuran en LEGAL.md.",
+    "licences": "El código de Sunrise está bajo la <mit>licencia MIT</mit>, como el de Horizon. Las fuentes son Geist, Geist Mono y Sora, con Bricolage Grotesque en las tarjetas para compartir, bajo la <ofl>SIL Open Font License</ofl>. Todos los recursos de este sitio figuran en LEGAL.md.",
     "privacyTitle": "Privacidad",
     "privacy": "Este sitio no usa cookies para los visitantes y no tiene analíticas ni rastreadores. Abrir una versión guarda un hash con clave de tu dirección IP, y compartir una captura de rendimiento guarda el archivo que subes; las descargas vienen de GitHub, bajo la <github>declaración de privacidad de GitHub</github>. El launcher no envía nada salvo que lo permitas: <telemetry>qué puede enviar y cómo borrarlo</telemetry>.",
     "legal": {
@@ -39,7 +39,8 @@
     "linksLabel": "Más",
     "links": {
       "faq": "FAQ",
-      "apiGaps": "Brechas de API"
+      "apiGaps": "Brechas de API",
+      "moddingTeam": "Equipo de mods"
     },
     "madeInRust": "Hecho en abierto, en Rust."
   },
@@ -88,7 +89,7 @@
         "title": "Créditos",
         "built": "Sunrise se construye sobre <horizon>Horizon</horizon>, de los colaboradores de horizon-rust.",
         "api": "La API de mods nativa sigue el diseño y la documentación de <neoforge>NeoForge</neoforge>, con agradecimiento.",
-        "modders": "<ari>Ari (arismoko)</ari> y los colaboradores de mods construyen la API de mods, en <repo>arismoko/horizon</repo>.",
+        "modders": "<ari>Ari (arismoko)</ari>, <xmilon>Xmilon</xmilon> y <levzzz>levzzz</levzzz> construyen la API de mods con <team>el equipo de mods</team>, en <repo>arismoko/horizon</repo>.",
         "profiler": "Perfilador: con la ayuda de <gigger>gigger</gigger>"
       },
       "team": {
@@ -135,7 +136,7 @@
       "all": "Todos los colaboradores en GitHub",
       "oneCommit": "1 commit",
       "commits": "{n} commits",
-      "webDeveloper": "Desarrollador web"
+      "webDeveloper": "Creador del sitio"
     },
     "parity": {
       "harnesses": "pruebas diferenciales cuando empezamos: cada una pasa las mismas entradas por Sunrise y por el cliente y el servidor vanilla, y compara lo que sale.",

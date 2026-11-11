@@ -52,7 +52,7 @@ function Panel({ id, children }: { id: string; children: ReactNode }) {
 function Block({ title, id, children }: { title: string; id?: string; children: ReactNode }) {
   return (
     <section id={id} className="mt-14 scroll-mt-40 first:mt-0">
-      <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">{title}</h2>
+      <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">{title}</h2>
       {children}
     </section>
   );
@@ -60,11 +60,11 @@ function Block({ title, id, children }: { title: string; id?: string; children: 
 
 const CHIP = "inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium";
 const BUTTON_PRIMARY =
-  "inline-flex h-10 items-center gap-2 rounded-lg bg-[#6b4bff] px-4 text-sm font-medium text-white transition-colors hover:bg-[#7a5dff]";
+  "sun-button inline-flex h-10 items-center gap-2 rounded-lg bg-brand px-4 text-sm font-medium text-white transition-colors hover:bg-brand-hover";
 const SMALL_BUTTON =
-  "inline-flex h-8 items-center gap-1.5 rounded-lg bg-white/[0.07] px-3 text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.12] hover:text-white";
+  "inline-flex h-8 items-center gap-1.5 rounded-lg bg-lavender px-3 text-[13px] font-medium text-foreground transition-colors hover:bg-sky-surface hover:text-foreground";
 const BUTTON =
-  "inline-flex h-10 items-center gap-2 rounded-lg bg-white/[0.07] px-4 text-sm font-medium text-white/85 transition-colors hover:bg-white/[0.12] hover:text-white";
+  "inline-flex h-10 items-center gap-2 rounded-lg bg-lavender px-4 text-sm font-medium text-foreground transition-colors hover:bg-sky-surface hover:text-foreground";
 
 function Out({ href, className, children }: { href: string; className: string; children: ReactNode }) {
   return (
@@ -80,19 +80,19 @@ const number2 = (i: number) => String(i + 1).padStart(2, "0");
 
 function ItemRows({ items, meta, href }: { items: RoadmapItem[]; meta: (item: RoadmapItem) => string; href?: (item: RoadmapItem) => string }) {
   return (
-    <ol className="mt-5 border-t border-white/[0.08]">
+    <ol className="mt-5 border-t border-line">
       {items.map((item, i) => (
-        <li key={item.id} className="border-b border-white/[0.08]">
+        <li key={item.id} className="border-b border-line">
           <a
             href={href ? href(item) : `#${item.id}`}
-            className="group grid grid-cols-[2rem_minmax(0,1fr)] gap-x-4 gap-y-2 rounded-md py-5 outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff] sm:grid-cols-[2rem_minmax(0,1fr)_minmax(0,14rem)]"
+            className="group grid grid-cols-[2rem_minmax(0,1fr)] gap-x-4 gap-y-2 rounded-md py-5 outline-none focus-visible:ring-2 focus-visible:ring-accent sm:grid-cols-[2rem_minmax(0,1fr)_minmax(0,14rem)]"
           >
-            <span className="pt-0.5 text-xs font-medium text-white/35 tabular-nums">{number2(i)}</span>
+            <span className="pt-0.5 text-xs font-medium text-muted tabular-nums">{number2(i)}</span>
             <span>
-              <span className="block text-[16px] font-medium text-white transition-colors group-hover:text-[#c9bbff]">{item.title}</span>
-              <Detail plain={item.plain} dev={item.dev} links={false} className="mt-1.5 text-[15px] leading-relaxed text-pretty text-white/60" />
+              <span className="block text-[16px] font-medium text-foreground transition-colors group-hover:text-accent-ink">{item.title}</span>
+              <Detail plain={item.plain} dev={item.dev} links={false} className="mt-1.5 text-[15px] leading-relaxed text-pretty text-muted" />
             </span>
-            <span className="col-start-2 text-sm text-white/45 sm:col-start-3 sm:text-right">{meta(item)}</span>
+            <span className="col-start-2 text-sm text-muted sm:col-start-3 sm:text-right">{meta(item)}</span>
           </a>
         </li>
       ))}
@@ -107,7 +107,7 @@ export function OverviewPanel({ roadmap, live }: { roadmap: Roadmap; live: Live 
   const shipped = roadmap.items.filter((i) => i.status === "shipped").slice(0, 3);
   return (
     <Panel id="overview">
-      <Detail plain={o.today_plain} dev={o.today_dev} className="max-w-3xl text-xl leading-relaxed text-pretty text-white/80" />
+      <Detail plain={o.today_plain} dev={o.today_dev} className="max-w-3xl text-xl leading-relaxed text-pretty text-muted" />
       <div className="mt-14">
         <Block title="Being done now">
           <ItemRows items={focus} meta={(x) => progress(x, live)} />
@@ -119,7 +119,7 @@ export function OverviewPanel({ roadmap, live }: { roadmap: Roadmap; live: Live 
           <ItemRows items={shipped} meta={(x) => (x.shipped_in ? `In ${x.shipped_in}` : "")} />
         </Block>
         <Block title="How to help">
-          <Detail plain={o.help_plain} dev={o.help_dev} className="mt-4 max-w-3xl text-[15px] leading-relaxed text-pretty text-white/65" />
+          <Detail plain={o.help_plain} dev={o.help_dev} className="mt-4 max-w-3xl text-[15px] leading-relaxed text-pretty text-muted" />
           <p className="mt-6 flex flex-wrap gap-2">
             <a href="#contribute" className={BUTTON_PRIMARY}>
               Contribute
@@ -151,12 +151,12 @@ const SECTION_LEDE: Record<string, string> = {
 };
 
 const LINK_TONE: Record<string, string> = {
-  open: "bg-white/[0.07] text-white/75",
-  "in review": "bg-[#6b4bff]/25 text-[#d4c9ff]",
+  open: "bg-lavender text-muted",
+  "in review": "bg-brand/25 text-accent-ink",
   "in progress": "bg-amber-300/15 text-amber-100",
   merged: "bg-emerald-400/15 text-emerald-200",
-  closed: "bg-white/[0.04] text-white/45",
-  dropped: "bg-white/[0.04] text-white/35 line-through",
+  closed: "bg-surface/80 text-muted",
+  dropped: "bg-surface/80 text-muted line-through",
 };
 
 function LinkChip({ link, live }: { link: string; live: Live }) {
@@ -164,7 +164,7 @@ function LinkChip({ link, live }: { link: string; live: Live }) {
   if (!n) {
     const url = link.startsWith("https://") ? link : fileUrl(link);
     return (
-      <a href={url} className={`${CHIP} bg-white/[0.05] font-mono text-white/60 hover:text-white`}>
+      <a href={url} className={`${CHIP} bg-surface/80 font-mono text-muted hover:text-foreground`}>
         {link.replace(/^https:\/\//, "")}
       </a>
     );
@@ -184,15 +184,15 @@ function RoadmapCard({ item, roadmap, live }: { item: RoadmapItem; roadmap: Road
   const done = item.status === "shipped";
   const state = done ? "" : progress(item, live);
   return (
-    <article id={item.id} data-area-item={item.area} className="scroll-mt-40 rounded-xl bg-white/[0.04] p-5 target:ring-2 target:ring-[#a98fff]">
+    <article id={item.id} data-area-item={item.area} className="scroll-mt-40 rounded-xl bg-surface/80 p-5 target:ring-2 target:ring-accent">
       <p className="flex flex-wrap items-center gap-2">
-        <span className={`${CHIP} bg-white/10 text-white/75`}>{areaName(roadmap, item.area)}</span>
-        {done && item.shipped_in && <span className={`${CHIP} bg-[#6b4bff]/25 text-[#d4c9ff]`}>{item.shipped_in}</span>}
+        <span className={`${CHIP} bg-lavender text-muted`}>{areaName(roadmap, item.area)}</span>
+        {done && item.shipped_in && <span className={`${CHIP} bg-brand/25 text-accent-ink`}>{item.shipped_in}</span>}
         {item.ongoing && <span className="text-xs font-medium text-amber-200/80">Ongoing</span>}
       </p>
-      <h3 className="mt-3 text-[17px] font-medium text-white">{item.title}</h3>
-      <Detail plain={item.plain} dev={devMarkdown(item)} className="mt-2 text-[15px] leading-relaxed text-pretty text-white/65" />
-      {state && <p className="mt-3 text-sm font-medium text-[#c9bbff]">{state}</p>}
+      <h3 className="mt-3 text-[17px] font-medium text-foreground">{item.title}</h3>
+      <Detail plain={item.plain} dev={devMarkdown(item)} className="mt-2 text-[15px] leading-relaxed text-pretty text-muted" />
+      {state && <p className="mt-3 text-sm font-medium text-accent-ink">{state}</p>}
       {(item.links?.length ?? 0) > 0 && (
         <p className="mt-4 flex flex-wrap gap-1.5">
           {[...new Set(item.links)].map((l) => (
@@ -215,8 +215,8 @@ export function RoadmapPanel({ roadmap, live, liveKnown }: { roadmap: Roadmap; l
         return (
           <section key={id} id={id} data-roadmap-section className="mt-14 scroll-mt-40 first:mt-0">
             <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-              <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">{name}</h2>
-              <p className="text-sm text-white/50">{SECTION_LEDE[id]}</p>
+              <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">{name}</h2>
+              <p className="text-sm text-muted">{SECTION_LEDE[id]}</p>
             </div>
             <div className="mt-5 grid gap-3 md:grid-cols-2">
               {items.map((item) => (
@@ -226,16 +226,16 @@ export function RoadmapPanel({ roadmap, live, liveKnown }: { roadmap: Roadmap; l
           </section>
         );
       })}
-      <p className="mt-12 max-w-3xl text-sm leading-relaxed text-white/45">
+      <p className="mt-12 max-w-3xl text-sm leading-relaxed text-muted">
         The roadmap lives in the repository:{" "}
-        <a href={fileUrl("ROADMAP.md")} className="text-white/70 underline underline-offset-4 hover:text-white">
+        <a href={fileUrl("ROADMAP.md")} className="text-muted underline underline-offset-4 hover:text-foreground">
           ROADMAP.md
         </a>
         , generated from{" "}
-        <a href={fileUrl("roadmap/roadmap.toml")} className="text-white/70 underline underline-offset-4 hover:text-white">
+        <a href={fileUrl("roadmap/roadmap.toml")} className="text-muted underline underline-offset-4 hover:text-foreground">
           roadmap/roadmap.toml
         </a>
-        . Pull requests carry the <code className="text-white/70">roadmap:&lt;id&gt;</code> label of their item.
+        . Pull requests carry the <code className="text-muted">roadmap:&lt;id&gt;</code> label of their item.
         {!liveKnown && " GitHub couldn't be reached just now, so the links show without their state."}
       </p>
     </Panel>
@@ -249,15 +249,15 @@ function Card({ card, roadmap }: { card: BoardCard; roadmap: Roadmap }) {
   const search = [card.n, card.title, card.user, item?.title ?? "", ...card.prs].join(" ").toLowerCase();
   return (
     <li data-board-card data-item={card.item ?? ""} data-search={search}>
-      <a href={card.url} className="block rounded-lg bg-white/[0.04] p-3 transition-colors hover:bg-white/[0.08]">
-        <span className="block text-xs text-white/45 tabular-nums">
+      <a href={card.url} className="block rounded-lg bg-surface/80 p-3 transition-colors hover:bg-lavender">
+        <span className="block text-xs text-muted tabular-nums">
           {card.kind === "pr" ? "PR" : "Issue"} #{card.n}
           {card.prs.length > 0 && ` · ${card.prs.map((n) => `PR #${n}`).join(", ")}`}
         </span>
-        <span className="mt-1 block text-sm leading-snug [overflow-wrap:anywhere] text-white/85">{card.title}</span>
+        <span className="mt-1 block text-sm leading-snug [overflow-wrap:anywhere] text-foreground">{card.title}</span>
         {(item || card.user) && (
-          <span className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-white/45">
-            {item && <span className={`${CHIP} bg-[#6b4bff]/20 px-1.5 text-[11px] text-[#d4c9ff]`}>{item.title}</span>}
+          <span className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
+            {item && <span className={`${CHIP} bg-brand/20 px-1.5 text-[11px] text-accent-ink`}>{item.title}</span>}
             {card.user && <span>{card.user}</span>}
           </span>
         )}
@@ -274,7 +274,7 @@ function boardItems(columns: Record<ColumnId, BoardCard[]>, roadmap: Roadmap) {
 export function BoardPanel({ columns, roadmap }: { columns: Record<ColumnId, BoardCard[]> | null; roadmap: Roadmap }) {
   return (
     <Panel id="board">
-      <p className="max-w-3xl text-[15px] leading-relaxed text-white/60">
+      <p className="max-w-3xl text-[15px] leading-relaxed text-muted">
         Every open issue and pull request, placed by its state on GitHub, as on Kira&apos;s work board in Discord.
       </p>
       {columns ? (
@@ -284,14 +284,14 @@ export function BoardPanel({ columns, roadmap }: { columns: Record<ColumnId, Boa
           {COLUMNS.map(({ id, name, about }) => {
             const cards = columns[id];
             return (
-              <section key={id} data-board-column aria-labelledby={`col-${id}`} className="rounded-xl bg-white/[0.025] p-4 ring-1 ring-white/[0.06] ring-inset">
-                <h3 id={`col-${id}`} className="flex items-center justify-between text-[15px] font-medium text-white">
+              <section key={id} data-board-column aria-labelledby={`col-${id}`} className="rounded-xl bg-surface/80 p-4 ring-1 ring-line ring-inset">
+                <h3 id={`col-${id}`} className="flex items-center justify-between text-[15px] font-medium text-foreground">
                   {name}
-                  <span data-col-count data-total={cards.length} className="rounded-md bg-white/10 px-2 py-0.5 text-xs text-white/70 tabular-nums">
+                  <span data-col-count data-total={cards.length} className="rounded-md bg-lavender px-2 py-0.5 text-xs text-muted tabular-nums">
                     {cards.length}
                   </span>
                 </h3>
-                <p className="mt-1 text-xs leading-relaxed text-white/45">{about}</p>
+                <p className="mt-1 text-xs leading-relaxed text-muted">{about}</p>
                 <ol className="mt-4 space-y-2">
                   {cards.slice(0, SHOWN).map((c) => (
                     <Card key={c.n} card={c} roadmap={roadmap} />
@@ -299,7 +299,7 @@ export function BoardPanel({ columns, roadmap }: { columns: Record<ColumnId, Boa
                 </ol>
                 {cards.length > SHOWN && (
                   <details className="group mt-2">
-                    <summary className="cursor-pointer list-none rounded-md py-2 text-sm font-medium text-[#a98fff] hover:text-[#c4b5ff] group-open:hidden [&::-webkit-details-marker]:hidden">
+                    <summary className="cursor-pointer list-none rounded-md py-2 text-sm font-medium text-accent-ink hover:text-accent-ink group-open:hidden [&::-webkit-details-marker]:hidden">
                       Show {cards.length - SHOWN} more
                     </summary>
                     <ol className="space-y-2">
@@ -315,9 +315,9 @@ export function BoardPanel({ columns, roadmap }: { columns: Record<ColumnId, Boa
         </div>
         </>
       ) : (
-        <p className="mt-6 text-[15px] text-white/60">
+        <p className="mt-6 text-[15px] text-muted">
           GitHub couldn&apos;t be reached just now; the{" "}
-          <a href={`https://github.com/${REPO}/issues`} className="text-[#a98fff] underline underline-offset-4">
+          <a href={`https://github.com/${REPO}/issues`} className="text-accent-ink underline underline-offset-4">
             issues
           </a>{" "}
           are all there.
@@ -328,15 +328,15 @@ export function BoardPanel({ columns, roadmap }: { columns: Record<ColumnId, Boa
 }
 
 const KIND: Record<JournalEntry["kind"], { label: string; tone: string }> = {
-  release: { label: "Game", tone: "bg-[#6b4bff]/25 text-[#d4c9ff]" },
-  launcher: { label: "Launcher", tone: "bg-white/10 text-white/80" },
+  release: { label: "Game", tone: "bg-brand/25 text-accent-ink" },
+  launcher: { label: "Launcher", tone: "bg-lavender text-muted" },
   merged: { label: "Merged", tone: "bg-emerald-400/15 text-emerald-200" },
   week: { label: "This week", tone: "bg-amber-300/15 text-amber-100" },
 };
 
 const refs = (prs: number[]) =>
   [...new Set(prs)].map((n) => (
-    <a key={n} href={issueUrl(n)} className="ml-1.5 text-xs text-white/40 tabular-nums hover:text-white">
+    <a key={n} href={issueUrl(n)} className="ml-1.5 text-xs text-muted tabular-nums hover:text-foreground">
       #{n}
     </a>
   ));
@@ -352,7 +352,7 @@ function Changes({ entry, roadmap }: { entry: JournalEntry; roadmap: Roadmap }) 
     <>
       <div className="hub-plain mt-3">
         {added.length > 0 && (
-          <ul className="list-disc space-y-1 pl-5 text-[15px] leading-relaxed text-white/65 marker:text-white/30">
+          <ul className="list-disc space-y-1 pl-5 text-[15px] leading-relaxed text-muted marker:text-muted">
             {added.map((c, i) => (
               <li key={i}>
                 <Md text={c.text} className="inline" />
@@ -361,7 +361,7 @@ function Changes({ entry, roadmap }: { entry: JournalEntry; roadmap: Roadmap }) 
           </ul>
         )}
         {fixes > 0 && (
-          <p className="mt-2 text-sm text-white/45">
+          <p className="mt-2 text-sm text-muted">
             {added.length ? "And " : ""}
             {fixes} fix{fixes === 1 ? "" : "es"}.
           </p>
@@ -372,16 +372,16 @@ function Changes({ entry, roadmap }: { entry: JournalEntry; roadmap: Roadmap }) 
           const item = roadmap.items.find((i) => i.id === id);
           return (
             <div key={id || "other"}>
-              <p className="text-sm font-medium text-white/80">
+              <p className="text-sm font-medium text-muted">
                 {item ? (
-                  <a href={`#${item.id}`} className="hover:text-[#c9bbff]">
+                  <a href={`#${item.id}`} className="hover:text-accent-ink">
                     {item.title}
                   </a>
                 ) : (
                   "Other changes"
                 )}
               </p>
-              <ul className="mt-1.5 list-disc space-y-1 pl-5 text-[15px] leading-relaxed text-white/65 marker:text-white/30">
+              <ul className="mt-1.5 list-disc space-y-1 pl-5 text-[15px] leading-relaxed text-muted marker:text-muted">
                 {groups.get(id)!.map((c, i) => (
                   <li key={i}>
                     <Md text={c.text} className="inline" />
@@ -400,11 +400,11 @@ function Changes({ entry, roadmap }: { entry: JournalEntry; roadmap: Roadmap }) 
 export function JournalPanel({ entries, roadmap }: { entries: JournalEntry[]; roadmap: Roadmap }) {
   return (
     <Panel id="journal">
-      <p className="max-w-3xl text-[15px] leading-relaxed text-white/60">
+      <p className="max-w-3xl text-[15px] leading-relaxed text-muted">
         Every release with what it changed, grouped by roadmap item in Technical, and a summary of each week.
       </p>
       <JournalFilter present={[...new Set(entries.map((e) => e.kind))]} />
-      <div data-journal className="mt-6 border-t border-white/[0.08]">
+      <div data-journal className="mt-6 border-t border-line">
         {entries.map((e) => {
           const shipped = e.shipped.map((id) => roadmap.items.find((i) => i.id === id)).filter((i) => i !== undefined);
           const kind = KIND[e.kind];
@@ -413,30 +413,30 @@ export function JournalPanel({ entries, roadmap }: { entries: JournalEntry[]; ro
               key={e.id}
               id={journalAnchor(e)}
               data-journal-kind={e.kind}
-              className="scroll-mt-40 border-b border-white/[0.08] py-7"
+              className="scroll-mt-40 border-b border-line py-7"
             >
               <p className="flex items-center gap-3 text-sm">
                 <span className={`${CHIP} ${kind.tone}`}>{kind.label}</span>
-                <time dateTime={e.date} className="text-white/45 tabular-nums">
+                <time dateTime={e.date} className="text-muted tabular-nums">
                   {e.date.slice(0, 10)}
                 </time>
               </p>
-              <h3 className="mt-2.5 text-[17px] font-medium text-white">
-                <a href={e.url} className="hover:text-[#c9bbff]">
+              <h3 className="mt-2.5 text-[17px] font-medium text-foreground">
+                <a href={e.url} className="hover:text-accent-ink">
                   {e.title}
                 </a>
               </h3>
               {e.kind === "week" && e.plain && e.dev && (
-                <Detail plain={e.plain} dev={e.dev} className="mt-2 max-w-3xl text-[15px] leading-relaxed text-pretty text-white/65" />
+                <Detail plain={e.plain} dev={e.dev} className="mt-2 max-w-3xl text-[15px] leading-relaxed text-pretty text-muted" />
               )}
-              {e.kind === "merged" && e.plain && <p className="hub-plain mt-2 text-[15px] text-white/60">{e.plain}</p>}
+              {e.kind === "merged" && e.plain && <p className="hub-plain mt-2 text-[15px] text-muted">{e.plain}</p>}
               {shipped.length > 0 && (
-                <p className="mt-2 text-sm text-white/60">
+                <p className="mt-2 text-sm text-muted">
                   Shipped:{" "}
                   {shipped.map((i, k) => (
                     <span key={i.id}>
                       {k > 0 && ", "}
-                      <a href={`#${i.id}`} className="text-[#c9bbff] hover:underline">
+                      <a href={`#${i.id}`} className="text-accent-ink hover:underline">
                         {i.title}
                       </a>
                     </span>
@@ -484,21 +484,21 @@ const RULES = [
 
 function TaskRows({ items, live }: { items: RoadmapItem[]; live: Live }) {
   return (
-    <ol className="mt-5 border-t border-white/[0.08]">
+    <ol className="mt-5 border-t border-line">
       {items.map((item, i) => {
         const first = (item.links ?? []).map(issueNumber).find(Boolean) ?? null;
         const issue = first ? live.get(first) : undefined;
         const taken = issue ? issue.assigned || issue.state !== "open" || issue.labels.some((l) => /^(in progress|claimed)$/i.test(l)) : false;
         return (
-          <li key={item.id} className="grid grid-cols-[2rem_minmax(0,1fr)] gap-x-4 gap-y-3 border-b border-white/[0.08] py-5 sm:grid-cols-[2rem_minmax(0,1fr)_auto]">
-            <span className="pt-0.5 text-xs font-medium text-white/35 tabular-nums">{number2(i)}</span>
-            <a href={first ? issueUrl(first) : `#${item.id}`} className="group rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff]">
-              <span className="block text-[16px] font-medium text-white transition-colors group-hover:text-[#c9bbff]">{item.title}</span>
-              <Detail plain={item.plain} dev={item.dev} links={false} className="mt-1.5 text-[15px] leading-relaxed text-pretty text-white/60" />
+          <li key={item.id} className="grid grid-cols-[2rem_minmax(0,1fr)] gap-x-4 gap-y-3 border-b border-line py-5 sm:grid-cols-[2rem_minmax(0,1fr)_auto]">
+            <span className="pt-0.5 text-xs font-medium text-muted tabular-nums">{number2(i)}</span>
+            <a href={first ? issueUrl(first) : `#${item.id}`} className="group rounded-md outline-none focus-visible:ring-2 focus-visible:ring-accent">
+              <span className="block text-[16px] font-medium text-foreground transition-colors group-hover:text-accent-ink">{item.title}</span>
+              <Detail plain={item.plain} dev={item.dev} links={false} className="mt-1.5 text-[15px] leading-relaxed text-pretty text-muted" />
             </a>
             <span className="col-start-2 flex flex-wrap items-center gap-2 sm:col-start-3 sm:flex-col sm:items-end">
               {first && (
-                <a href={issueUrl(first)} className="text-sm text-white/45 tabular-nums hover:text-white">
+                <a href={issueUrl(first)} className="text-sm text-muted tabular-nums hover:text-foreground">
                   #{first}
                   {taken && <span className="ml-1.5 text-amber-200/80">{issue?.state === "open" ? "claimed" : "closed"}</span>}
                 </a>
@@ -527,11 +527,11 @@ export function ContributePanel({
   return (
     <Panel id="contribute">
       <Block title="Good first tasks">
-        <p className="hub-plain mt-2 max-w-3xl text-[15px] text-white/60">
+        <p className="hub-plain mt-2 max-w-3xl text-[15px] text-muted">
           Each one is a small difference from vanilla, with an issue that says how to see it. Found one you like? Copy its /claim command and send it
           on Discord, so nobody starts the same work.
         </p>
-        <p className="hub-dev mt-2 max-w-3xl text-[15px] text-white/60">
+        <p className="hub-dev mt-2 max-w-3xl text-[15px] text-muted">
           Each links its issue; the technical text says where in the code and in vanilla to start. /claim on Discord marks it as yours, /unclaim frees it.
         </p>
         <TaskRows items={wanted} live={live} />
@@ -540,9 +540,9 @@ export function ContributePanel({
       <Block title="Ways to help">
         <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {WAYS.map((w) => (
-            <article key={w.title} className="flex flex-col rounded-xl bg-white/[0.04] p-5">
-              <h3 className="text-[16px] font-medium text-white">{w.title}</h3>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-white/60">{w.body}</p>
+            <article key={w.title} className="flex flex-col rounded-xl bg-surface/80 p-5">
+              <h3 className="text-[16px] font-medium text-foreground">{w.title}</h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{w.body}</p>
               <p className="mt-4 flex flex-wrap gap-2">
                 {w.actions.map((a) =>
                   a.href.startsWith("/") ? (
@@ -566,7 +566,7 @@ export function ContributePanel({
       </Block>
 
       <Block title="Report a bug" id="report">
-        <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-white/60">
+        <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-muted">
           One bug per report: something that breaks, or doesn&apos;t play like vanilla. Fill this in and it opens as a ready issue on GitHub for you to
           check and send, with the steps in the order the maintainers need them.
         </p>
@@ -574,10 +574,10 @@ export function ContributePanel({
       </Block>
 
       <Block title="The rules">
-        <ol className="mt-5 max-w-3xl list-decimal space-y-3 pl-5 text-[15px] leading-relaxed text-white/65 marker:text-white/35">
+        <ol className="mt-5 max-w-3xl list-decimal space-y-3 pl-5 text-[15px] leading-relaxed text-muted marker:text-muted">
           {RULES.map(([lead, rest]) => (
             <li key={lead}>
-              <strong className="font-medium text-white">{lead}</strong> {rest}
+              <strong className="font-medium text-foreground">{lead}</strong> {rest}
             </li>
           ))}
         </ol>
@@ -603,11 +603,11 @@ export function ContributePanel({
           <ul className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
             {contributors.map((c) => (
               <li key={c.login}>
-                <a href={c.url} className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-white/[0.05]">
-                  <Image src={c.avatar} alt="" width={36} height={36} className="size-9 shrink-0 rounded-full bg-white/[0.06]" />
+                <a href={c.url} className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-surface/80">
+                  <Image src={c.avatar} alt="" width={36} height={36} className="size-9 shrink-0 rounded-full bg-lavender" />
                   <span className="min-w-0">
-                    <span className="block truncate text-sm font-medium text-white">{c.login}</span>
-                    <span className="block text-xs text-white/45">
+                    <span className="block truncate text-sm font-medium text-foreground">{c.login}</span>
+                    <span className="block text-xs text-muted">
                       {c.commits.toLocaleString("en-US")} {c.commits === 1 ? "commit" : "commits"}
                     </span>
                   </span>
@@ -636,20 +636,20 @@ const TIER_TEXT: Record<string, { title: string; about: string; empty?: string }
 
 function PersonCard({ person }: { person: OrgPerson }) {
   return (
-    <li className="flex items-center gap-3 rounded-xl bg-white/[0.04] p-4">
+    <li className="flex items-center gap-3 rounded-xl bg-surface/80 p-4">
       {person.avatar ? (
-        <Image src={person.avatar} alt="" width={40} height={40} className="size-10 shrink-0 rounded-full bg-white/[0.06]" />
+        <Image src={person.avatar} alt="" width={40} height={40} className="size-10 shrink-0 rounded-full bg-lavender" />
       ) : (
-        <span aria-hidden className="grid size-10 shrink-0 place-items-center rounded-full bg-white/[0.08] text-sm font-medium text-white/70">
+        <span aria-hidden className="grid size-10 shrink-0 place-items-center rounded-full bg-lavender text-sm font-medium text-muted">
           {[...person.name][0]?.toUpperCase()}
         </span>
       )}
       <span className="min-w-0 flex-1">
         <span className="flex min-w-0 items-center gap-2">
-          <span className="truncate text-[15px] font-medium text-white">{person.name}</span>
-          {person.job && <span className={`${CHIP} shrink-0 bg-[#6b4bff]/20 text-[#d9ceff]`}>{person.job}</span>}
+          <span className="truncate text-[15px] font-medium text-foreground">{person.name}</span>
+          {person.job && <span className={`${CHIP} shrink-0 bg-brand/20 text-accent-ink`}>{person.job}</span>}
         </span>
-        <span className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-white/45">
+        <span className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
           <span className="inline-flex min-w-0 items-center gap-1.5">
             <DiscordIcon className="size-3.5 shrink-0" />
             <span className="sr-only">Discord: </span>
@@ -658,7 +658,7 @@ function PersonCard({ person }: { person: OrgPerson }) {
           {person.github && (
             <a
               href={`https://github.com/${person.github}`}
-              className="inline-flex min-w-0 items-center gap-1.5 text-white/60 transition-colors hover:text-white"
+              className="inline-flex min-w-0 items-center gap-1.5 text-muted transition-colors hover:text-foreground"
             >
               <GitHubIcon className="size-3.5 shrink-0" />
               <span className="sr-only">GitHub: </span>
@@ -680,14 +680,14 @@ export function PeoplePanel({ tiers }: { tiers: OrgTier[] | null }) {
           it is confirmed: run <code className="text-white/75">/link-github &lt;your login&gt; credit:True</code> on Discord to add yours.
         </p>
         {tiers ? (
-          <ol className="mt-8 ml-1 border-l border-white/[0.1]">
+          <ol className="mt-8 ml-1 border-l border-line">
             {tiers.map((tier) => {
               const t = TIER_TEXT[tier.key] ?? { title: tier.post, about: "" };
               return (
                 <li key={tier.key} id={`people-${tier.key}`} className="relative scroll-mt-40 pb-10 pl-6 last:pb-0 sm:pl-8">
-                  <span aria-hidden className="absolute top-2 -left-[5px] size-2.5 rounded-full bg-[#a98fff] ring-4 ring-background" />
-                  <h3 className="text-[17px] font-medium text-white">{t.title}</h3>
-                  {t.about && <p className="mt-1 max-w-3xl text-sm leading-relaxed text-white/55">{t.about}</p>}
+                  <span aria-hidden className="absolute top-2 -left-[5px] size-2.5 rounded-full bg-lavender ring-4 ring-background" />
+                  <h3 className="text-[17px] font-medium text-foreground">{t.title}</h3>
+                  {t.about && <p className="mt-1 max-w-3xl text-sm leading-relaxed text-muted">{t.about}</p>}
                   {tier.people.length > 0 ? (
                     <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                       {tier.people.map((p) => (
@@ -695,7 +695,7 @@ export function PeoplePanel({ tiers }: { tiers: OrgTier[] | null }) {
                       ))}
                     </ul>
                   ) : (
-                    <p className="mt-3 text-sm text-white/45">{t.empty ?? "Nobody right now."}</p>
+                    <p className="mt-3 text-sm text-muted">{t.empty ?? "Nobody right now."}</p>
                   )}
                 </li>
               );
@@ -707,7 +707,7 @@ export function PeoplePanel({ tiers }: { tiers: OrgTier[] | null }) {
             {DISCORD_URL && (
               <>
                 {" "}The roles are on{" "}
-                <a href={DISCORD_URL} className="text-[#a98fff] underline underline-offset-4">
+                <a href={DISCORD_URL} className="text-accent-ink underline underline-offset-4">
                   Sunrise&apos;s Discord server
                 </a>
                 .

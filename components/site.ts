@@ -91,6 +91,6 @@ export function rootMetadata(locale: Locale): Metadata {
 }
 
 export const VIEWPORT: Viewport = {
-  themeColor: "#100a1f",
+  themeColor: "#170c19",
   colorScheme: "dark",
 };

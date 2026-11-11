@@ -8,7 +8,7 @@ const BAYER = [
   61, 29, 53, 21,
 ].map((v) => (v + 0.5) / 64);
 
-const RAMP = ["#100a1f", "#170e2c", "#21113c", "#2e144c", "#3d175a", "#511a66", "#6a1e6f", "#872672", "#a53470", "#c4486b", "#de6466", "#f08a64", "#f8b36f", "#fcd795"];
+const RAMP = ["#170c19", "#260b14", "#3a0c12", "#560e10", "#740f0e", "#94110c", "#b5140b", "#d4190c", "#ee2410", "#ff3a14", "#ff5a1c", "#ff7f26", "#ffaa3c", "#ffd86a"];
 
 function abgr(hex: string) {
   const n = parseInt(hex.slice(1), 16);
@@ -147,5 +147,5 @@ export function PixelFire({ className = "" }: { className?: string }) {
     };
   }, []);
 
-  return <canvas ref={ref} aria-hidden className={`opacity-0 transition-opacity duration-700 [image-rendering:pixelated] data-ready:opacity-75 ${className}`} />;
+  return <canvas ref={ref} aria-hidden className={`opacity-0 transition-opacity duration-700 [image-rendering:pixelated] data-ready:opacity-100 ${className}`} />;
 }

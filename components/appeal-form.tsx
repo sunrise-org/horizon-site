@@ -104,10 +104,10 @@ export function AppealForm() {
 
   let body;
   if (token === null || (token && !view && !error)) {
-    body = <p className="text-lg text-white/70">Checking…</p>;
+    body = <p className="text-lg text-muted">Checking…</p>;
   } else if (!token || error) {
     body = (
-      <div className="max-w-2xl space-y-6 text-lg leading-relaxed text-white/70">
+      <div className="max-w-2xl space-y-6 text-lg leading-relaxed text-muted">
         {note ? <p>{NOTES[note]}</p> : null}
         {error ? <p>{error}</p> : null}
         <p>
@@ -122,24 +122,24 @@ export function AppealForm() {
     const open = view.cases.filter((c) => c.canAppeal);
     body = (
       <div className="space-y-8">
-        <p className="max-w-2xl text-lg leading-relaxed text-white/70">
+        <p className="max-w-2xl text-lg leading-relaxed text-muted">
           {view.name ? (
             <>
-              As <strong className="text-white">{view.name}</strong> on Discord.{" "}
+              As <strong className="text-foreground">{view.name}</strong> on Discord.{" "}
             </>
           ) : null}
           The mods read the form and decide; the one who acted never decides alone. Come back to this page to read the answer.
         </p>
         {view.appeals.length ? (
           <section className={`${CARD} max-w-3xl space-y-3`}>
-            <h2 className="font-display text-xl font-semibold text-white">Your appeals</h2>
+            <h2 className="font-display text-xl font-semibold text-foreground">Your appeals</h2>
             <ul className="space-y-3">
               {view.appeals.map((a) => (
-                <li key={a.id} className="text-[15px] leading-relaxed text-white/75">
-                  <span className="text-white">
+                <li key={a.id} className="text-[15px] leading-relaxed text-muted">
+                  <span className="text-foreground">
                     Case #{a.case} · {a.label}
                   </span>{" "}
-                  <span className="text-white/45">sent {day(a.at)}</span>
+                  <span className="text-muted">sent {day(a.at)}</span>
                   <p className="mt-1 whitespace-pre-line">{a.outcome ?? "Open: the mods haven't decided yet."}</p>
                 </li>
               ))}
@@ -147,7 +147,7 @@ export function AppealForm() {
           </section>
         ) : null}
         {sent ? (
-          <p className="text-lg text-white/75">Sent, thank you. The answer shows here once the mods decide.</p>
+          <p className="text-lg text-muted">Sent, thank you. The answer shows here once the mods decide.</p>
         ) : (
           <form onSubmit={submit} className={`${CARD} max-w-3xl space-y-5`}>
             <Field label="What you are appealing">
@@ -164,7 +164,7 @@ export function AppealForm() {
             {view.cases
               .filter((c) => !c.canAppeal && c.why)
               .map((c) => (
-                <p key={c.n} className="text-[13px] text-white/50">
+                <p key={c.n} className="text-[13px] text-muted">
                   Case #{c.n} ({c.label}): {c.why}
                 </p>
               ))}
@@ -183,7 +183,7 @@ export function AppealForm() {
                 <textarea name={q.id} rows={4} maxLength={q.max} required={q.required} className={AREA} />
               </Field>
             ))}
-            <p className="text-[13px] leading-relaxed text-white/50">
+            <p className="text-[13px] leading-relaxed text-muted">
               Only the mods (for the Minecraft server, its ops) and Ludovic read it. One appeal per action; another one 7 days after a decision (
               <Link href="/privacy" className={LINK}>
                 privacy
@@ -214,10 +214,10 @@ export function AppealForm() {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 pt-32 pb-24 sm:pt-36 lg:px-10">
-      <p className="text-sm font-medium text-white/60">
-        Hub <span className="mx-1.5 text-white/30">·</span> Appeal
+      <p className="text-sm font-medium text-muted">
+        Hub <span className="mx-1.5 text-muted">·</span> Appeal
       </p>
-      <h1 className="mt-3 mb-6 font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-white">Appeal a ban</h1>
+      <h1 className="mt-3 mb-6 font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-foreground">Appeal a ban</h1>
       {body}
     </main>
   );
