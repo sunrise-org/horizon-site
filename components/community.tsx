@@ -1,8 +1,6 @@
-import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
 import {
   getMessages,
-  rich,
   type Locale,
   type Messages,
 } from "@/components/i18n";
@@ -61,7 +59,7 @@ export function Community({ locale }: { locale: Locale }) {
       aria-labelledby="community-title"
       className="relative isolate mb-8 scroll-mt-14 overflow-hidden py-16  sm:py-24"
     >
-      <PixelAurora className="absolute top-0 left-0 -z-10 [mask-image:linear-gradient(#000_72%,transparent)]" />
+      <PixelAurora className="absolute top-0 left-0 -z-10" />
 
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
         <div className="reveal">
@@ -101,19 +99,6 @@ export function Community({ locale }: { locale: Locale }) {
             </li>
           ))}
         </ul>
-
-        <p className="mt-6 text-sm text-muted">
-          {rich(t.artists, {
-            link: (chunks) => (
-              <Link
-                href="/artists"
-                className="font-medium text-white/85 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60"
-              >
-                {chunks}
-              </Link>
-            ),
-          })}
-        </p>
       </div>
     </section>
   );

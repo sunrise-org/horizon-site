@@ -10,12 +10,14 @@ import { book, type Book, type BookSource } from "@/components/modding-docs";
 const CONTENT = join(process.cwd(), "content", "docs");
 const PUBLIC = join(process.cwd(), "public");
 
-// `section` is the tab of the docs menu the group shows under; `parents` maps a chapter to the page it belongs to.
-export type DocGroup = { group: string; section: string; pages: string[]; parents?: Record<string, string> };
+// `section` is the part of the docs (the menu's tab) the group shows under; `parents` maps a chapter to the page it
+// belongs to; `book` marks the groups of the modding book, which the menu shows as Modding's reference.
+export type DocGroup = { group: string; section: string; pages: string[]; parents?: Record<string, string>; book?: boolean };
 export type Doc = {
   slug: string;
   path: string;
   group: string;
+  section: string;
   title: string;
   lede: string;
   description: string;
@@ -107,9 +109,23 @@ async function getBook(): Promise<{ book: Book; source: BookSource }> {
 
 export async function getDocsNav(): Promise<DocGroup[]> {
   "use cache";
-  const nav: (DocGroup | { book: string; section: string })[] = JSON.parse(await readFile(join(CONTENT, "nav.json"), "utf8"));
+  // A book entry with `parts` lifts those parts of the book into an ordinary group named `group` (the how-to guides,
+  // high in Modding); a book entry without them lists the rest of the book as Modding's reference.
+  type BookEntry = { book: string; section: string; parts?: string[]; group?: string };
+  const nav: (Omit<DocGroup, "book"> | BookEntry)[] = JSON.parse(await readFile(join(CONTENT, "nav.json"), "utf8"));
   const { book } = await getBook();
-  return nav.flatMap((g) => ("book" in g ? book.groups.map((b) => ({ ...b, section: g.section, parents: book.parents })) : [g]));
+  const lifted = new Set(nav.flatMap((g) => ("book" in g ? (g.parts ?? []) : [])));
+  return nav.flatMap((g) => {
+    if (!("book" in g)) return [g];
+    if (g.parts) {
+      const pages = book.groups.filter((b) => g.parts!.includes(b.group)).flatMap((b) => b.pages);
+      return [{ group: g.group ?? g.parts.join(", "), section: g.section, pages, parents: book.parents }];
+    }
+    // The book's parts are named in the book's own words; the prefix keeps them apart from the guides' groups.
+    return book.groups
+      .filter((b) => !lifted.has(b.group))
+      .map((b) => ({ ...b, group: `Book: ${b.group === "Modding book" ? "Introduction" : b.group}`, section: g.section, parents: book.parents, book: true }));
+  });
 }
 
 export async function getDocs(): Promise<Doc[]> {
@@ -121,7 +137,7 @@ export async function getDocs(): Promise<Doc[]> {
   const { harnesses } = await parityNumbers();
   let failed = false;
   const docs = await Promise.all(
-    nav.flatMap(({ group, pages }) =>
+    nav.flatMap(({ group, section, pages }) =>
       pages.map(async (slug): Promise<Doc> => {
         const api = isApi(slug);
         const page = book.pages.get(slug);
@@ -140,6 +156,7 @@ export async function getDocs(): Promise<Doc[]> {
             slug,
             path,
             group,
+            section,
             title,
             lede: `This page couldn't be loaded from GitHub just now. Read it there: <a href="${link}">${source}</a>.`,
             description: title,
@@ -165,6 +182,7 @@ export async function getDocs(): Promise<Doc[]> {
           slug,
           path,
           group,
+          section,
           title,
           lede: inline(lede),
           description: plainText(lede).slice(0, 220),

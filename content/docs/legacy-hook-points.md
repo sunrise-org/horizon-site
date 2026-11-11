@@ -434,4 +434,4 @@ Block hooks (`random_tick`, `tick_block`, `perform_bonemeal`…) get a level hos
 
 **Not yet.** horizon-mods' `native.py` doesn't know `[api]` yet: `check` and `build` don't handle it, and `package` leaves the crate's folder out of the `.hnmod`. Build typed mods with `horizon-launcher native-build`, and use mixin helpers for a mod you want in the registry today.
 
-Next: [content mods](/docs/content-mods), or straight to [testing](/docs/test-a-mod).
+Next: [blocks, items and data files](/docs/mod-data), or straight to [testing](/docs/test-a-mod).

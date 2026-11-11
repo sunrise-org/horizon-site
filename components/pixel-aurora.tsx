@@ -231,7 +231,7 @@ export function PixelAurora({ className = "", moonTop = 32 }: { className?: stri
     <canvas
       ref={ref}
       aria-hidden
-      className={`opacity-0 transition-opacity duration-700 [image-rendering:pixelated] data-ready:opacity-100 ${className}`}
+      className={`fade-y opacity-0 transition-opacity duration-700 [image-rendering:pixelated] data-ready:opacity-100 ${className}`}
     />
   );
 }

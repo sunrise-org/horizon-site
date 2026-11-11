@@ -10,11 +10,10 @@
   "header": {
     "nav": {
       "about": "Qué es",
-      "hub": "Hub",
+      "team": "Equipo",
       "mods": "Mods",
       "releases": "Versiones",
       "docs": "Docs",
-      "players": "Jugadores",
       "apiGaps": "Brechas de API",
       "faq": "FAQ"
     },
@@ -28,7 +27,7 @@
   "footer": {
     "disclaimer": "No es un producto oficial de Minecraft. No está aprobado por Mojang ni Microsoft ni asociado con ellos.",
     "whoTitle": "Quién lo hace",
-    "who": "Sunrise lo hace su equipo: <members>Sunrise</members>, con <team>todas las personas que contribuyen</team>. Parte de <horizon>Horizon</horizon>, de Ludovic Marie y los contribuidores de horizon-rust, y este sitio lo hacen <umut>Umut</umut> y <xmilon>Xmilon</xmilon>, y lo aloja <umut>Umut</umut>. Escríbenos en <github>GitHub</github>. Sunrise no contiene código, recursos ni datos de Minecraft, y este sitio no ofrece archivos del juego: necesitas tu propia copia legal de Minecraft: Java Edition. Minecraft es una marca de Mojang Synergies AB.",
+    "who": "Sunrise lo hace su equipo: <members>Sunrise</members>, con <team>todas las personas que contribuyen</team>. Parte de <horizon>Horizon</horizon>, fundado por Ludovic Marie, y de los contribuidores de horizon-rust. Este sitio lo hacen <umut>Umut</umut> y <xmilon>Xmilon</xmilon>, lo aloja <umut>Umut</umut> y parte del sitio de Horizon, de <anthony>Anthony S</anthony>. Escríbenos en <github>GitHub</github>. Sunrise no contiene código, recursos ni datos de Minecraft, y este sitio no ofrece archivos del juego: necesitas tu propia copia legal de Minecraft: Java Edition. Minecraft es una marca de Mojang Synergies AB.",
     "licencesTitle": "Licencias",
     "licences": "El código de Sunrise está bajo la <mit>licencia MIT</mit>, como el de Horizon. Las fuentes son Geist, Geist Mono y Sora, con Bricolage Grotesque en las tarjetas para compartir, bajo la <ofl>SIL Open Font License</ofl>. Todos los recursos de este sitio figuran en LEGAL.md.",
     "privacyTitle": "Privacidad",
@@ -67,7 +66,7 @@
     "about": {
       "eyebrow": "Qué es",
       "title": "Mismas entradas, salidas idénticas.",
-      "fork": "Sunrise es un fork de la comunidad de <upstream>Horizon</upstream>.",
+      "fork": "Sunrise es un fork de la comunidad de <upstream>Horizon</upstream>, hecho para facilitar el desarrollo y publicar funciones que aún están en desarrollo.",
       "lead": "Sunrise, a veces llamado Minecraft Rust Edition, rehace Minecraft: Java Edition 26.3 en Rust, subsistema a subsistema, y somete cada pieza a las mismas entradas que el juego vanilla hasta que las salidas son idénticas.",
       "contributors": "Ver colaboradores",
       "imageAlt": "Un molino de Minecraft sobre un campo de lavanda",
@@ -113,30 +112,23 @@
           "title": "Cómo se hace",
           "body": "Quién lo escribe, cómo se comprueban los cambios y por qué es seguro ejecutarlo."
         }
-      },
-      "artists": "¿Haces modelos 3D? <link>Sunrise busca artistas 3D</link>."
-    },
-    "gallery": {
-      "eyebrow": "Dibujado por",
-      "title": "El juego que te encanta, <accent>fotograma a fotograma.</accent>",
-      "lead": "Cada fotograma de aquí lo renderizó Sunrise, con los modelos de bloques, la iluminación, el cielo y la niebla de vanilla.",
-      "shots": {
-        "nether": "Un piglin con una espada de oro en un bosque carmesí sobre un mar de lava en el Nether",
-        "village": "Una aldea de sabana con casas de paja entre acacias bajo un cielo azul",
-        "night": "Una aldea iluminada con antorchas bajo una luna cuadrada y un cielo estrellado",
-        "ocean": "Peces tropicales nadando sobre un arrecife de coral en un océano cálido"
       }
     },
     "contributors": {
-      "eyebrow": "Colaboradores",
+      "eyebrow": "Colaboradores de Horizon",
       "title": "Hecho por {n} personas.",
       "claude": "…y<claude/>Claude también",
       "titleFallback": "Hecho por sus colaboradores.",
-      "lead": "Todos los que tienen commits en {repo}, primero los que más, y las personas detrás de este sitio.",
+      "lead": "Todos los que tienen commits en Horizon, a través de {repo}, primero los que más.",
       "all": "Todos los colaboradores en GitHub",
       "oneCommit": "1 commit",
       "commits": "{n} commits",
-      "webDeveloper": "Creador del sitio"
+      "webDeveloper": "Creador del sitio",
+      "onePull": "1 pull request a este sitio",
+      "pulls": "{n} pull requests a este sitio",
+      "siteTitle": "Este sitio",
+      "siteLead": "playsunrise.net lo hacen Xmilon y Umut, en {repo}, y parte del sitio de Horizon.",
+      "originalSite": "Hizo el sitio original de Horizon"
     },
     "parity": {
       "harnesses": "pruebas diferenciales cuando empezamos: cada una pasa las mismas entradas por Sunrise y por el cliente y el servidor vanilla, y compara lo que sale.",
@@ -382,108 +374,6 @@
         "githubOne": "{n} estrella en GitHub"
       }
     }
-  },
-  "stats": {
-    "meta": {
-      "title": "Jugadores de Sunrise: cuántos juegan ahora mismo",
-      "description": "Cuántas personas juegan a Sunrise ahora mismo, sus picos y su historial, a partir del ping anónimo que envía cada partida en marcha."
-    },
-    "kicker": "Jugadores",
-    "kickerLive": "En directo, cada minuto",
-    "titleA": "Quién juega",
-    "titleB": "a Sunrise ahora.",
-    "lead": "Cada partida en marcha envía un ping anónimo de “estoy jugando” una vez por minuto: sin cuenta, sin dirección, nada de lo que haces en el juego (<link>qué contiene</link>, en inglés). El recuento de abajo es exacto, y el historial solo guarda totales.",
-    "live": {
-      "ranges": {
-        "24h": "24 horas",
-        "7d": "7 días",
-        "30d": "30 días",
-        "all": "Todo"
-      },
-      "spans": {
-        "24h": "en las últimas 24 horas",
-        "7d": "en los últimos 7 días",
-        "30d": "en los últimos 30 días",
-        "all": "desde que empezó el recuento"
-      },
-      "platforms": {
-        "linux": "Linux",
-        "macos": "macOS",
-        "windows": "Windows",
-        "other": "Otro"
-      },
-      "label": "{title} {span}",
-      "noSamples": "Todavía no hay muestras en este periodo: el historial empezó el 31 de octubre de 2026.",
-      "highest": "Máximo",
-      "average": "Media",
-      "peak": "Pico de {n} el {when}",
-      "chartLabel": "{title}: el recuento más alto de cada punto y la media. La tabla de abajo lista todos los puntos.",
-      "tooltip": "Máximo {max} · Media {avg}",
-      "table": "Tabla",
-      "when": "Cuándo",
-      "showThe": "Mostrar",
-      "down": "El servidor no responde ahora mismo.",
-      "loading": "Cargando…",
-      "nowTitle": "Ahora y los picos",
-      "playingNow": "jugando ahora",
-      "updated": "Actualizado a las {time}, de nuevo cada minuto",
-      "asking": "Preguntando al servidor…",
-      "peakToday": "pico de hoy",
-      "at": "a las {time}",
-      "noSampleToday": "Todavía no hay muestras hoy",
-      "allTime": "récord histórico",
-      "on": "el {when}",
-      "lan": "abiertas en LAN o a amigos",
-      "lanShare": "el {pct} % de quienes juegan",
-      "system": "En qué sistema",
-      "nobody": "Nadie está jugando ahora mismo.",
-      "overTime": "A lo largo del tiempo",
-      "historyNote": "Cada punto es el recuento más alto y la media de sus 5 minutos (24 horas), su hora (7 días), sus 3 horas (30 días) o su día (todo, días UTC). Las horas están en tu zona horaria.",
-      "officialTitle": "El Official Sunrise SMP",
-      "officialLead": "El Official Sunrise SMP, el servidor de supervivencia que aparece primero en la lista de servidores del juego. Cada minuto, el servidor de telemetría le pregunta cuántos juegan, con el mismo ping de estado que envía la lista de Multijugador de tu juego.",
-      "playingThere": "jugando allí ahora",
-      "atAgain": "A las {time}, de nuevo cada minuto",
-      "notAnswering": "Sin responder desde las {time}",
-      "playersTitle": "Jugadores",
-      "officialHistory": "En el Official Sunrise SMP"
-    }
-  },
-  "artists": {
-    "meta": {
-      "title": "Artistas 3D · Sunrise",
-      "description": "Sunrise da la bienvenida a artistas 3D para crear cosméticos para sus jugadores: sombreros, objetos para la espalda, mascotas para el hombro, estelas y gestos con estilo de bloques. Saluda en Discord."
-    },
-    "kicker": "Artistas 3D",
-    "titleA": "Buscamos",
-    "titleB": "artistas 3D.",
-    "lead": "Sunrise da la bienvenida a artistas 3D para crear cosméticos para los jugadores de Sunrise: cosas que llevan puestas o encima y que los demás jugadores de Sunrise ven en cada mundo y en cada servidor. Si te gusta hacer modelos pequeños y de bloques, nos encantaría saber de ti.",
-    "make": {
-      "title": "Lo que haríamos juntos",
-      "items": [
-        "Sombreros y otras piezas para la cabeza.",
-        "Objetos para la espalda, como mochilas o alas rígidas.",
-        "Pequeñas mascotas que van sobre el hombro del jugador, o compañeros que flotan a su lado.",
-        "Auras y estelas hechas de unas pocas partículas.",
-        "Gestos: animaciones cortas para el propio modelo del jugador."
-      ],
-      "note": "Los cosméticos solo cambian el aspecto de un jugador, nunca cómo se juega."
-    },
-    "fits": {
-      "title": "Lo que encaja",
-      "items": [
-        "Modelos low-poly con el estilo de bloques de Minecraft, hechos con unas pocas docenas de cubos y con texturas pequeñas de píxeles (de 16 a 64 píxeles).",
-        "Tus propios diseños. Nada de copias de las criaturas y los objetos de Minecraft, ni del trabajo de nadie más.",
-        "Arte para todas las edades, que se siga entendiendo a distancia.",
-        "Nada de capas, ni nada que cuelgue de los hombros como una.",
-        "Blockbench es bienvenido. La animación es un plus, no un requisito."
-      ]
-    },
-    "contact": {
-      "title": "Ponte en contacto",
-      "body": "Únete al Discord de Sunrise y di que eres artista 3D, con algunas piezas que hayas hecho: valen enlaces o imágenes. Si prefieres escribir en privado, hazlo a través de <link>lu4ovic.com</link>.",
-      "discord": "Únete al Discord"
-    },
-    "newTab": " (se abre en una pestaña nueva)"
   },
   "faq": {
     "meta": {

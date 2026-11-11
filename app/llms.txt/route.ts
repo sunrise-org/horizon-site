@@ -5,8 +5,7 @@ import { absolute, SITE_URL } from "@/components/site";
 const PAGES = [
   ["Download and releases", "/releases", "every game, launcher and nightly release, with notes and downloads"],
   ["Mods", "/mods", "mods, modpacks and resource packs made for Sunrise, each reviewed before it was listed"],
-  ["Hub", "/hub", "what is being built now, what comes next and what shipped"],
-  ["Players", "/stats", "how many people play Sunrise right now"],
+  ["Team", "/team", "who makes Sunrise and this site"],
 ];
 
 export async function GET() {
@@ -24,7 +23,7 @@ export async function GET() {
     "- It reads the same worlds, plays by the same rules and generates the same terrain as the Java game. Differential harnesses feed the same inputs to Sunrise and to vanilla and compare the results.",
     "- Forge, NeoForge, Fabric and Quilt mods do not run in it. It has its own mod system, and the launcher can carry over the content of some Java mods.",
     "- Players sign in with a Microsoft account that owns Java Edition, and it joins servers that check accounts (online mode) as vanilla does. Vanilla 26.3 clients can join a Sunrise server.",
-    `- It is a community fork of Horizon (${UPSTREAM_URL}), which Ludovic Marie makes. Source code: ${GITHUB_URL}.${DISCORD_URL ? ` Community: ${DISCORD_URL}.` : ""}`,
+    `- It is a community fork of Horizon (${UPSTREAM_URL}), founded by Ludovic Marie. Sunrise is made by its own team, to ease development and to ship features that are still in development. Source code: ${GITHUB_URL}.${DISCORD_URL ? ` Community: ${DISCORD_URL}.` : ""}`,
     "",
     "## Pages",
     "",

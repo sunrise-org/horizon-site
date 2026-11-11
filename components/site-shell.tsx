@@ -32,7 +32,8 @@ export function SiteShell({ locale, children }: { locale: Locale; children: Reac
       lang={locale}
       className={`${geist.variable} ${geistMono.variable} ${sora.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      {/* Browser extensions (e.g. Bitdefender) add attributes to <body> before React loads. */}
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <DawnBackdrop />
         <PointerGlow />
         <Suspense fallback={<SiteHeader locale={locale} t={getMessages(locale).header} />}>

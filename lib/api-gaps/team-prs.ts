@@ -6,7 +6,7 @@ import { REPO } from "./links";
 import { parseTeamPulls, searchPath, teamQuery, type TeamPulls } from "./team-prs-parse";
 
 export const TEAM_REPOS = [REPO, "sunrise-org/horizon"] as const;
-export const TEAM_QUERY = teamQuery(TEAM.map((m) => m.login), TEAM_REPOS);
+export const TEAM_QUERY = teamQuery(TEAM.flatMap((m) => (m.login ? [m.login] : [])), TEAM_REPOS);
 
 // The team's open pull requests; null when GitHub would not answer, and the page leaves the section out.
 export async function getTeamPulls(): Promise<TeamPulls | null> {

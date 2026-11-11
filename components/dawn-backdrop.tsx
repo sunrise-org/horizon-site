@@ -9,7 +9,6 @@ export function DawnBackdrop() {
         <div className="dawn-sun" />
       </div>
       <div className="dawn-land" />
-      <div className="dawn-horizon" />
       <div className="dawn-grain" />
     </div>
   );

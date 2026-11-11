@@ -6,20 +6,12 @@ import { githubFetch } from "@/components/github-api";
 import { format, getMessages, NUMBER_LOCALE, rich, type Locale } from "@/components/i18n";
 import { ClaudeIcon, ExternalLinkIcon } from "@/components/icons";
 import { GITHUB_URL } from "@/components/links";
-import { avatarUrl, memberOf, profileUrl } from "@/components/team";
+import { avatarUrl, memberOf, ORIGINAL_SITE_MAKER, profileUrl, SITE_MAKERS, SITE_REPO } from "@/components/team";
 
 const REPO = GAME_REPO;
 
 const NOT_PEOPLE = new Set(["claude", "cursoragent", "noreply"]);
 
-// The site's makers, shown first; their own commits are not listed twice.
-const TEAM = ["Xmilon", "UMCEKO"].map((login) => ({
-  login,
-  name: memberOf(login)?.name ?? login,
-  role: "webDeveloper" as const,
-  avatar: avatarUrl(login),
-  url: profileUrl(login),
-}));
 
 const FEATURED = 6;
 
@@ -51,6 +43,27 @@ export async function getContributors(): Promise<Contributor[] | null> {
     .map((c) => ({ login: c.login, avatar: c.avatar_url, url: c.html_url, commits: c.contributions }));
 }
 
+// How many pull requests each site maker opened on this site's repository.
+export async function getSitePulls(): Promise<Record<string, number> | null> {
+  "use cache";
+  cacheTag(TAGS.main);
+  try {
+    const counts = await Promise.all(
+      SITE_MAKERS.map(async (login) => {
+        const res = await githubFetch(`/search/issues?q=${encodeURIComponent(`repo:${SITE_REPO} is:pr author:${login}`)}&per_page=1`);
+        if (!res.ok) throw new Error(`GitHub responded ${res.status} ${res.statusText}`);
+        return [login, ((await res.json()) as { total_count: number }).total_count] as const;
+      }),
+    );
+    cacheLife("hours");
+    return Object.fromEntries(counts);
+  } catch (error) {
+    console.error(`Couldn't count pull requests in ${SITE_REPO}:`, error);
+    cacheLife("minutes");
+    return null;
+  }
+}
+
 export async function Contributors({ locale }: { locale: Locale }) {
   const { common, home } = getMessages(locale);
   const t = home.contributors;
@@ -61,13 +74,19 @@ export async function Contributors({ locale }: { locale: Locale }) {
     avatar: c.avatar,
     url: c.url,
   });
-  const contributors = (await getContributors())?.filter((c) => !TEAM.some((m) => m.login.toLowerCase() === c.login.toLowerCase())) ?? null;
-  const committers = FEATURED - TEAM.length;
-  const cards: Card[] = [
-    ...TEAM.map((m) => ({ name: m.name, detail: t[m.role], avatar: m.avatar, url: m.url })),
-    ...(contributors?.slice(0, committers).map(committerCard) ?? []),
+  const [contributors, pulls] = await Promise.all([getContributors(), getSitePulls()]);
+  const cards: Card[] = contributors?.slice(0, FEATURED).map(committerCard) ?? [];
+  const rest = contributors?.slice(FEATURED) ?? [];
+  const pullCount = (n: number) => (n === 1 ? t.onePull : format(t.pulls, { n: n.toLocaleString(NUMBER_LOCALE[locale]) }));
+  const siteCards: Card[] = [
+    ...SITE_MAKERS.map((login) => ({
+      name: memberOf(login)?.name ?? login,
+      detail: pulls?.[login] !== undefined ? pullCount(pulls[login]) : t.webDeveloper,
+      avatar: avatarUrl(login),
+      url: profileUrl(login),
+    })),
+    { ...ORIGINAL_SITE_MAKER, detail: t.originalSite },
   ];
-  const rest = contributors?.slice(committers) ?? [];
 
   return (
     <section id="contributors" aria-labelledby="contributors-title" className="scroll-mt-14 pb-8">
@@ -81,7 +100,7 @@ export async function Contributors({ locale }: { locale: Locale }) {
             >
               {contributors ? (
                 <span className="relative">
-                  {format(t.title, { n: contributors.length + TEAM.length })}
+                  {format(t.title, { n: contributors.length })}
                   <span
                     aria-hidden
                     className="pointer-events-none absolute bottom-[0.2em] left-full ml-3 hidden translate-y-1 items-center gap-1.5 font-sans text-lg font-medium tracking-normal whitespace-nowrap text-[#d97757] opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 sm:flex"
@@ -111,24 +130,7 @@ export async function Contributors({ locale }: { locale: Locale }) {
           </a>
         </div>
 
-        <ul className="reveal mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {cards.map((c) => (
-            <li key={c.name} className="flex">
-              <a
-                href={c.url}
-                target="_blank"
-                rel="noreferrer"
-                className="flex w-full items-center gap-4 rounded-xl bg-white/[0.04] p-4 transition-colors outline-none hover:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-accent-ink"
-              >
-                <Image src={c.avatar} alt="" width={48} height={48} className="size-12 shrink-0 rounded-full" />
-                <span className="min-w-0">
-                  <span className="block truncate text-[15px] font-medium text-white">{c.name}</span>
-                  <span className="block text-sm text-white/50">{c.detail}</span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
+        <CardList cards={cards} />
 
         {rest.length > 0 && (
           <ul className="reveal mt-6 flex flex-wrap gap-2">
@@ -153,7 +155,36 @@ export async function Contributors({ locale }: { locale: Locale }) {
             ))}
           </ul>
         )}
+
+        <div className="reveal mt-16">
+          <h3 className="font-display text-xl font-semibold tracking-[-0.02em] text-white">{t.siteTitle}</h3>
+          <p className="mt-2 max-w-md text-[15px] leading-relaxed text-pretty text-white/60">{format(t.siteLead, { repo: SITE_REPO })}</p>
+          <CardList cards={siteCards} />
+        </div>
       </div>
     </section>
+  );
+}
+
+function CardList({ cards }: { cards: Card[] }) {
+  return (
+    <ul className="reveal mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {cards.map((c) => (
+        <li key={c.name} className="flex">
+          <a
+            href={c.url}
+            target="_blank"
+            rel="noreferrer"
+            className="flex w-full items-center gap-4 rounded-xl bg-white/[0.04] p-4 transition-colors outline-none hover:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-accent-ink"
+          >
+            <Image src={c.avatar} alt="" width={48} height={48} className="size-12 shrink-0 rounded-full" />
+            <span className="min-w-0">
+              <span className="block truncate text-[15px] font-medium text-white">{c.name}</span>
+              <span className="block text-sm text-white/50">{c.detail}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
   );
 }

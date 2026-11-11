@@ -14,7 +14,7 @@ A released Sunrise native mod is a bundle for horizon-mixins, shipped as a `.hnm
 | **How players get it** | The game reads it when it starts | The launcher compiles a game with it, for the instance it is installed in |
 | **Safety** | Data only: it can't run anything | Not sandboxed: it can do anything the player can on their computer |
 
-**Pick a content mod** when what you add is a block, an item, a recipe or a structure: no compiler, and it works on every computer as it is. [Content mods](/docs/content-mods) has the whole guide.
+**Pick a content mod** when what you add is a block, an item, a recipe or a structure: no compiler, and it works on every computer as it is. [Blocks, items and data files](/docs/mod-data) has the whole guide.
 
 **Pick a native mod** when the mod has to do something: draw on the screen, react to a key, add a command, change how the game plays. The rest of this page and the two after it are about native mods.
 
@@ -35,7 +35,7 @@ Players never compile anything by hand. They install the mod from the launcher's
 1. **Set up** (this page): the tools, the files of a native mod, and your mod in the game.
 2. **[The bundle](/docs/legacy-bundle)**: the manifest, what a mod builds on, and the `.hnmod` file.
 3. **[Hook points and helpers](/docs/legacy-hook-points)**: what your code can hook and call, and a worked example.
-4. **[Content mods](/docs/content-mods)**: blocks, items, recipes and textures from data files, with no code at all.
+4. **[Blocks, items and data files](/docs/mod-data)**: blocks, items, recipes and textures from data files, with no code at all.
 5. **[Test it](/docs/test-a-mod)**: unit tests, a check against Sunrise's source, and the game with your mod in it.
 6. **[Publish it](/docs/publish-a-mod)**: package it and submit it to the registry.
 
