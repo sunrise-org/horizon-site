@@ -47,15 +47,15 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/mods/[id]">): Promise<Metadata> {
   const { id } = await params;
   const p = await getMod(id);
-  if (!p) return { title: "Not in the registry · Horizon mods", robots: { index: false } };
+  if (!p) return { title: "Not in the registry · Sunrise mods", robots: { index: false } };
   const kind = (KIND_NAMES[p.kind] ?? "Mod").toLowerCase();
   const authors = (p.authors ?? []).join(", ");
   const summary = p.summary ? `${p.summary.trim().replace(/[.!?]?$/, (end) => end || ".")} ` : "";
   return pageMetadata({
-    title: `${p.name}: ${kind} for Horizon`,
-    description: `${summary}A ${kind} for Horizon${authors ? ` by ${authors}` : ""}, reviewed before it was listed.`,
+    title: `${p.name}: ${kind} for Sunrise`,
+    description: `${summary}A ${kind} for Sunrise${authors ? ` by ${authors}` : ""}, reviewed before it was listed.`,
     path: `/mods/${p.id}`,
-    image: { url: `/mods/${p.id}/opengraph-image`, width: 1200, height: 630, alt: `${p.name}, a ${kind} for Horizon` },
+    image: { url: `/mods/${p.id}/opengraph-image`, width: 1200, height: 630, alt: `${p.name}, a ${kind} for Sunrise` },
   });
 }
 
@@ -75,7 +75,7 @@ function ModJsonLd({ p, rating }: { p: ModProject; rating: ReturnType<typeof rat
             applicationCategory: "GameApplication",
             applicationSubCategory: KIND_NAMES[p.kind] ?? "Mod",
             operatingSystem: OPERATING_SYSTEMS,
-            softwareRequirements: "Horizon",
+            softwareRequirements: "Sunrise",
             softwareVersion: v.version,
             dateModified: v.published,
             license: /^[\w.+-]+$/.test(p.license) ? `https://spdx.org/licenses/${p.license}.html` : p.license,
@@ -101,12 +101,12 @@ function ModJsonLd({ p, rating }: { p: ModProject; rating: ReturnType<typeof rat
   );
 }
 
-const CODE = "rounded bg-white/[0.07] px-1 py-0.5 font-mono text-[0.88em] text-[#e7e1ff]";
-const LINK = "text-[#c4b5ff] underline underline-offset-4 hover:text-white";
+const CODE = "rounded bg-lavender px-1 py-0.5 font-mono text-[0.88em] text-foreground";
+const LINK = "text-accent-ink underline underline-offset-4 hover:text-foreground";
 
 function Dot() {
   return (
-    <span aria-hidden className="text-white/25">
+    <span aria-hidden className="text-muted">
       ·
     </span>
   );
@@ -115,7 +115,7 @@ function Dot() {
 function Part({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="mt-12 first:mt-0">
-      <h2 className="font-display text-[1.6rem] leading-tight font-semibold tracking-[-0.02em] text-white">{title}</h2>
+      <h2 className="font-display text-[1.6rem] leading-tight font-semibold tracking-[-0.02em] text-foreground">{title}</h2>
       <div className="mt-4">{children}</div>
     </section>
   );
@@ -153,13 +153,13 @@ function byHand(kind: string): ReactNode {
     );
   return (
     <>
-      put it in <code className={CODE}>shaderpacks/</code> beside <code className={CODE}>options.txt</code>, then pick it in Options, then Horizon
+      put it in <code className={CODE}>shaderpacks/</code> beside <code className={CODE}>options.txt</code>, then pick it in Options, then Sunrise
       Settings, then Shader Packs
     </>
   );
 }
 
-const CHIP = "inline-flex h-7 items-center rounded-md px-2.5 text-[13px] font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff]";
+const CHIP = "inline-flex h-7 items-center rounded-md px-2.5 text-[13px] font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent";
 
 function Chips({ p }: { p: ModProject }) {
   const categories = categoriesOf(p);
@@ -171,7 +171,7 @@ function Chips({ p }: { p: ModProject }) {
         <li key={`c-${c}`}>
           <Link
             href={`/mods?kind=${encodeURIComponent(p.kind)}&category=${encodeURIComponent(c)}`}
-            className={`${CHIP} bg-[#a98fff]/15 text-[#d9ceff] hover:bg-[#a98fff]/25`}
+            className={`${CHIP} bg-lavender/15 text-accent-ink hover:bg-lavender/25`}
           >
             {categoryLabel(c)}
           </Link>
@@ -179,7 +179,7 @@ function Chips({ p }: { p: ModProject }) {
       ))}
       {tags.map((t) => (
         <li key={`t-${t}`}>
-          <Link href={`/mods?q=${encodeURIComponent(t)}`} className={`${CHIP} bg-white/[0.06] text-white/65 hover:bg-white/[0.1] hover:text-white`}>
+          <Link href={`/mods?q=${encodeURIComponent(t)}`} className={`${CHIP} bg-lavender text-muted hover:bg-lavender hover:text-foreground`}>
             #{t}
           </Link>
         </li>
@@ -191,11 +191,11 @@ function Chips({ p }: { p: ModProject }) {
 function FileFacts({ p }: { p: ModProject }) {
   const v = p.versions[0];
   return (
-    <div className="rounded-2xl bg-[#18112c] p-5 sm:p-6">
-      <h2 className="text-[17px] font-semibold text-white">File</h2>
+    <div className="rounded-2xl bg-surface p-5 sm:p-6">
+      <h2 className="text-[17px] font-semibold text-foreground">File</h2>
       <dl className="mt-4 space-y-3 text-[14px]">
         <div>
-          <dt className="text-white/45">Name</dt>
+          <dt className="text-muted">Name</dt>
           <dd className="mt-0.5 break-all">
             <a href={https(v.file.url)} className={LINK}>
               {v.file.name}
@@ -203,17 +203,17 @@ function FileFacts({ p }: { p: ModProject }) {
           </dd>
         </div>
         <div>
-          <dt className="text-white/45">Size</dt>
-          <dd className="mt-0.5 text-white/85">{fileSize(v.file.size)}</dd>
+          <dt className="text-muted">Size</dt>
+          <dd className="mt-0.5 text-foreground">{fileSize(v.file.size)}</dd>
         </div>
         <div>
-          <dt className="text-white/45">SHA-256</dt>
-          <dd className="mt-1 font-mono text-[12px] leading-relaxed break-all text-[#e7e1ff]">{v.file.sha256}</dd>
+          <dt className="text-muted">SHA-256</dt>
+          <dd className="mt-1 font-mono text-[12px] leading-relaxed break-all text-foreground">{v.file.sha256}</dd>
         </div>
         {p.key && (
           <div>
-            <dt className="text-white/45">Signing key</dt>
-            <dd className="mt-1 font-mono text-[12px] leading-relaxed break-all text-[#e7e1ff]">{p.key}</dd>
+            <dt className="text-muted">Signing key</dt>
+            <dd className="mt-1 font-mono text-[12px] leading-relaxed break-all text-foreground">{p.key}</dd>
           </div>
         )}
       </dl>
@@ -224,15 +224,15 @@ function FileFacts({ p }: { p: ModProject }) {
 function Publisher({ p }: { p: ModProject }) {
   const people = owners(p);
   return (
-    <div className="rounded-2xl bg-[#18112c] p-5 sm:p-6">
-      <h2 className="text-[17px] font-semibold text-white">Publisher</h2>
+    <div className="rounded-2xl bg-surface p-5 sm:p-6">
+      <h2 className="text-[17px] font-semibold text-foreground">Publisher</h2>
       <dl className="mt-4 space-y-3 text-[14px]">
         {people.length > 0 && (
           <div>
-            <dt className="text-white/45">Published by</dt>
+            <dt className="text-muted">Published by</dt>
             <dd className="mt-1.5 flex flex-wrap gap-x-3 gap-y-2">
               {people.map((o) => (
-                <a key={o} href={`https://github.com/${o}`} className="inline-flex items-center gap-2 font-medium text-white/85 transition-colors hover:text-white">
+                <a key={o} href={`https://github.com/${o}`} className="inline-flex items-center gap-2 font-medium text-foreground transition-colors hover:text-foreground">
                   <Image src={`https://avatars.githubusercontent.com/${o}?s=48`} alt="" width={24} height={24} unoptimized className="size-6 rounded-[6px]" />@{o}
                 </a>
               ))}
@@ -240,11 +240,11 @@ function Publisher({ p }: { p: ModProject }) {
           </div>
         )}
         <div>
-          <dt className="text-white/45">Signature</dt>
-          <dd className="mt-1 flex items-start gap-1.5 text-white/85">
+          <dt className="text-muted">Signature</dt>
+          <dd className="mt-1 flex items-start gap-1.5 text-foreground">
             {p.key ? (
               <>
-                <ShieldIcon className="mt-0.5 size-4 shrink-0 text-[#8be0b4]" />
+                <ShieldIcon className="mt-0.5 size-4 shrink-0 text-success-ink" />
                 Signed: every file is signed with the author&apos;s key
               </>
             ) : (
@@ -270,7 +270,7 @@ function Links({ p }: { p: ModProject }) {
     <ul className="space-y-1 px-1 text-[14px]">
       {links.map((l) => (
         <li key={l.label}>
-          <a href={l.href} className="group inline-flex items-center gap-1.5 py-1 font-medium text-[#c4b5ff] hover:text-white">
+          <a href={l.href} className="group inline-flex items-center gap-1.5 py-1 font-medium text-accent-ink hover:text-foreground">
             {l.label}
             <span aria-hidden className="transition-transform group-hover:translate-x-0.5">
               →
@@ -299,7 +299,7 @@ async function ModContent({ params }: Pick<PageProps<"/mods/[id]">, "params">) {
       <section className="relative isolate overflow-hidden pt-32 pb-12 sm:pt-40 sm:pb-16">
         <PixelAurora moonTop={104} className="absolute top-0 left-0 -z-10" />
         <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
-          <Link href="/mods" className="group inline-flex items-center gap-1.5 text-sm font-medium text-white/60 transition-colors hover:text-white">
+          <Link href="/mods" className="group inline-flex items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-foreground">
             <span aria-hidden className="transition-transform group-hover:-translate-x-0.5">
               ←
             </span>
@@ -308,17 +308,17 @@ async function ModContent({ params }: Pick<PageProps<"/mods/[id]">, "params">) {
           <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
             <ModIcon id={p.id} icon={https(p.icon)} size={80} className="rounded-2xl" />
             <div className="max-w-2xl min-w-0">
-              <p className="text-sm text-white/60">
+              <p className="text-sm text-muted">
                 {KIND_NAMES[p.kind] ?? p.kind}
                 {authors ? ` by ${authors}` : ""}
               </p>
-              <h1 className="mt-2 font-display text-[clamp(2.25rem,5.5vw,3.75rem)] leading-[1.04] font-semibold tracking-[-0.035em] text-white">{p.name}</h1>
-              {p.summary && <p className="mt-4 text-lg leading-relaxed text-white/70">{p.summary}</p>}
-              <p className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-white/60">
-                {rating && <Stars rating={rating} className="text-white/75" />}
+              <h1 className="mt-2 font-display text-[clamp(2.25rem,5.5vw,3.75rem)] leading-[1.04] font-semibold tracking-[-0.035em] text-foreground">{p.name}</h1>
+              {p.summary && <p className="mt-4 text-lg leading-relaxed text-muted">{p.summary}</p>}
+              <p className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
+                {rating && <Stars rating={rating} className="text-muted" />}
                 {rating && stars > 0 && <Dot />}
                 {stars > 0 && (
-                  <a href={githubRepo(p.source)} className="transition-colors hover:text-white">
+                  <a href={githubRepo(p.source)} className="transition-colors hover:text-foreground">
                     <GitHubStars stars={stars} />
                   </a>
                 )}
@@ -342,13 +342,13 @@ async function ModContent({ params }: Pick<PageProps<"/mods/[id]">, "params">) {
         </div>
       </section>
 
-      <section className="bg-[#0c0718] py-12 sm:py-16">
+      <section className="bg-lavender py-12 sm:py-16">
         <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:px-10">
           <div className="min-w-0">
-            <p className="text-sm leading-relaxed text-white/55">
+            <p className="text-sm leading-relaxed text-muted">
               {isOfficial(p)
-                ? "Made by Horizon. "
-                : `Made by ${authors || "its authors"}. Its authors own it and answer for it. Not made or endorsed by the Horizon project. `}
+                ? "Made by Sunrise. "
+                : `Made by ${authors || "its authors"}. Its authors own it and answer for it. Not made or endorsed by the Sunrise project. `}
               <a href={POLICY_URL} className={LINK}>
                 Mod policy
               </a>
@@ -368,10 +368,10 @@ async function ModContent({ params }: Pick<PageProps<"/mods/[id]">, "params">) {
             {p.kind === "mod" && (
               <Part title="What it may do">
                 {caps.length ? (
-                  <ul className="space-y-2 text-[16px] text-white/75">
+                  <ul className="space-y-2 text-[16px] text-muted">
                     {caps.map((c) => (
                       <li key={c} className="flex gap-2.5">
-                        <span aria-hidden className="text-[#a98fff]">
+                        <span aria-hidden className="text-accent-ink">
                           ·
                         </span>
                         {CAPABILITIES[c] ? `May ${CAPABILITIES[c]}` : `Uses the ${c} capability`}
@@ -379,9 +379,9 @@ async function ModContent({ params }: Pick<PageProps<"/mods/[id]">, "params">) {
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-[16px] text-white/75">It asks for nothing beyond writing its own log.</p>
+                  <p className="text-[16px] text-muted">It asks for nothing beyond writing its own log.</p>
                 )}
-                <p className="mt-3 text-sm leading-relaxed text-white/50">
+                <p className="mt-3 text-sm leading-relaxed text-muted">
                   Mods run in a sandbox with no file, network or clock access. The game refuses a mod whose code uses more than this list.
                 </p>
               </Part>
@@ -389,7 +389,7 @@ async function ModContent({ params }: Pick<PageProps<"/mods/[id]">, "params">) {
 
             {p.kind === "native-mod" && (
               <Part title="Native code">
-                <p className="text-[16px] leading-relaxed text-white/70">
+                <p className="text-[16px] leading-relaxed text-muted">
                   A native mod is Rust code that the launcher compiles into a game of its own, the Native mods instance. It is not sandboxed: it can do anything
                   you can on this computer. The launcher builds it only after a warning that names it, and a reviewer read its source before it was listed. Read
                   the source yourself before you build it.{" "}
@@ -408,7 +408,7 @@ async function ModContent({ params }: Pick<PageProps<"/mods/[id]">, "params">) {
                       <Link href={`/mods/${r.id}`} className={LINK}>
                         {r.id}
                       </Link>{" "}
-                      <span className="text-white/50">{r.version}</span>
+                      <span className="text-muted">{r.version}</span>
                     </li>
                   ))}
                 </ul>
@@ -416,17 +416,17 @@ async function ModContent({ params }: Pick<PageProps<"/mods/[id]">, "params">) {
             )}
 
             <Part title="Versions">
-              <ul className="divide-y divide-white/[0.06] rounded-2xl bg-[#18112c]">
+              <ul className="divide-y divide-line rounded-2xl bg-surface">
                 {p.versions.map((x) => (
                   <li key={x.version} className="px-5 py-4 sm:px-6">
                     <p className="flex flex-wrap items-baseline gap-x-2">
-                      <span className="font-semibold text-white">{x.version}</span>
-                      <span className="text-sm text-white/50">
+                      <span className="font-semibold text-foreground">{x.version}</span>
+                      <span className="text-sm text-muted">
                         {[x.published, `for Minecraft ${x.game}`, apiLabel(x.api)].filter(Boolean).join(" · ")}
                       </span>
                     </p>
                     {buildsOn(x) && (
-                      <p className={`mt-1 text-sm ${buildsOn(x)?.ok ? "text-[#8be0b4]" : "text-[#f07a6a]"}`}>{buildsOn(x)?.text}</p>
+                      <p className={`mt-1 text-sm ${buildsOn(x)?.ok ? "text-success-ink" : "text-danger-ink"}`}>{buildsOn(x)?.text}</p>
                     )}
                     {x.changelog && (
                       <div className="mt-2 text-[15px]">
@@ -466,11 +466,11 @@ function ModSkeleton() {
     <main>
       <section className="pt-32 pb-12 sm:pt-40 sm:pb-16">
         <div className="mx-auto flex w-full max-w-6xl gap-6 px-6 lg:px-10">
-          <div className="size-20 shrink-0 rounded-2xl bg-white/[0.05]" />
+          <div className="size-20 shrink-0 rounded-2xl bg-surface/80" />
           <div className="w-full max-w-xl space-y-3 pt-2">
-            <div className="h-4 w-40 rounded bg-white/[0.05]" />
-            <div className="h-12 w-3/4 rounded-lg bg-white/[0.06]" />
-            <div className="h-5 w-full rounded bg-white/[0.04]" />
+            <div className="h-4 w-40 rounded bg-surface/80" />
+            <div className="h-12 w-3/4 rounded-lg bg-lavender" />
+            <div className="h-5 w-full rounded bg-surface/80" />
           </div>
         </div>
       </section>

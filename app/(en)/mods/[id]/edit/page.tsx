@@ -14,7 +14,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/mods/[id]/edit">): Promise<Metadata> {
   const { id } = await params;
   const p = await getMod(id);
-  return { title: p ? `Edit ${p.name} · Horizon mods` : "Not in the registry · Horizon mods", robots: { index: false } };
+  return { title: p ? `Edit ${p.name} · Sunrise mods` : "Not in the registry · Sunrise mods", robots: { index: false } };
 }
 
 async function EditContent({ params }: Pick<PageProps<"/mods/[id]/edit">, "params">) {
@@ -23,11 +23,11 @@ async function EditContent({ params }: Pick<PageProps<"/mods/[id]/edit">, "param
   if (!p) notFound();
   return (
     <>
-      <Link href={`/mods/${p.id}`} className="text-sm font-medium text-white/60 transition-colors hover:text-white">
+      <Link href={`/mods/${p.id}`} className="text-sm font-medium text-muted transition-colors hover:text-foreground">
         ← {p.name}
       </Link>
-      <h1 className="mt-5 font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-white">Edit {p.name}</h1>
-      <p className="mt-4 text-lg leading-relaxed text-white/70">
+      <h1 className="mt-5 font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-foreground">Edit {p.name}</h1>
+      <p className="mt-4 text-lg leading-relaxed text-muted">
         Its page on this site and in the launcher: {KIND_NAMES[p.kind]?.toLowerCase() ?? p.kind}, version {p.versions[0].version}.
       </p>
       <div className="mt-10">
@@ -56,7 +56,7 @@ async function EditContent({ params }: Pick<PageProps<"/mods/[id]/edit">, "param
 export default function EditPage({ params }: PageProps<"/mods/[id]/edit">) {
   return (
     <main className="mx-auto w-full max-w-3xl px-6 pt-32 pb-24 sm:pt-36 lg:px-10">
-      <Suspense fallback={<p className="text-sm text-white/50">Loading…</p>}>
+      <Suspense fallback={<p className="text-sm text-muted">Loading…</p>}>
         <EditContent params={params} />
       </Suspense>
     </main>

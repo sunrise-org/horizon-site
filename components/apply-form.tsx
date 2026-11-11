@@ -46,7 +46,7 @@ export function ApplyForm() {
   }, [token]);
 
   useEffect(() => {
-    if (invite) document.title = `Apply for ${invite.roleName} · Horizon`;
+    if (invite) document.title = `Apply for ${invite.roleName} · Sunrise`;
   }, [invite]);
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
@@ -66,12 +66,12 @@ export function ApplyForm() {
     }
   };
 
-  const title = invite ? `Apply for ${invite.roleName}` : "Apply to help run Horizon";
+  const title = invite ? `Apply for ${invite.roleName}` : "Apply to help run Sunrise";
   let body;
   if (sent) {
     body = (
       <div className="space-y-6">
-        <p className="text-lg leading-relaxed text-white/75">
+        <p className="text-lg leading-relaxed text-muted">
           Sent, thank you. The members who vote on it will read it over the next few days; Kira DMs you the answer on Discord.
         </p>
         <Link href="/hub" className={SECONDARY}>
@@ -80,22 +80,22 @@ export function ApplyForm() {
       </div>
     );
   } else if (token === null || (token && !invite && !error)) {
-    body = <p className="text-lg text-white/70">Checking your link…</p>;
+    body = <p className="text-lg text-muted">Checking your link…</p>;
   } else if (!token) {
     body = (
       <p className="max-w-2xl text-lg leading-relaxed text-white/70">
-        To apply for Support or Mod, run <code className="font-mono text-[#e7e1ff]">/apply</code> on Horizon&apos;s Discord server: Kira DMs you a link to this form.
+        To apply for Support or Mod, run <code className="font-mono text-[#ffe6f0]">/apply</code> on Sunrise&apos;s Discord server: Kira DMs you a link to this form.
       </p>
     );
   } else if (error || !invite) {
-    body = <p className="max-w-2xl text-lg leading-relaxed text-white/70">{error}</p>;
+    body = <p className="max-w-2xl text-lg leading-relaxed text-muted">{error}</p>;
   } else {
     body = (
       <>
-        <p className="max-w-2xl text-lg leading-relaxed text-white/70">
+        <p className="max-w-2xl text-lg leading-relaxed text-muted">
           {invite.name ? (
             <>
-              As <strong className="text-white">{invite.name}</strong> on Discord.{" "}
+              As <strong className="text-foreground">{invite.name}</strong> on Discord.{" "}
             </>
           ) : null}
           Take your time: the link works once, until{" "}
@@ -103,8 +103,8 @@ export function ApplyForm() {
           {invite.role === "team" && (
             <>
               {" "}
-              If you linked your GitHub account with <code className="font-mono text-[#e7e1ff]">/link-github</code> and proved it with{" "}
-              <code className="font-mono text-[#e7e1ff]">/verify-github</code>, your merged pull requests in Horizon are shown with your application.
+              If you linked your GitHub account with <code className="font-mono text-[#ffe6f0]">/link-github</code> and proved it with{" "}
+              <code className="font-mono text-[#ffe6f0]">/verify-github</code>, your merged pull requests in Sunrise are shown with your application.
             </>
           )}
         </p>
@@ -118,7 +118,7 @@ export function ApplyForm() {
               )}
             </Field>
           ))}
-          <p className="text-[13px] leading-relaxed text-white/50">
+          <p className="text-[13px] leading-relaxed text-muted">
             Only the members who vote on applications for this role and Ludovic read it. Your answers are deleted 90 days after the decision (
             <Link href="/privacy" className={LINK}>
               privacy
@@ -138,10 +138,10 @@ export function ApplyForm() {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 pt-32 pb-24 sm:pt-36 lg:px-10">
-      <p className="text-sm font-medium text-white/60">
-        Apply <span className="mx-1.5 text-white/30">·</span> Support, Mod
+      <p className="text-sm font-medium text-muted">
+        Apply <span className="mx-1.5 text-muted">·</span> Support, Mod
       </p>
-      <h1 className="mt-3 mb-6 font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-white">{title}</h1>
+      <h1 className="mt-3 mb-6 font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-foreground">{title}</h1>
       {body}
     </main>
   );

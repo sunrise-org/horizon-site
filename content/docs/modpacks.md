@@ -1,8 +1,8 @@
 # Modpacks
 
-Java mod jars do not run in Horizon. Instead, the launcher reads a modpack, tells you which of its mods Horizon can carry over, and brings over the ones it can. This page explains what that means today and where the limits are.
+Java mod jars do not run in Sunrise. Instead, the launcher reads a modpack, tells you which of its mods Sunrise can carry over, and brings over the ones it can. This page explains what that means today and where the limits are.
 
-> **Early.** The Modpacks page works, but no large pack runs as a whole in Horizon yet. What carries over today is mods made of data and assets: blocks, items, recipes, loot tables, tags, models, textures and structures. Mods with Java code do not, yet.
+> **Early.** The Modpacks page works, but no large pack runs as a whole in Sunrise yet. What carries over today is mods made of data and assets: blocks, items, recipes, loot tables, tags, models, textures and structures. Mods with Java code do not, yet.
 
 ## What the Modpacks page does
 
@@ -21,13 +21,13 @@ Nothing is uploaded or shared. The mod jars and what is made from them stay on y
 
 **Not yet:**
 
-- **Mods with Java code:** machines, magic, new mob behaviour, anything that needs the mod's own logic. Each of these must be ported by hand as a Horizon [native mod](/docs/make-a-mod), and checked against the original mod running in a Java test instance. That work is under way; none of it is something you can install yet.
+- **Mods with Java code:** machines, magic, new mob behaviour, anything that needs the mod's own logic. Each of these must be ported by hand as a Sunrise [native mod](/docs/make-a-mod), and checked against the original mod running in a Java test instance. That work is under way; none of it is something you can install yet.
 - **World generation written in code:** custom biomes, terrain shaping and structure types that are Java classes.
 - **Scripts** such as KubeJS, and recipe viewers and map mods that are built around Java.
 
-**Not needed:** performance mods such as Sodium, Lithium or FerriteCore (Horizon is the replacement), and libraries whose job is to give mods a common API. The report says which is which.
+**Not needed:** performance mods such as Sodium, Lithium or FerriteCore (Sunrise is the replacement), and libraries whose job is to give mods a common API. The report says which is which.
 
-So a pack is a list of mods, and today Horizon can bring over a part of that list. The coverage report is the honest answer for your pack.
+So a pack is a list of mods, and today Sunrise can bring over a part of that list. The coverage report is the honest answer for your pack.
 
 If two ported mods use the same namespace, the game can only load one of them. The launcher keeps the first, leaves the other off, and lists it under the pack.
 
@@ -35,7 +35,7 @@ Measured on three packs: Vanilla Perfected (108 files) ports 2 mods, Slimes Adve
 
 ## Example: All the Mods 10
 
-All the Mods 10 has 495 jars. Horizon's report sorts them: about 290 add content, 80 are libraries, and the rest are integrations, interface mods, tools and performance mods. A few dozen of the content mods carry over today. The measured numbers are in [docs/modpacks.md](https://github.com/horizon-rust/horizon/blob/main/docs/modpacks.md).
+All the Mods 10 has 495 jars. Sunrise's report sorts them: about 290 add content, 80 are libraries, and the rest are integrations, interface mods, tools and performance mods. A few dozen of the content mods carry over today. The measured numbers are in [docs/modpacks.md](https://github.com/sunrise-org/horizon/blob/main/docs/modpacks.md).
 
 ## From the command line
 
@@ -49,4 +49,4 @@ horizon-launcher modpack remove <pack>
 
 ## Licences
 
-Mods have their own licences, and Horizon respects them: it does not redistribute anyone's jars. The ports are made on your computer, from jars you downloaded, and stay there.
+Mods have their own licences, and Sunrise respects them: it does not redistribute anyone's jars. The ports are made on your computer, from jars you downloaded, and stay there.

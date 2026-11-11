@@ -4,7 +4,6 @@ import { getReleases } from "@/components/github-releases";
 import { languageAlternates, LOCALES } from "@/components/i18n";
 import { localePath } from "@/components/i18n-text";
 import { getMods } from "@/components/mods-data";
-import { getShopStatus } from "@/components/shop-data";
 import { absolute } from "@/components/site";
 
 const newest = (dates: (string | undefined)[]) => dates.filter((d): d is string => Boolean(d)).sort().at(-1);
@@ -26,14 +25,13 @@ function inEveryLanguage(path: string, entry: Omit<Entry, "url">): Entry[] {
 const KEY_DOCS = new Set(["index", "install", "faq", "multiplayer", "hosting"]);
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [docs, releases, mods, shop] = await Promise.all([getDocs(), getReleases(), getMods(), getShopStatus()]);
+  const [docs, releases, mods] = await Promise.all([getDocs(), getReleases(), getMods()]);
   const released = releases?.[0]?.published;
   const modsUpdated = newest((mods ?? []).map((p) => p.versions[0]?.published));
 
   return [
     ...inEveryLanguage("/", { lastModified: released, changeFrequency: "daily", priority: 1 }),
     ...inEveryLanguage("/releases", { lastModified: released, changeFrequency: "hourly", priority: 0.9 }),
-    ...inEveryLanguage("/benchmarks", { changeFrequency: "weekly", priority: 0.8 }),
     ...inEveryLanguage("/mods", { lastModified: modsUpdated, changeFrequency: "daily", priority: 0.8 }),
     { url: absolute("/hub"), changeFrequency: "daily", priority: 0.7 },
     ...inEveryLanguage("/stats", { changeFrequency: "hourly", priority: 0.5 }),
@@ -49,10 +47,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5,
     })),
     { url: absolute("/mods/policy"), changeFrequency: "monthly", priority: 0.3 },
-    ...((shop.open || shop.selling) && !shop.preview ? [{ url: absolute("/shop"), changeFrequency: "weekly" as const, priority: 0.6 }] : []),
-    { url: absolute("/terms"), changeFrequency: "yearly" as const, priority: 0.2 },
-    { url: absolute("/refunds"), changeFrequency: "yearly" as const, priority: 0.2 },
     ...inEveryLanguage("/artists", { changeFrequency: "monthly", priority: 0.4 }),
+    ...inEveryLanguage("/faq", { changeFrequency: "monthly", priority: 0.6 }),
+    { url: absolute("/modding-team"), changeFrequency: "monthly", priority: 0.4 },
     { url: absolute("/privacy"), changeFrequency: "yearly", priority: 0.2 },
   ];
 }

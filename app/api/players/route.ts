@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 
-const TELEMETRY = process.env.TELEMETRY_URL || "https://telemetry.playhorizon.dev";
+const TELEMETRY = process.env.TELEMETRY_URL || "https://telemetry.playsunrise.net";
 const RANGES = new Set(["24h", "7d", "30d", "all"]);
 const SERIES = new Set(["players", "official"]);
 const HEADERS = { "Cache-Control": "public, max-age=30, s-maxage=30", "X-Content-Type-Options": "nosniff" };

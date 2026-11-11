@@ -18,7 +18,7 @@ import {
 import { CARD, Field, GHOST_SM, INPUT, LINK, PRIMARY } from "@/components/staff/ui";
 
 const API = "/api/mods";
-const PAGES = "https://horizon-rust.github.io/horizon-mods/";
+const PAGES = "https://sunrise-org.github.io/horizon-mods/";
 
 /** The page fields of a listed project, as the index has them. */
 export type EditableProject = {
@@ -42,7 +42,7 @@ type Result = { ok: true; url: string } | { ok: false; message: string } | { pen
 type Problems = Partial<Record<"description" | "categories" | "tags" | "icon" | "shots", string>>;
 
 function Hint({ children }: { children: ReactNode }) {
-  return <span className="mt-1.5 block text-[13px] leading-relaxed text-white/45">{children}</span>;
+  return <span className="mt-1.5 block text-[13px] leading-relaxed text-muted">{children}</span>;
 }
 
 // The service keeps the listed screenshots in the order sent and adds uploads after them.
@@ -134,12 +134,12 @@ export function ModEditForm({ project: p }: { project: EditableProject }) {
   };
 
   if (closed)
-    return <p className="text-[15px] text-white/65">Editing isn&apos;t open right now. Try again in a few minutes.</p>;
-  if (me === undefined) return <p className="text-sm text-white/50">Checking whether you are signed in…</p>;
+    return <p className="text-[15px] text-muted">Editing isn&apos;t open right now. Try again in a few minutes.</p>;
+  if (me === undefined) return <p className="text-sm text-muted">Checking whether you are signed in…</p>;
   if (me === null)
     return (
       <div className="space-y-3">
-        <p className="text-[15px] text-white/65">Sign in with the GitHub account that owns {p.name} to edit its page.</p>
+        <p className="text-[15px] text-muted">Sign in with the GitHub account that owns {p.name} to edit its page.</p>
         <a href={`${API}/auth/login?back=/mods/${encodeURIComponent(p.id)}/edit`} className={PRIMARY}>
           Sign in with GitHub
         </a>
@@ -148,8 +148,8 @@ export function ModEditForm({ project: p }: { project: EditableProject }) {
 
   return (
     <form onSubmit={submit} className="space-y-8">
-      <p className="flex flex-wrap items-center gap-2 text-[15px] text-white/65">
-        Signed in as <strong className="text-white">{me.login}</strong>.
+      <p className="flex flex-wrap items-center gap-2 text-[15px] text-muted">
+        Signed in as <strong className="text-foreground">{me.login}</strong>.
         <button
           type="button"
           onClick={async () => {
@@ -162,7 +162,7 @@ export function ModEditForm({ project: p }: { project: EditableProject }) {
         </button>
       </p>
       {!owner && (
-        <p className="rounded-xl bg-[#f2c46b]/10 px-4 py-3 text-sm leading-relaxed text-[#f6dca3]">
+        <p className="rounded-xl bg-[#f2c46b]/10 px-4 py-3 text-sm leading-relaxed text-warning-ink">
           {p.name}&apos;s owners are {p.owners.map((o) => `@${o}`).join(", ") || "not listed"}. Only they can edit its page: the service will refuse this
           account.
         </p>
@@ -233,7 +233,7 @@ export function ModEditForm({ project: p }: { project: EditableProject }) {
         />
         <Hint>New screenshots come after the ones it keeps.</Hint>
       </fieldset>
-      <p className="text-[14px] leading-relaxed text-white/55">
+      <p className="text-[14px] leading-relaxed text-muted">
         No new version: this changes the page only. A reviewer reads the change in a pull request, and the page updates when it is merged. A new file goes
         through{" "}
         <Link href="/mods/submit" className={LINK}>
@@ -247,9 +247,9 @@ export function ModEditForm({ project: p }: { project: EditableProject }) {
         </button>
       </p>
       <div role="status" aria-live="polite">
-        {result && "pending" in result && <p className="text-sm text-white/60">Opening the pull request…</p>}
+        {result && "pending" in result && <p className="text-sm text-muted">Opening the pull request…</p>}
         {result && "ok" in result && result.ok && (
-          <p className="text-lg text-white/80">
+          <p className="text-lg text-muted">
             Sent. Follow the review in{" "}
             <a href={result.url} rel="noreferrer" className={LINK}>
               its pull request
@@ -257,7 +257,7 @@ export function ModEditForm({ project: p }: { project: EditableProject }) {
             : the page changes when it is merged.
           </p>
         )}
-        {result && "ok" in result && !result.ok && <p className="rounded-xl bg-[#f07a6a]/10 px-4 py-3 text-sm text-[#f7b2a8]">{result.message}</p>}
+        {result && "ok" in result && !result.ok && <p className="rounded-xl bg-[#f07a6a]/10 px-4 py-3 text-sm text-danger-ink">{result.message}</p>}
       </div>
     </form>
   );

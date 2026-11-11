@@ -1,6 +1,6 @@
 # Host a server
 
-`horizon-server` runs a Minecraft: Java Edition 26.3 server with Horizon's own game as the engine. It is one native program: no Java, one settings file, a web panel and backups. Vanilla 26.3 clients and Horizon clients can join it.
+`horizon-server` runs a Minecraft: Java Edition 26.3 server with Sunrise's own game as the engine. It is one native program: no Java, one settings file, a web panel and backups. Vanilla 26.3 clients and Sunrise clients can join it.
 
 There are two ways to run one. The launcher's **Servers** page does everything with buttons and no commands. The command line is for a VPS or a headless machine. Both run the same program and keep the same folder.
 
@@ -9,7 +9,7 @@ There are two ways to run one. The launcher's **Servers** page does everything w
 ## Before you start
 
 - **You need your own copy of Minecraft 26.3**, like for playing: the server reads its game files from the ones you prepared. See [Install](/docs/install#what-you-need).
-- **Servers check Minecraft accounts by default**, as vanilla's do: every player signs in with a Microsoft account, Horizon and vanilla players alike. A server that doesn't (offline mode) lets anyone who can reach it join under any name. Keep such a server on your network or a VPN such as Tailscale, and use a whitelist ("Friends only" in the launcher).
+- **Servers check Minecraft accounts by default**, as vanilla's do: every player signs in with a Microsoft account, Sunrise and vanilla players alike. A server that doesn't (offline mode) lets anyone who can reach it join under any name. Keep such a server on your network or a VPN such as Tailscale, and use a whitelist ("Friends only" in the launcher).
 - Nothing of Mojang's is downloaded or shipped with the server.
 
 ## From the launcher: the Servers page
@@ -56,7 +56,7 @@ For friends elsewhere, the page offers **Friends over the internet** through [Ta
 - **Invite a friend:** open Tailscale's admin console, or **Use an access token…** so the launcher can make the invitation itself. Type their email (optional), choose **Make an invitation** and send them the link. The list shows **Withdraw** for an invitation not accepted yet and **Stop sharing** for one that was.
 - **Limit them to Minecraft** changes your Tailscale access controls so invited friends reach the server and nothing else on your computer. **Remove the limit** undoes it.
 
-Horizon never turns on Tailscale Funnel: the server is not put on the public internet. The other way is to forward TCP port 25565 on your router to the computer.
+Sunrise never turns on Tailscale Funnel: the server is not put on the public internet. The other way is to forward TCP port 25565 on your router to the computer.
 
 ![Inviting a friend through Tailscale](/media/docs/servers-invite.webp)
 
@@ -74,7 +74,7 @@ When something is wrong the launcher says so in plain words. If it can fix it, t
 
 The **Backups** tab has **Back up now**, and **Back up automatically** (every 6 hours, keeping the last 12; backups you make by hand are never deleted). **Restore** next to a backup asks you to confirm with **Replace the world**, and keeps the world it replaces.
 
-Under **This server's Horizon**, **Check for updates** and **Update now** move the server to the newest release. The world is backed up first, and the server goes back to the old release by itself if the new one does not start.
+Under **This server's Sunrise**, **Check for updates** and **Update now** move the server to the newest release. The world is backed up first, and the server goes back to the old release by itself if the new one does not start.
 
 ![A server's Backups tab](/media/docs/servers-backups.webp)
 
@@ -87,13 +87,13 @@ This works today, on a VPS or any computer. Everything below is the same program
 On Linux (x86-64) and macOS (Apple Silicon or Intel):
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/horizon-rust/horizon/main/packaging/server/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/sunrise-org/horizon/main/packaging/server/install.sh | sh
 ```
 
 On Windows (x64), in PowerShell:
 
 ```powershell
-irm https://raw.githubusercontent.com/horizon-rust/horizon/main/packaging/server/install.ps1 | iex
+irm https://raw.githubusercontent.com/sunrise-org/horizon/main/packaging/server/install.ps1 | iex
 ```
 
 The script downloads the latest release from GitHub, checks it against the SHA-256 GitHub publishes, and never asks for sudo or administrator rights. It puts `horizon-server` and `horizon-prepare` in `~/.local/bin` (on Windows, in your PATH). Other systems, such as Linux on ARM, build from source.
@@ -152,8 +152,8 @@ The server restarts the game by itself if it crashes. **Updates** never happen o
 - Settings in `server.toml` apply at the next restart, not live.
 - `console` (attach to a server running in the background) and `ban` and `pardon` as their own commands are coming. In the meantime, `horizon-server cmd ban NAME` works.
 
-The full reference, with every option, is [docs/hosting.md](https://github.com/horizon-rust/horizon/blob/main/docs/hosting.md) in the repository, and [docs/server.md](https://github.com/horizon-rust/horizon/blob/main/docs/server.md) explains the design.
+The full reference, with every option, is [docs/hosting.md](https://github.com/sunrise-org/horizon/blob/main/docs/hosting.md) in the repository, and [docs/server.md](https://github.com/sunrise-org/horizon/blob/main/docs/server.md) explains the design.
 
 ## How fast is it
 
-On the latest bot benchmark, with up to 50 players, Horizon used 3.8 to 4.8 times less memory than vanilla, Paper and Fabric with Lithium, started in about 8 seconds against 15 to 22, and used the least CPU from 10 players up. Its average tick was longer than Paper's at low player counts. See [Performance](/docs/performance#servers) for the numbers and what they mean.
+On the latest bot benchmark, with up to 50 players, Sunrise used 3.8 to 4.8 times less memory than vanilla, Paper and Fabric with Lithium, started in about 8 seconds against 15 to 22, and used the least CPU from 10 players up. Its average tick was longer than Paper's at low player counts. See [Performance](/docs/performance#servers) for the numbers and what they mean.

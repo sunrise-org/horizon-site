@@ -165,10 +165,10 @@ function KanbanCard({ c, ctx }: { c: Card; ctx: Ctx }) {
   const people = ctx.data.people ?? {};
   const move = (to: Column) => () => api("POST", "team/cards", { action: "move", id: c.id, column: to });
   return (
-    <li className="rounded-xl bg-white/[0.04] p-3">
-      <p className="text-[15px] font-medium text-white">{c.title}</p>
-      <Lines text={c.note} className="mt-1 text-[13px] text-white/60" />
-      <p className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-white/45">
+    <li className="rounded-xl bg-surface/80 p-3">
+      <p className="text-[15px] font-medium text-foreground">{c.title}</p>
+      <Lines text={c.note} className="mt-1 text-[13px] text-muted" />
+      <p className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted">
         {c.owner && people[c.owner] ? <span>{people[c.owner]}</span> : null}
         {c.link ? (
           <span>
@@ -183,7 +183,7 @@ function KanbanCard({ c, ctx }: { c: Card; ctx: Ctx }) {
         <Action label="Delete" confirm="Delete this card?" run={() => api("POST", "team/cards", { action: "delete", id: c.id })} ctx={ctx} />
       </p>
       <details className="mt-1">
-        <summary className="cursor-pointer text-xs text-white/50 hover:text-white">Edit</summary>
+        <summary className="cursor-pointer text-xs text-muted hover:text-foreground">Edit</summary>
         <div className="mt-2">
           <Form path="team/cards" before={{ action: "save" }} after={{ id: c.id, column: c.column }} submit="Save" ctx={ctx}>
             <Field label="Title">
@@ -209,8 +209,8 @@ function WorkBoardCard({ k }: { k: WorkCard }) {
   const href = safeGithubUrl(k.url);
   const inner = (
     <>
-      <span className="block text-[14px] text-white/85">{k.title}</span>
-      <span className="mt-1 flex flex-wrap gap-x-3 text-xs text-white/45">
+      <span className="block text-[14px] text-foreground">{k.title}</span>
+      <span className="mt-1 flex flex-wrap gap-x-3 text-xs text-muted">
         <span>
           {KIND[k.kind ?? ""] ?? "Card"} #{k.number}
         </span>
@@ -221,7 +221,7 @@ function WorkBoardCard({ k }: { k: WorkCard }) {
     </>
   );
   return (
-    <li className="rounded-xl bg-white/[0.04] p-3">
+    <li className="rounded-xl bg-surface/80 p-3">
       {href ? (
         <a href={href} rel="noreferrer" className="block hover:opacity-80">
           {inner}
@@ -238,7 +238,7 @@ function Board({ ctx }: { ctx: Ctx }) {
   return (
     <div className="space-y-10">
       <section>
-        <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">Team kanban</h2>
+        <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">Team kanban</h2>
         <Note>Coordination that isn&apos;t a GitHub issue: releases, onboarding, reviews to organise. Only the Team sees it.</Note>
         <Guard what="The Team kanban">
           <div className="mt-4 grid gap-4 lg:grid-cols-3">
@@ -246,11 +246,11 @@ function Board({ ctx }: { ctx: Ctx }) {
               const cards = data.cards?.[k] ?? [];
               return (
                 <section key={k} className={CARD}>
-                  <h3 className="flex items-center justify-between text-sm font-medium text-white">
-                    {label} <span className="text-white/45 tabular-nums">{cards.length}</span>
+                  <h3 className="flex items-center justify-between text-sm font-medium text-foreground">
+                    {label} <span className="text-muted tabular-nums">{cards.length}</span>
                   </h3>
                   <ul className="mt-3 space-y-2">
-                    {cards.length ? cards.map((c) => <KanbanCard key={c.id} c={c} ctx={ctx} />) : <li className="text-sm text-white/45">Nothing here.</li>}
+                    {cards.length ? cards.map((c) => <KanbanCard key={c.id} c={c} ctx={ctx} />) : <li className="text-sm text-muted">Nothing here.</li>}
                   </ul>
                 </section>
               );
@@ -279,7 +279,7 @@ function Board({ ctx }: { ctx: Ctx }) {
         </div>
       </section>
       <section>
-        <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">Work board</h2>
+        <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">Work board</h2>
         <Note>
           Kira&apos;s board from GitHub, as on{" "}
           <Link href="/hub" className={LINK}>
@@ -294,8 +294,8 @@ function Board({ ctx }: { ctx: Ctx }) {
                 const cards = c.cards ?? [];
                 return (
                   <section key={c.name} className={CARD}>
-                    <h3 className="flex items-center justify-between text-sm font-medium text-white">
-                      {c.name} <span className="text-white/45 tabular-nums">{cards.length}</span>
+                    <h3 className="flex items-center justify-between text-sm font-medium text-foreground">
+                      {c.name} <span className="text-muted tabular-nums">{cards.length}</span>
                     </h3>
                     <ul className="mt-3 space-y-2">
                       {cards.slice(0, 12).map((k, i) => (
@@ -303,7 +303,7 @@ function Board({ ctx }: { ctx: Ctx }) {
                       ))}
                     </ul>
                     {cards.length > 12 && (
-                      <p className="mt-2 text-xs text-white/45">
+                      <p className="mt-2 text-xs text-muted">
                         and {cards.length - 12} more on{" "}
                         <Link href="/hub" className={LINK}>
                           the hub
@@ -392,27 +392,27 @@ function TeamItemCard({ it, ctx }: { it: TeamItem; ctx: Ctx }) {
   const edit = safeGithubUrl(snippet?.edit);
   return (
     <article id={`item-${it.id}`} className={CARD}>
-      <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-white/50">
+      <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
         <span className={BADGE}>Team only</span>
         <span>{STATUS_NAME[it.status] ?? it.status}</span>
         <span>{area}</span>
         {it.owner && people[it.owner] ? <span>{people[it.owner]}</span> : null}
         {it.publishRequested ? <span>publish asked {when(it.publishRequested.at)}</span> : null}
       </p>
-      <h3 className="mt-2 text-lg font-semibold text-white">{it.title}</h3>
-      <Lines text={it.note} className="mt-1 text-[15px] text-white/70" />
+      <h3 className="mt-2 text-lg font-semibold text-foreground">{it.title}</h3>
+      <Lines text={it.note} className="mt-1 text-[15px] text-muted" />
       {it.links?.length ? (
         <p className="mt-1 flex flex-wrap gap-x-2 text-sm">
           {it.links.map((l, i) => (
             <span key={i}>
-              {i > 0 && <span className="text-white/30">· </span>}
+              {i > 0 && <span className="text-muted">· </span>}
               <LinkText link={l} />
             </span>
           ))}
         </p>
       ) : null}
       <details className="mt-3">
-        <summary className="cursor-pointer text-sm text-white/55 hover:text-white">Edit</summary>
+        <summary className="cursor-pointer text-sm text-muted hover:text-foreground">Edit</summary>
         <div className="mt-3">
           <ItemForm it={it} ctx={ctx} />
         </div>
@@ -425,12 +425,12 @@ function TeamItemCard({ it, ctx }: { it: TeamItem; ctx: Ctx }) {
         <Status text={status} />
       </p>
       {snippet && (
-        <div className="mt-3 rounded-xl bg-white/[0.03] p-4 text-sm text-white/70">
+        <div className="mt-3 rounded-xl bg-surface/80 p-4 text-sm text-muted">
           <p>
-            Add this to <code className="font-mono text-[#e7e1ff]">{snippet.file}</code> in a pull request to horizon (then{" "}
-            <code className="font-mono text-[#e7e1ff]">{snippet.then}</code>). Until it merges the item stays Team-only.
+            Add this to <code className="font-mono text-foreground">{snippet.file}</code> in a pull request to horizon (then{" "}
+            <code className="font-mono text-foreground">{snippet.then}</code>). Until it merges the item stays Team-only.
           </p>
-          <pre className="mt-2 overflow-x-auto rounded-lg bg-[#0a0614] px-3.5 py-3 font-mono text-[12.5px] text-[#e7e1ff]">
+          <pre className="mt-2 overflow-x-auto rounded-lg bg-sky-surface px-3.5 py-3 font-mono text-[12.5px] text-foreground">
             <code>{snippet.snippet}</code>
           </pre>
           <p className="mt-2 flex flex-wrap gap-2">
@@ -463,12 +463,12 @@ function PublicItemRow({ it, ctx }: { it: PublicItem; ctx: Ctx }) {
   return (
     <li className="py-3">
       <p className="text-[15px]">
-        <Link href="/hub" className="text-white hover:underline">
+        <Link href="/hub" className="text-foreground hover:underline">
           {it.title}
         </Link>{" "}
-        <span className="text-sm text-white/45">{area}</span>
+        <span className="text-sm text-muted">{area}</span>
         {t && (
-          <span className="text-sm text-white/45">
+          <span className="text-sm text-muted">
             {t.priority ? ` · ${t.priority} priority` : ""}
             {t.owner && people[t.owner] ? ` · ${people[t.owner]}` : ""}
             {t.note ? ` · ${t.note}` : ""}
@@ -476,7 +476,7 @@ function PublicItemRow({ it, ctx }: { it: PublicItem; ctx: Ctx }) {
         )}
       </p>
       <details className="mt-1">
-        <summary className="cursor-pointer text-xs text-white/50 hover:text-white">Team note</summary>
+        <summary className="cursor-pointer text-xs text-muted hover:text-foreground">Team note</summary>
         <div className="mt-2">
           <Form path="team/roadmap" before={{ action: "note", id: it.id }} submit="Save" ctx={ctx}>
             <div className={pair}>
@@ -508,21 +508,21 @@ function Roadmap({ ctx }: { ctx: Ctx }) {
   return (
     <div className="space-y-10">
       <section className="space-y-4">
-        <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">Team-only items</h2>
+        <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">Team-only items</h2>
         <Note>
           Plans the public doesn&apos;t see. They never reach the public repository by themselves: &ldquo;Publish&rdquo; gives the entry to add to
           roadmap/roadmap.toml in a pull request, and once it is merged the item shows as public here.
         </Note>
         {(r.team ?? []).length ? (r.team ?? []).map((it) => <TeamItemCard key={it.id} it={it} ctx={ctx} />) : <Empty>No Team-only item.</Empty>}
         <details className={CARD}>
-          <summary className="cursor-pointer text-sm font-medium text-white">New Team-only item</summary>
+          <summary className="cursor-pointer text-sm font-medium text-foreground">New Team-only item</summary>
           <div className="mt-4">
             <ItemForm ctx={ctx} />
           </div>
         </details>
       </section>
       <section>
-        <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">Public roadmap</h2>
+        <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">Public roadmap</h2>
         <Note>
           What everyone sees on{" "}
           <Link href="/hub" className={LINK}>
@@ -537,10 +537,10 @@ function Roadmap({ ctx }: { ctx: Ctx }) {
             if (!items.length) return null;
             return (
               <details key={k} open={k === "now"} className={CARD}>
-                <summary className="cursor-pointer font-medium text-white">
-                  {label} <span className="text-sm font-normal text-white/45">{items.length}</span>
+                <summary className="cursor-pointer font-medium text-foreground">
+                  {label} <span className="text-sm font-normal text-muted">{items.length}</span>
                 </summary>
-                <ul className="mt-2 divide-y divide-white/[0.06]">
+                <ul className="mt-2 divide-y divide-line">
                   {items.map((it) => (
                     <PublicItemRow key={it.id} it={it} ctx={ctx} />
                   ))}
@@ -589,25 +589,25 @@ function Decisions({ ctx }: { ctx: Ctx }) {
   return (
     <div className="space-y-10">
       <section className="space-y-4">
-        <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">Record a decision</h2>
+        <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">Record a decision</h2>
         <Note>Who decided what and when, with a link. Nothing is ever deleted: an edit keeps the previous version and a withdrawn decision stays listed.</Note>
         <div className={CARD}>
           <DecisionForm ctx={ctx} />
         </div>
       </section>
       <section className="space-y-4">
-        <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">Decisions</h2>
+        <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">Decisions</h2>
         {list.length ? (
           list.map((d) => (
             <article key={d.id} className={`${CARD} ${d.status === "withdrawn" ? "opacity-60" : ""}`}>
-              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-white/50">
+              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
                 <span>{when(d.at)}</span>
                 <span>{(d.by && people[d.by]) || "someone"}</span>
                 {d.item ? <span>{d.item}</span> : null}
                 {d.status === "withdrawn" ? <span className={BADGE}>withdrawn</span> : null}
               </p>
-              <h3 className="mt-2 text-lg font-semibold text-white">{d.title}</h3>
-              <Lines text={d.body} className="mt-1 text-[15px] text-white/70" />
+              <h3 className="mt-2 text-lg font-semibold text-foreground">{d.title}</h3>
+              <Lines text={d.body} className="mt-1 text-[15px] text-muted" />
               {d.link ? (
                 <p className="mt-1 text-sm">
                   <LinkText link={d.link} />
@@ -615,8 +615,8 @@ function Decisions({ ctx }: { ctx: Ctx }) {
               ) : null}
               {d.history?.length ? (
                 <details className="mt-2 text-sm">
-                  <summary className="cursor-pointer text-white/50 hover:text-white">Earlier versions ({d.history.length})</summary>
-                  <ul className="mt-2 space-y-1 text-white/60">
+                  <summary className="cursor-pointer text-muted hover:text-foreground">Earlier versions ({d.history.length})</summary>
+                  <ul className="mt-2 space-y-1 text-muted">
                     {d.history.map((h, i) => (
                       <li key={i}>
                         {when(h.at)}, before {(h.by && people[h.by]) || "someone"}&apos;s change: {h.title}
@@ -627,7 +627,7 @@ function Decisions({ ctx }: { ctx: Ctx }) {
               ) : null}
               {d.status === "active" && (
                 <details className="mt-2">
-                  <summary className="cursor-pointer text-sm text-white/55 hover:text-white">Edit</summary>
+                  <summary className="cursor-pointer text-sm text-muted hover:text-foreground">Edit</summary>
                   <div className="mt-3 space-y-3">
                     <DecisionForm d={d} ctx={ctx} />
                     <Action
@@ -659,7 +659,7 @@ function Stats({ s }: { s: TeamStats }) {
   return (
     <div className="space-y-6">
       <p className="text-[15px] text-white/60">
-        GitHub counts for horizon-rust/horizon over the last 12 weeks, and Discord counters (counts only, no messages). Updated {relative(Date.parse(s.generatedAt))}.
+        GitHub counts for sunrise-org/horizon over the last 12 weeks, and Discord counters (counts only, no messages). Updated {relative(Date.parse(s.generatedAt))}.
       </p>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Tile value={fmt(pr.ready)} label="pull requests ready for review" note={`${fmt(pr.drafts)} drafts${pr.oldestReadyDays != null ? ` · oldest ${pr.oldestReadyDays} d` : ""}`} />
@@ -761,13 +761,13 @@ function Data({ data, stats }: { data: Overview; stats: TeamStats | null }) {
   const sets = datasets(data, stats);
   return (
     <div className="space-y-8">
-      <p className="text-[15px] text-white/60">
+      <p className="text-[15px] text-muted">
         What this dashboard holds and counts, as tables. Each exports as CSV (cells that start with = + - @ get a leading quote, so a spreadsheet never runs
         them) or JSON. Generated {generated}.{stats ? "" : " The GitHub tables come once Kira has counted."}
       </p>
-      <nav className="flex flex-wrap gap-x-3 gap-y-1 text-sm text-white/55">
+      <nav className="flex flex-wrap gap-x-3 gap-y-1 text-sm text-muted">
         {sets.map((x) => (
-          <a key={x.id} href={`#data-${x.id}`} className="hover:text-white">
+          <a key={x.id} href={`#data-${x.id}`} className="hover:text-foreground">
             {x.title}
           </a>
         ))}
@@ -813,12 +813,12 @@ export function TeamDashboard({ who }: { who: Who }) {
 
   if (error) {
     return (
-      <p role="alert" className="text-[15px] text-white/70">
+      <p role="alert" className="text-[15px] text-muted">
         {error}
       </p>
     );
   }
-  if (!data || !apps) return <p className="text-sm text-white/50">Loading…</p>;
+  if (!data || !apps) return <p className="text-sm text-muted">Loading…</p>;
 
   const ctx: Ctx = { data, reload };
   const names = [who.name, data.people?.[who.user] ?? ""];
@@ -837,7 +837,7 @@ export function TeamDashboard({ who }: { who: Who }) {
       render(stats)
     ) : statsError ? (
       <div className="space-y-3">
-        <p className="text-[15px] text-white/70">{statsError.message}</p>
+        <p className="text-[15px] text-muted">{statsError.message}</p>
         {statsError.retry && (
           <button type="button" className={SECONDARY_SM} onClick={() => setStatsError(null)}>
             Try again
@@ -845,14 +845,14 @@ export function TeamDashboard({ who }: { who: Who }) {
         )}
       </div>
     ) : (
-      <p className="text-sm text-white/50">Loading…</p>
+      <p className="text-sm text-muted">Loading…</p>
     );
 
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Tabs tabs={tabs} active={tab} onSelect={selectTab} label="Team dashboard" />
-        <Link href="/hub/staff-help" className="text-sm text-white/55 hover:text-white">
+        <Link href="/hub/staff-help" className="text-sm text-muted hover:text-foreground">
           How this works
         </Link>
       </div>
@@ -883,7 +883,7 @@ export function TeamDashboard({ who }: { who: Who }) {
         <Guard what="The statistics">{statsBody((s) => <Stats s={s} />)}</Guard>
       </Panel>
       <Panel id="data" active={tab}>
-        <Guard what="The data">{stats || statsError ? <Data data={data} stats={stats} /> : <p className="text-sm text-white/50">Loading…</p>}</Guard>
+        <Guard what="The data">{stats || statsError ? <Data data={data} stats={stats} /> : <p className="text-sm text-muted">Loading…</p>}</Guard>
       </Panel>
     </div>
   );

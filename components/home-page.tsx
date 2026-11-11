@@ -6,7 +6,7 @@ import { getReleases } from "@/components/github-releases";
 import { Hero } from "@/components/hero";
 import { getMessages, type Locale } from "@/components/i18n";
 import { JsonLd } from "@/components/json-ld";
-import { DOWNLOAD_URL, GITHUB_URL } from "@/components/links";
+import { DOWNLOAD_URL, GITHUB_URL, UPSTREAM_URL } from "@/components/links";
 import { Parity } from "@/components/parity";
 import {
   absolute,
@@ -20,9 +20,13 @@ import {
   SITE_URL,
   WEBSITE_ID,
 } from "@/components/site";
-import { Sponsor } from "@/components/sponsor";
 
-const SCREENSHOTS = ["/media/nether.webp", "/media/village-800.webp", "/media/night-800.webp", "/media/underwater.webp"];
+const SCREENSHOTS = [
+  "/media/nether.webp",
+  "/media/village-800.webp",
+  "/media/night-800.webp",
+  "/media/underwater.webp",
+];
 
 // The home page in each language: app/(en)/page.tsx and app/es/page.tsx.
 export async function HomePage({ locale }: { locale: Locale }) {
@@ -51,7 +55,6 @@ export async function HomePage({ locale }: { locale: Locale }) {
               name: SITE_NAME,
               url: SITE_URL,
               logo: absolute("/icon-512.png"),
-              founder: AUTHOR,
               sameAs: SAME_AS,
             },
             {
@@ -65,7 +68,8 @@ export async function HomePage({ locale }: { locale: Locale }) {
               applicationSubCategory: "Minecraft: Java Edition client",
               operatingSystem: OPERATING_SYSTEMS,
               softwareVersion: game?.tag.replace(/^\D+/, ""),
-              softwareRequirements: "A legally obtained copy of Minecraft: Java Edition 26.3",
+              softwareRequirements:
+                "A legally obtained copy of Minecraft: Java Edition 26.3",
               downloadUrl: absolute(DOWNLOAD_URL),
               releaseNotes: absolute("/releases"),
               screenshot: SCREENSHOTS.map(absolute),
@@ -73,6 +77,11 @@ export async function HomePage({ locale }: { locale: Locale }) {
               isAccessibleForFree: true,
               license: "https://opensource.org/license/mit",
               author: AUTHOR,
+              isBasedOn: {
+                "@type": "SoftwareApplication",
+                name: "Horizon",
+                url: UPSTREAM_URL,
+              },
               publisher: { "@id": ORGANIZATION_ID },
               sameAs: [GITHUB_URL],
             },
@@ -81,7 +90,6 @@ export async function HomePage({ locale }: { locale: Locale }) {
       />
       <Hero locale={locale} />
       <About locale={locale} />
-      <Sponsor locale={locale} />
       <Community locale={locale} />
       <Gallery locale={locale} />
       <Contributors locale={locale} />

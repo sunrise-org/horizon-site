@@ -1,9 +1,10 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { TAGS } from "@/components/github-fresh";
+import { GAME_REPO } from "@/components/game-repo";
 import { githubFetch } from "@/components/github-api";
 import { GITHUB_URL } from "@/components/links";
 
-const REPO = "horizon-rust/horizon";
+const REPO = GAME_REPO;
 
 export const RELEASES_URL = `${GITHUB_URL}/releases`;
 

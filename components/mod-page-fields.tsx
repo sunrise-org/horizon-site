@@ -100,12 +100,12 @@ export async function shotProblem(file: File) {
   return "";
 }
 
-const HINT = "mt-1.5 block text-[13px] leading-relaxed text-white/45";
-const LABEL = "mb-1.5 block text-[13px] font-medium text-white/70";
+const HINT = "mt-1.5 block text-[13px] leading-relaxed text-muted";
+const LABEL = "mb-1.5 block text-[13px] font-medium text-muted";
 
 export function Problem({ id, text }: { id: string; text?: string }) {
   return text ? (
-    <span id={id} data-problem className="mt-1.5 block text-[13px] leading-relaxed text-[#f7b2a8]">
+    <span id={id} data-problem className="mt-1.5 block text-[13px] leading-relaxed text-danger-ink">
       {text}
     </span>
   ) : null;
@@ -128,7 +128,7 @@ export function DescriptionField({ value, onChange, problem }: { value: string; 
       />
       <span id={`${id}-count`} className={`${HINT} flex justify-between gap-3`}>
         <span>Markdown: what it does, how to use it, what it needs.</span>
-        <span className={`tabular-nums ${n > DESCRIPTION_MAX || (n > 0 && n < DESCRIPTION_MIN) ? "text-[#f7b2a8]" : ""}`}>
+        <span className={`tabular-nums ${n > DESCRIPTION_MAX || (n > 0 && n < DESCRIPTION_MIN) ? "text-danger-ink" : ""}`}>
           {n.toLocaleString("en")} / {DESCRIPTION_MAX.toLocaleString("en")}
           {n < DESCRIPTION_MIN ? `, at least ${DESCRIPTION_MIN}` : ""}
         </span>
@@ -138,7 +138,7 @@ export function DescriptionField({ value, onChange, problem }: { value: string; 
   );
 }
 
-const CHIP = "inline-flex h-8 items-center rounded-md px-3 text-[13px] font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff] disabled:cursor-not-allowed disabled:opacity-40";
+const CHIP = "inline-flex h-8 items-center rounded-md px-3 text-[13px] font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-40";
 
 export function CategoriesField({ kind, value, onChange, problem }: { kind: string; value: string[]; onChange: (v: string[]) => void; problem?: string }) {
   const id = useId();
@@ -147,7 +147,7 @@ export function CategoriesField({ kind, value, onChange, problem }: { kind: stri
   return (
     <fieldset aria-describedby={`${id}-problem`}>
       <legend className={LABEL}>
-        Categories <span className="font-normal text-white/45">(1 to {MAX_CATEGORIES})</span>
+        Categories <span className="font-normal text-muted">(1 to {MAX_CATEGORIES})</span>
       </legend>
       <div className="flex flex-wrap gap-1.5">
         {list.map((c) => {
@@ -159,7 +159,7 @@ export function CategoriesField({ kind, value, onChange, problem }: { kind: stri
               aria-pressed={on}
               disabled={!on && value.length >= MAX_CATEGORIES}
               onClick={() => toggle(c)}
-              className={`${CHIP} ${on ? "bg-white text-[#100a1f]" : "bg-white/[0.06] text-white/70 hover:bg-white/[0.1] hover:text-white"}`}
+              className={`${CHIP} ${on ? "bg-sky-surface text-foreground" : "bg-lavender text-muted hover:bg-lavender hover:text-foreground"}`}
             >
               {categoryLabel(c)}
             </button>
@@ -176,7 +176,7 @@ export function TagsField({ value, onChange, problem }: { value: string; onChang
   return (
     <label className="block">
       <span className={LABEL}>
-        Tags <span className="font-normal text-white/45">(optional, up to {MAX_TAGS})</span>
+        Tags <span className="font-normal text-muted">(optional, up to {MAX_TAGS})</span>
       </span>
       <input
         value={value}
@@ -194,7 +194,7 @@ export function TagsField({ value, onChange, problem }: { value: string; onChang
   );
 }
 
-const FILE = "block w-full text-sm text-white/70 file:mr-3 file:h-9 file:rounded-lg file:border-0 file:bg-white/10 file:px-3 file:text-sm file:font-medium file:text-white hover:file:bg-white/15";
+const FILE = "block w-full text-sm text-muted file:mr-3 file:h-9 file:rounded-lg file:border-0 file:bg-lavender file:px-3 file:text-sm file:font-medium file:text-foreground hover:file:bg-sky-surface";
 
 function useObjectUrl(file: File | null) {
   const url = useMemo(() => (file ? URL.createObjectURL(file) : ""), [file]);
@@ -230,9 +230,9 @@ export function IconField({
       </label>
       <div className="flex items-center gap-4">
         {shown ? (
-          <Image src={shown} alt="The icon" width={64} height={64} unoptimized className="size-16 shrink-0 rounded-xl bg-[#221a3a] object-cover [image-rendering:pixelated]" />
+          <Image src={shown} alt="The icon" width={64} height={64} unoptimized className="size-16 shrink-0 rounded-xl bg-lavender object-cover [image-rendering:pixelated]" />
         ) : (
-          <span aria-hidden className="size-16 shrink-0 rounded-xl border border-dashed border-white/15" />
+          <span aria-hidden className="size-16 shrink-0 rounded-xl border border-dashed border-line" />
         )}
         <input
           id={id}
@@ -284,17 +284,17 @@ export function ScreenshotsField({ shots, onChange, problem }: { shots: Shot[]; 
   return (
     <div>
       <label htmlFor={id} className={LABEL}>
-        Screenshots <span className="font-normal text-white/45">(optional, up to {MAX_SHOTS})</span>
+        Screenshots <span className="font-normal text-muted">(optional, up to {MAX_SHOTS})</span>
       </label>
       {shots.length > 0 && (
         <ol className="mb-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {shots.map((s, i) => (
             <li key={s.key} className="min-w-0">
-              <span className="relative block aspect-video overflow-hidden rounded-lg bg-[#221a3a]">
+              <span className="relative block aspect-video overflow-hidden rounded-lg bg-lavender">
                 <Image src={s.url} alt={`Screenshot ${i + 1}`} fill unoptimized sizes="12rem" className="object-cover" />
               </span>
               <span className="mt-1 flex items-center justify-between gap-1">
-                <span className="text-[12px] text-white/45 tabular-nums">{i + 1}</span>
+                <span className="text-[12px] text-muted tabular-nums">{i + 1}</span>
                 <span className="flex">
                   <button type="button" onClick={() => move(i, -1)} disabled={i === 0} aria-label={`Move screenshot ${i + 1} earlier`} className={GHOST_SM}>
                     ←

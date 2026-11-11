@@ -5,17 +5,22 @@ import type { HorizonPerf } from "@/lib/perf/generated/horizon_perf";
 import { grouped, num } from "@/lib/perf/format";
 import { t } from "@/lib/perf/i18n";
 import { phaseTree, type PhaseNode } from "@/lib/perf/overview";
+import { spanField } from "@/lib/perf/pins";
 import type { SpanRow } from "@/lib/perf/types";
 import { useChanges } from "./comparison";
 import { Delta, NewRows } from "./delta";
 import { Icons } from "./icons";
 import { RowTools } from "./row-tools";
-import { Segmented } from "./segmented";
+import { PinButton } from "./pin-button";
+import { ShowAll, useLimit } from "./show-all";
 import { useRows } from "./use-capture";
 import type { LoadedCapture } from "./use-capture";
 import styles from "./page.module.css";
+import tree from "./tree.module.css";
 
 const VISIBLE_MS = 0.005;
+
+const SPAN_LIMIT = 200;
 
 /** How deep the tree starts open: enough to read the phases, not every small step. */
 const OPEN_DEPTH = 2;
@@ -23,7 +28,6 @@ const OPEN_DEPTH = 2;
 /** Waiting worth pointing at: a thread that lost a tenth of a span's time to something else. */
 const WAITING_SHARE = 0.1;
 
-type Selection = "all" | "slow";
 type Opening = "default" | "all" | "none";
 
 interface Props {
@@ -62,6 +66,7 @@ function SpanLine({ node, depth, context }: { node: PhaseNode; depth: number; co
           )}
           <span className={styles.nameText}>{node.name}</span>
           <RowTools id={node.id} name={node.name} />
+          <PinButton field={spanField(node.name)} />
         </span>
         <span className={styles.spanTrack} aria-hidden="true">
           <span className={styles.meterFill} style={{ width: `${(worked / context.max) * 100}%` }} />
@@ -93,18 +98,42 @@ function SpanLine({ node, depth, context }: { node: PhaseNode; depth: number; co
 
 /** Every timed step as a tree: measured on every tick or frame, so waiting and rare steps show here. */
 export function SpansPanel({ reader, capture }: Props) {
-  const [selection, setSelection] = useState<Selection>("all");
   const [opening, setOpening] = useState<Opening>("default");
   const [toggled, setToggled] = useState<Set<string>>(new Set());
-  const slowRows = useRows<SpanRow>(reader, capture, "spans", { limit: 200, slow: true });
-  const hasSlow = slowRows.rows.length > 0;
-  const allRows = useRows<SpanRow>(reader, capture, "spans", { limit: 200 });
-  const { rows, error, reply } = selection === "slow" && hasSlow ? slowRows : allRows;
+  const [names, setNames] = useState("");
+  const cap = useLimit(SPAN_LIMIT);
+  const wanted = names.split(",").map((name) => name.trim()).filter((name) => name !== "");
+  const { rows, error, reply } = useRows<SpanRow>(reader, capture, "spans", {
+    limit: cap.limit,
+    ...(wanted.length > 0 ? { names: wanted } : {}),
+  });
   const compare = useChanges();
   const frames = capture.side === "client";
 
-  if (error) return <p className={styles.error}>{error}</p>;
-  if (rows.length === 0) return <p className={styles.empty}>{t("meta.empty")}</p>;
+  const namesBox = (
+    <label className={tree.control}>
+      <span className={tree.controlLabel}>{t("spans.only")}</span>
+      <input
+        type="search"
+        className={tree.search}
+        value={names}
+        placeholder={t("spans.onlyHint")}
+        onChange={(event) => setNames(event.target.value)}
+      />
+    </label>
+  );
+  if (error) {
+    return (
+      <div className={styles.summary}>
+        {namesBox}
+        <p className={styles.error}>{error}</p>
+        {reply?.candidates?.length ? (
+          <p className={styles.note}>{t("spans.candidates", { list: reply.candidates.map((item) => item.name).join(", ") })}</p>
+        ) : null}
+      </div>
+    );
+  }
+  if (rows.length === 0 && wanted.length === 0) return <p className={styles.empty}>{t("meta.empty")}</p>;
 
   const shown = rows.filter((row) => (row.values[0] ?? 0) >= VISIBLE_MS);
   const roots = phaseTree(shown);
@@ -133,17 +162,7 @@ export function SpansPanel({ reader, capture }: Props) {
       <header className={styles.summaryHead}>
         <p className={styles.cardNote}>{t(frames ? "spans.noteFrames" : "spans.noteTicks")}</p>
         <div className={styles.actions}>
-          {hasSlow ? (
-            <Segmented
-              label={t("spans.selection")}
-              options={[
-                { id: "all", text: t(frames ? "spans.allFrames" : "spans.allTicks") },
-                { id: "slow", text: t(frames ? "spans.slowFrames" : "spans.slowTicks") },
-              ]}
-              value={selection}
-              onChange={setSelection}
-            />
-          ) : null}
+          {namesBox}
           <button type="button" className={styles.buttonSmall} onClick={() => openAll("all")}>
             {t("spans.expandAll")}
           </button>
@@ -168,6 +187,7 @@ export function SpansPanel({ reader, capture }: Props) {
             <SpanLine key={node.id} node={node} depth={0} context={context} />
           ))}
         </div>
+        {cap.capped(rows.length) ? <ShowAll count={rows.length} onClick={cap.show} /> : null}
         {rows.length > shown.length ? (
           <p className={styles.note}>{t("spans.hidden", { count: rows.length - shown.length })}</p>
         ) : null}

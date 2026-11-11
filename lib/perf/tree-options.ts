@@ -1,20 +1,9 @@
-import type { Envelope, GroupRow } from "./types";
+import type { ContextFilter, ContextKey, Envelope, GroupRow, QueryOp, RequestFilters, SampleKind } from "./types";
 
-/** Which samples the tree weighs, as the reader picks them. */
-export type SampleSelection = "all" | "slow" | "running" | "waiting" | "alloc" | "live";
+export type { ContextKey };
 
-export const SAMPLE_SELECTIONS: readonly SampleSelection[] = ["all", "slow", "running", "waiting", "alloc", "live"];
-
-type WireSelect = "cpu" | "running" | "waiting" | "alloc" | "live";
-
-const SELECTIONS: Record<SampleSelection, { select: WireSelect; slow: boolean }> = {
-  all: { select: "cpu", slow: false },
-  slow: { select: "cpu", slow: true },
-  running: { select: "running", slow: false },
-  waiting: { select: "waiting", slow: false },
-  alloc: { select: "alloc", slow: false },
-  live: { select: "live", slow: false },
-};
+/** Which samples the reader can weigh, in the order they are offered. */
+export const SAMPLE_KINDS: readonly SampleKind[] = ["cpu", "running", "waiting", "wall", "alloc", "live"];
 
 /** How the tree is drawn: as lines to open, or as a flame graph. */
 export type ViewKind = "list" | "flame";
@@ -23,8 +12,6 @@ export type ViewKind = "list" | "flame";
 export type GroupKind = "none" | "thread" | "span" | "entity" | "block" | "chunk" | "dimension";
 
 export const GROUP_KINDS: readonly GroupKind[] = ["none", "thread", "span", "entity", "block", "chunk", "dimension"];
-
-export type ContextKey = "span" | "entity" | "block" | "chunk" | "dim";
 
 /** The contexts a sample can carry; a node's weight can be split by each. */
 export const CONTEXT_KEYS: readonly ContextKey[] = ["span", "entity", "block", "chunk", "dim"];
@@ -39,14 +26,13 @@ const CONTEXT_OF: Record<Exclude<GroupKind, "none" | "thread">, ContextKey> = {
 
 /** The filters of a samples query: the selection, the thread, and what a group narrowed it to. */
 export interface SampleFilters {
-  select: WireSelect;
+  select: SampleKind;
   slow?: boolean;
   thread?: string;
-  where?: Partial<Record<ContextKey, string[]>>;
+  where?: ContextFilter;
 }
 
-export function sampleFilters(selection: SampleSelection, thread: string | null): SampleFilters {
-  const { select, slow } = SELECTIONS[selection];
+export function sampleFilters(select: SampleKind, slow: boolean, thread: string | null): SampleFilters {
   return { select, ...(slow ? { slow } : {}), ...(thread === null ? {} : { thread }) };
 }
 
@@ -59,7 +45,10 @@ export function groupScope(group: GroupKind, row: Pick<GroupRow, "key" | "label"
 
 /** What a capture's samples can be shown as. */
 export interface SampleOptions {
-  selections: SampleSelection[];
+  /** The sample kinds the capture has samples of. */
+  kinds: SampleKind[];
+  /** Whether the samples of slow ticks or frames alone are there. */
+  slow: boolean;
   groups: GroupKind[];
   /** The threads with samples, when there is more than one to pick from. */
   threads: string[];
@@ -67,22 +56,25 @@ export interface SampleOptions {
   thread: string | null;
 }
 
-export type Ask = <R>(op: string, filters: Record<string, unknown>) => Envelope<R>;
+export type Ask = <R>(op: QueryOp, filters: RequestFilters) => Envelope<R>;
 
 /** Probes the capture with the queries the tree itself runs: an option is offered only when it answers with samples. */
 export function probeOptions(ask: Ask): SampleOptions {
-  const selections: SampleSelection[] = [];
+  const kinds: SampleKind[] = [];
   let thread: string | null = null;
-  for (const id of SAMPLE_SELECTIONS) {
-    const reply = ask<unknown>("tree", { ...sampleFilters(id, null), depth: 0, limit: 1 });
+  for (const kind of SAMPLE_KINDS) {
+    const reply = ask<unknown>("tree", { ...sampleFilters(kind, false, null), depth: 0, limit: 1 });
     if (!reply.ok || (reply.selection?.samples ?? 0) === 0) continue;
-    selections.push(id);
+    kinds.push(kind);
     thread ??= reply.selection?.thread ?? null;
   }
   const groups: GroupKind[] = ["none"];
   let threads: string[] = [];
-  if (selections.length > 0) {
-    const filters = sampleFilters(selections[0], null);
+  let slow = false;
+  if (kinds.length > 0) {
+    const filters = sampleFilters(kinds[0], false, null);
+    const slowReply = ask<unknown>("tree", { ...sampleFilters(kinds[0], true, null), depth: 0, limit: 1 });
+    slow = slowReply.ok && (slowReply.selection?.samples ?? 0) > 0;
     const rowsOf = (by: string) => {
       const reply = ask<GroupRow>("group", { ...filters, by, limit: 50 });
       return reply.ok ? reply.rows : [];
@@ -97,5 +89,5 @@ export function probeOptions(ask: Ask): SampleOptions {
       if (rowsOf(kind).some((row) => row.key !== null)) groups.push(kind);
     }
   }
-  return { selections, groups, threads, thread };
+  return { kinds, slow, groups, threads, thread };
 }

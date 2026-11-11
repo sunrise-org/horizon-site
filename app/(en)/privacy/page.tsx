@@ -1,161 +1,149 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Contact, PADDLE_PRIVACY, SELLER } from "@/components/legal";
 import { pageMetadata } from "@/components/site";
 
 export const metadata = pageMetadata({
-  title: "Privacy · Horizon",
+  title: "Privacy · Sunrise",
   description:
-    "What this website keeps about you, and what it doesn't: no cookies for visitors, no analytics, and one hashed count of release views.",
+    "What this website keeps about you: no cookies for visitors, no analytics, a hashed count of release views and the performance captures you upload.",
   path: "/privacy",
 });
 
-const LINK = "text-[#c4b5ff] underline decoration-[#c4b5ff]/40 underline-offset-4 transition-colors hover:text-white";
-
-function Out({ href, children }: { href: string; children: ReactNode }) {
-  return (
-    <a href={href} target="_blank" rel="noreferrer" className={LINK}>
-      {children}
-      <span className="sr-only"> (opens in a new tab)</span>
-    </a>
-  );
-}
+const LINK =
+  "text-[#ffd2e4] underline decoration-[#ffd2e4]/40 underline-offset-4 transition-colors hover:text-white";
 
 function Part({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="mt-12">
-      <h2 className="font-display text-[1.6rem] leading-tight font-semibold tracking-[-0.02em] text-white">{title}</h2>
+      <h2 className="font-display text-[1.6rem] leading-tight font-semibold tracking-[-0.02em] text-white">
+        {title}
+      </h2>
       <div className="mt-4 space-y-4">{children}</div>
     </section>
   );
 }
 
-function Key({ children }: { children: ReactNode }) {
-  return <code className="rounded bg-white/[0.07] px-1 py-0.5 font-mono text-[0.88em] text-[#e7e1ff]">{children}</code>;
-}
-
 export default function PrivacyPage() {
   return (
     <main>
-      <article className="mx-auto w-full max-w-3xl px-6 pt-32 pb-20 text-[16px] leading-relaxed text-pretty text-white/70 sm:pt-40 sm:pb-28 lg:px-10">
-        <p className="text-sm font-medium text-white/60">Privacy</p>
-        <h1 className="mt-4 font-display text-[clamp(2.25rem,6vw,4rem)] leading-[1.04] font-semibold tracking-[-0.035em] text-white">
+      <article className="mx-auto w-full max-w-3xl px-6 pt-32 pb-20 text-[16px] leading-relaxed text-pretty text-muted sm:pt-40 sm:pb-28 lg:px-10">
+        <p className="text-sm font-medium text-muted">Privacy</p>
+        <h1 className="mt-4 font-display text-[clamp(2.25rem,6vw,4rem)] leading-[1.04] font-semibold tracking-[-0.035em] text-foreground">
           <span className="block">This site keeps</span>
           <span className="text-accent block pb-1">almost nothing.</span>
         </h1>
         <p className="mt-6 text-lg text-white/70">
-          What this website keeps about you, and what it doesn&apos;t. The Horizon launcher and game have their own rules, set by the Horizon project:
-          they are on <Out href="https://playhorizon.dev/privacy">Horizon&apos;s privacy page</Out>.
+          What this website keeps about you, and what it doesn&apos;t.
         </p>
 
         <Part title="In short">
           <ul className="list-disc space-y-2 pl-5 marker:text-white/30">
-            <li>No cookies for visitors. Signing in, as a staff member or to submit or rate a mod, sets one session cookie.</li>
-            <li>No analytics, trackers or ads.</li>
-            <li>One thing is kept on the server: a one-way hash of your IP address when you open a release, so each release counts each visitor once.</li>
-            <li>A few choices you make stay in your own browser, and never leave it.</li>
+            <li>
+              No cookies for visitors, no analytics, no trackers and no ads.
+            </li>
+            <li>
+              Opening a release stores a keyed hash of your IP address, so each
+              release counts each visitor once.
+            </li>
+            <li>
+              Signing in, where a deployment offers it, sets a session cookie
+              from the service you sign in to.
+            </li>
+            <li>
+              Uploading a performance capture stores the file you upload, and a
+              hash of your IP address for rate limiting.
+            </li>
           </ul>
         </Part>
 
         <Part title="Release views">
           <p>
-            Each release on <Link href="/releases" className={LINK}>Releases</Link> shows how many people opened it. When you open one, the server turns
-            your IP address into a one-way hash, using a secret key that stays on the server, and keeps that hash next to the release. The address itself
-            is never stored, and the hash can&apos;t be turned back into it. The same address opening the same release again counts once.
-          </p>
-          <p>
-            The hashes are used only to keep those counts, are not linked to anything else, and are never shared. Only the number of views is shown.
-          </p>
-        </Part>
-
-        <Part title="What stays in your browser">
-          <p>The site remembers three choices in your browser&apos;s local storage. They stay on your device and are never sent to the server:</p>
-          <ul className="list-disc space-y-2 pl-5 marker:text-white/30">
-            <li>
-              <Key>horizon:seen-releases</Key>: which releases you have opened, so the list can mark new ones.
-            </li>
-            <li>
-              <Key>horizon:partners-hidden</Key>: that you hid the partner banner.
-            </li>
-            <li>
-              <Key>hub:detail</Key>: whether the Hub reads in simple or technical words.
-            </li>
-          </ul>
-          <p>Clearing this site&apos;s data in your browser removes them.</p>
-        </Part>
-
-        <Part title="What your browser loads from GitHub">
-          <p>
-            Contributors&apos; and mod authors&apos; pictures come from avatars.githubusercontent.com, mod icons from horizon-rust.github.io, and every
-            download from github.com. Those requests go from your browser to GitHub, and{" "}
-            <Out href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub&apos;s privacy statement</Out> covers
-            them. Nothing else on this site is loaded from another company, except in the shop (/shop and /shop/pay): once you
-            start a claim or a purchase there, it loads Paddle.js from cdn.paddle.com, and Paddle&apos;s checkout runs in it under{" "}
-            <Out href="https://www.paddle.com/legal/privacy">Paddle&apos;s privacy policy</Out>. The face shown to confirm a Minecraft account is that
-            account&apos;s skin, loaded from textures.minecraft.net (Mojang).
+            Each release on{" "}
+            <Link href="/releases" className={LINK}>
+              Releases
+            </Link>{" "}
+            shows how many people opened it. When you open one, the server turns
+            your IP address into a hash with a secret key that stays on the
+            server, and keeps that hash next to the release. The address itself
+            is not stored, the same address opening the same release again
+            counts once, and only the number of views is shown.
           </p>
         </Part>
 
         <Part title="Signing in">
           <p>
-            The staff dashboards and the mod registry&apos;s sign-in are run by the Horizon project&apos;s own services; this site only passes your requests on
-            to them. Signing in to the dashboards sets an HttpOnly session cookie from Kira, Horizon&apos;s Discord bot, that ends after 12 hours without use
-            and 7 days at most. Signing in with GitHub to submit or rate a mod sets the registry&apos;s session cookie for 12 hours, or until you sign out. Both
-            go only to the service that set them, and the Horizon project is responsible for what those services keep.
+            The staff dashboards and the mod registry&apos;s sign-in are
+            services this site passes your requests on to; they are configured
+            per deployment. When you sign in, the cookie that service sets is
+            passed back to your browser and sent only with later requests to the
+            same service. This site keeps no account of its own.
+          </p>
+        </Part>
+
+        <Part title="Performance captures">
+          <p>
+            Opening a{" "}
+            <code className="font-mono text-[0.9em] text-[#ffe6f0]">
+              .hzperf
+            </code>{" "}
+            file on{" "}
+            <Link href="/perf" className={LINK}>
+              /perf
+            </Link>{" "}
+            reads it in your browser and uploads nothing.{" "}
+            <strong className="font-medium text-white/85">Share</strong> asks
+            first, then uploads the file as it is. The capture is stored for one
+            hour; if you share it, it is kept for 30 days. The server also keeps
+            a SHA-256 hash of your IP address for an hour to limit uploads per
+            address, and a hash of the delete token your browser receives. The
+            token itself stays in your browser&apos;s session storage and lets
+            you delete the capture. A capture can name the world, the players,
+            the mods and the machine it was recorded on: check what it contains
+            before you share it.
+          </p>
+        </Part>
+
+        <Part title="What stays in your browser">
+          <p>
+            A few choices are kept in your browser&apos;s local or session
+            storage and are never sent to the server: which releases you have
+            opened, whether the Hub reads in simple or technical words, and
+            short-lived notes while you fill in an application or a share.
           </p>
         </Part>
 
         <Part title="What the server fetches">
           <p>
-            To show releases, the roadmap, contributors and mods, the server fetches them from GitHub, from Horizon&apos;s mod registry and from the
-            registry&apos;s ratings. The Players page&apos;s counts come from Horizon&apos;s telemetry server through this site&apos;s server too, so your
-            browser never contacts it. Those requests carry nothing about you.
+            To show releases, the roadmap, contributors and mods, the server
+            fetches them from GitHub and, where configured, from the mod
+            registry and the telemetry service. Those requests carry nothing
+            about you. Downloads link to github.com, which has its own{" "}
+            <a
+              href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement"
+              target="_blank"
+              rel="noreferrer"
+              className={LINK}
+            >
+              privacy statement
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+            .
           </p>
         </Part>
 
-        <Part title="The launcher, the game and Discord">
+        <Part title="Questions">
           <p>
-            What the Horizon launcher and game can send, the &ldquo;I&apos;m playing&rdquo; ping, the mod registry&apos;s sign-in and Horizon&apos;s Discord
-            are run by the Horizon project, and Ludovic Marie is responsible for them. Read{" "}
-            <Out href="https://playhorizon.dev/privacy">Horizon&apos;s privacy page</Out> for what they keep, and write through{" "}
-            <Out href="https://lu4ovic.com/#contact">lu4ovic.com</Out> about it.
+            Ask what this site holds about you, or have it deleted, by opening
+            an issue on{" "}
+            <a
+              href="https://github.com/sunrise-org/horizon-site/issues"
+              className={LINK}
+            >
+              sunrise-org/horizon-site
+            </a>
+            . Because only hashes of addresses are kept, include the IP address
+            you used so the entry can be found.
           </p>
-        </Part>
-
-        <Part title="Cosmetics and purchases">
-          <p>
-            Horizon&apos;s cosmetics service is run by {SELLER}, who is responsible for what it keeps. You claim and buy cosmetics on this site&apos;s
-            shop, without signing in: your browser sends the Minecraft name you type to the service (cosmetics.playhorizon.dev), which looks it up
-            in Mojang&apos;s public profiles and keeps the answer in memory for ten minutes. For each Minecraft account, keyed by its UUID, the service
-            keeps:
-          </p>
-          <ul className="list-disc space-y-2 pl-5 marker:text-white/30">
-            <li>the items it owns and since when, what it wears, whether its cosmetics are hidden, and when it claimed the founder set;</li>
-            <li>
-              if the founder set was claimed in the launcher&apos;s Wardrobe because Paddle doesn&apos;t serve your country: that country&apos;s
-              two-letter code. The service finds it from your IP address in a database it holds itself (IP geolocation by{" "}
-              <Out href="https://db-ip.com">DB-IP</Out>, CC BY 4.0) and keeps the country only, never the address;
-            </li>
-            <li>
-              for each order: Paddle&apos;s transaction id, the item, the amount and currency paid, its state (paid, refunded, disputed) and its date,
-              so the launcher can show your purchase history and refunds can take the item back.
-            </li>
-          </ul>
-          <p>
-            Nothing else: no name, email, address or payment details. Paddle.com, the merchant of record, takes the payment and keeps your email,
-            country and payment details under <Out href={PADDLE_PRIVACY}>Paddle&apos;s privacy policy</Out>; of what Paddle sends, the service keeps
-            only the lines above. Orders are kept as long as tax law requires a record of them. To see or delete
-            what the service holds about your account, write to <Contact />.
-          </p>
-        </Part>
-
-        <Part title="Who is responsible, and your rights">
-          <p>
-            This website is developed and run by Anthony S of <Out href="https://dezerx.com">DezerX</Out>, who is responsible for what it keeps. You can ask
-            what it holds about you, or have it deleted, through dezerx.com. Because only a hash of your address is kept, include the IP address you used,
-            so your entry can be found. You can also complain to the data protection authority where you live.
-          </p>
-          <p className="text-sm text-white/45">Last updated on 4 November 2026.</p>
         </Part>
       </article>
     </main>

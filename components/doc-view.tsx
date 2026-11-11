@@ -1,74 +1,111 @@
-import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import type { Doc } from "@/components/docs-data";
 import { DocsProse, DocsToc } from "@/components/docs-page-tools";
-import { ChevronDownIcon } from "@/components/icons";
+import { GAME_URL } from "@/components/game-repo";
+import { ChevronDownIcon, ExternalLinkIcon, GitHubIcon } from "@/components/icons";
 import { DISCORD_URL } from "@/components/links";
-
-const REPO_URL = "https://github.com/horizon-rust/horizon";
-const PARTNER_URL = "https://my.sculkhosting.com/ref/horizon";
-
-function Partner() {
-  return (
-    <aside aria-label="Partner" className="mt-8">
-      <a href={PARTNER_URL} target="_blank" rel="sponsored noopener" className="block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff]">
-        <Image
-          src="/media/sculk-banner.webp"
-          width={1600}
-          height={588}
-          sizes="(min-width: 1280px) 600px, (min-width: 1024px) 690px, 100vw"
-          alt="Sculk server hosting: your Minecraft server, 24/7 online, ready in about 60 seconds. Get my server, with the promo code HORIZON15."
-          className="h-auto w-full"
-        />
-      </a>
-      <p className="mt-2 text-xs text-white/40">Partner</p>
-    </aside>
-  );
-}
 
 function PagerLink({ doc, rel }: { doc: Doc | null; rel: "prev" | "next" }) {
   if (!doc) return <span className="hidden sm:block" />;
+  const next = rel === "next";
   return (
     <Link
       href={doc.path}
       prefetch
       rel={rel}
-      className={`group block rounded-2xl bg-white/[0.04] px-5 py-4 transition-colors hover:bg-white/[0.07] ${rel === "next" ? "sm:text-right" : ""}`}
+      className={`docs-pager glass-panel soft-press group flex items-center gap-4 rounded-2xl border border-line px-5 py-4 ${next ? "sm:flex-row-reverse sm:text-right" : ""}`}
     >
-      <span className="block text-[13px] text-white/45">{rel === "next" ? "Next" : "Previous"}</span>
-      <span className="mt-1 block text-[16px] font-medium text-white group-hover:text-[#d4c9ff]">{doc.title}</span>
+      <span aria-hidden className={`docs-pager-arrow text-xl text-muted ${next ? "docs-pager-next" : "docs-pager-prev"}`}>
+        {next ? "→" : "←"}
+      </span>
+      <span className="min-w-0">
+        <span className="block text-[12px] font-semibold tracking-[0.09em] text-muted uppercase">{next ? "Next" : "Previous"}</span>
+        <span className="mt-1 block text-[16px] font-medium text-pretty text-foreground group-hover:text-accent-ink">{doc.title}</span>
+      </span>
     </Link>
   );
 }
 
-export function DocView({ doc, prev, next }: { doc: Doc; prev: Doc | null; next: Doc | null }) {
-  const toc = doc.headings.filter((h) => h.level === 2);
+const START_HERE = [
+  { href: "/docs/install", title: "Play Sunrise", text: "Install the launcher and start playing." },
+  { href: "/docs/make-a-mod", title: "Make a mod", text: "One folder, one manifest, one .hmod file." },
+  { href: "/docs/apis", title: "Browse reference", text: "Find formats, launcher commands, and server APIs." },
+];
+
+export function DocView({ doc, prev, next, children }: { doc: Doc; prev: Doc | null; next: Doc | null; children?: ReactNode }) {
+  const headings = doc.headings.filter((h) => h.level === 2);
+  const toc = doc.slug === "index"
+    ? [{ id: "modding-cookbook", text: "Modding cookbook" }, ...headings, { id: "docs-team", text: "Meet the Sunrise team" }]
+    : headings;
   const showToc = toc.length >= 4;
   return (
-    <div className={showToc ? "xl:grid xl:grid-cols-[minmax(0,1fr)_11rem] xl:gap-10" : ""}>
-      <article id="main" className="min-w-0 max-w-[44rem]">
-        <nav aria-label="Breadcrumb" className="text-sm text-white/45">
-          <Link href="/docs" className="hover:text-white">
+    <div key={doc.slug} className={`docs-page ${showToc ? "min-[80rem]:grid min-[80rem]:grid-cols-[minmax(0,1fr)_13rem] min-[80rem]:gap-12" : ""}`}>
+      <article id="main" className="min-w-0 max-w-[50rem]">
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-muted">
+          <Link href="/docs" className="hover:text-foreground">
             Docs
           </Link>
-          <span aria-hidden className="mx-2 text-white/25">
-            /
-          </span>
-          <span>{doc.group}</span>
+          <span aria-hidden>/</span>
+          <span className="rounded-full bg-lavender px-2.5 py-0.5 font-medium text-accent-ink">{doc.group}</span>
         </nav>
-        <h1 className="mt-3 font-display text-[clamp(2rem,4.5vw,3rem)] leading-[1.06] font-semibold tracking-[-0.03em] text-white">{doc.title}</h1>
-        {doc.lede && <p className="docs-lede mt-4 text-lg leading-relaxed text-pretty text-white/70" dangerouslySetInnerHTML={{ __html: doc.lede }} />}
+        <h1 className="docs-title mt-4 font-display text-[clamp(2.1rem,4.6vw,3.15rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-balance text-foreground">{doc.title}</h1>
+        {doc.lede && <p className="docs-lede mt-5 text-[1.1875rem] leading-[1.6] text-pretty text-muted" dangerouslySetInnerHTML={{ __html: doc.lede }} />}
+        {doc.sourceUrl && !doc.api && (
+          <p className="mt-5 flex flex-wrap items-center gap-2 text-[13px] text-muted">
+            <a href={doc.sourceUrl} target="_blank" rel="noreferrer" className="docs-source soft-press inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 hover:text-foreground">
+              <GitHubIcon className="size-3.5" />
+              From the modding book of arismoko/horizon
+              <code className="font-mono text-[12px] text-accent-ink">{doc.sourceUrl.match(/blob\/([0-9a-f]{7})/)?.[1]}</code>
+              <ExternalLinkIcon className="size-3" />
+            </a>
+          </p>
+        )}
+
+        {doc.slug === "index" && (
+          <>
+            <nav aria-label="Start here" className="docs-cards mt-8 grid gap-3 sm:grid-cols-3">
+              {START_HERE.map(({ href, title, text }) => (
+                <Link key={href} href={href} className="glass-panel soft-press rounded-xl border border-line p-4 focus-visible:outline-2 focus-visible:outline-accent">
+                  <span className="block font-display text-lg font-semibold">{title}</span>
+                  <span className="mt-1 block text-sm leading-relaxed text-muted">{text}</span>
+                </Link>
+              ))}
+            </nav>
+            <section className="mt-10" aria-labelledby="modding-cookbook">
+              <h2 id="modding-cookbook" className="scroll-mt-28 font-display text-2xl font-semibold">Modding cookbook</h2>
+              <p className="mt-2 text-muted">Pick something to make. Each recipe takes you from the files to a game you can try.</p>
+              <div className="docs-cards mt-4 grid gap-3 sm:grid-cols-2">
+                <Link href="/docs/build-your-first-block" className="glass-panel glass-sky soft-press rounded-xl border border-line p-5 focus-visible:outline-2 focus-visible:outline-accent">
+                  <span className="text-xs font-medium text-accent-ink">DATA & ASSETS</span>
+                  <span className="mt-2 block font-display text-xl font-semibold">A block that glows and drops</span>
+                  <span className="mt-2 block text-sm leading-relaxed text-muted">Build Glowing Amethyst with a model, a recipe, and a pickaxe drop.</span>
+                </Link>
+                <Link href="/docs/mod-code#your-first-typed-hook" className="glass-panel soft-press rounded-xl border border-line p-5 focus-visible:outline-2 focus-visible:outline-accent">
+                  <span className="text-xs font-medium text-accent-ink">TYPED RUST</span>
+                  <span className="mt-2 block font-display text-xl font-semibold">Greet a player when they join</span>
+                  <span className="mt-2 block text-sm leading-relaxed text-muted">Use a server hook and the Host to send a welcome message.</span>
+                </Link>
+                <Link href="/docs/modding" className="glass-panel soft-press rounded-xl border border-line p-5 focus-visible:outline-2 focus-visible:outline-accent sm:col-span-2">
+                  <span className="text-xs font-medium text-accent-ink">THE MODDING BOOK</span>
+                  <span className="mt-2 block font-display text-xl font-semibold">Everything the mod API can do</span>
+                  <span className="mt-2 block text-sm leading-relaxed text-muted">Ari’s own guide and reference: hooks, Parts, attachments, injections, the manifest and the registry.</span>
+                </Link>
+              </div>
+            </section>
+          </>
+        )}
 
         {showToc && (
-          <details className="group mt-6 rounded-xl bg-white/[0.04] xl:hidden">
-            <summary className="flex h-11 cursor-pointer list-none items-center justify-between px-4 text-sm font-medium text-white/80 [&::-webkit-details-marker]:hidden">
+          <details className="group mt-7 rounded-xl border border-line bg-surface/80 min-[80rem]:hidden">
+            <summary className="flex h-11 cursor-pointer list-none items-center justify-between px-4 text-sm font-medium text-muted [&::-webkit-details-marker]:hidden">
               On this page
-              <ChevronDownIcon className="size-4 text-white/50 transition-transform group-open:rotate-180" />
+              <ChevronDownIcon className="size-4 text-muted transition-transform group-open:rotate-180" />
             </summary>
             <ul className="px-4 pb-3">
               {toc.map((h) => (
                 <li key={h.id}>
-                  <a href={`#${h.id}`} className="block py-1.5 text-sm text-white/60 hover:text-white">
+                  <a href={`#${h.id}`} className="block py-1.5 text-sm text-muted hover:text-foreground">
                     {h.text}
                   </a>
                 </li>
@@ -77,42 +114,46 @@ export function DocView({ doc, prev, next }: { doc: Doc; prev: Doc | null; next:
           </details>
         )}
 
-        {doc.slug === "hosting" && <Partner />}
-
         {doc.html && (
-          <div className="mt-10">
+          <div className="docs-body mt-10">
             <DocsProse html={doc.html} />
           </div>
         )}
+
+        {children}
 
         <nav aria-label="Next and previous pages" className="mt-16 grid gap-3 sm:grid-cols-2">
           <PagerLink doc={prev} rel="prev" />
           <PagerLink doc={next} rel="next" />
         </nav>
 
-        <p className="mt-8 text-sm leading-relaxed text-white/45">
-          {doc.api && (
+        <p className="mt-8 text-sm leading-relaxed text-muted">
+          {doc.sourceUrl && (
             <>
-              <a href={`${REPO_URL}/blob/main/${doc.source}`} className="text-white/65 underline underline-offset-4 hover:text-white">
+              <a href={doc.sourceUrl} className="text-muted underline underline-offset-4 hover:text-foreground">
                 Edit this page on GitHub
               </a>
               {" · "}
             </>
           )}
           Spotted something wrong?{" "}
-          <a href={`${REPO_URL}/issues`} className="text-white/65 underline underline-offset-4 hover:text-white">
+          <a href={`${doc.sourceUrl?.includes("arismoko/horizon") ? "https://github.com/arismoko/horizon" : GAME_URL}/issues`} className="text-muted underline underline-offset-4 hover:text-foreground">
             Open an issue
           </a>{" "}
-          or ask on{" "}
-          <a href={DISCORD_URL} className="text-white/65 underline underline-offset-4 hover:text-white">
-            Discord
-          </a>
+          {DISCORD_URL && (
+            <>
+              or ask on{" "}
+              <a href={DISCORD_URL} className="text-muted underline underline-offset-4 hover:text-foreground">
+                Discord
+              </a>
+            </>
+          )}
           .
         </p>
       </article>
 
       {showToc && (
-        <div className="hidden xl:block">
+        <div className="hidden min-[80rem]:block">
           <DocsToc headings={toc} className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto" />
         </div>
       )}
@@ -122,18 +163,18 @@ export function DocView({ doc, prev, next }: { doc: Doc; prev: Doc | null; next:
 
 export function DocSkeleton() {
   return (
-    <div aria-busy="true" aria-label="Loading the page" className="max-w-[44rem] motion-safe:animate-pulse">
-      <div className="h-4 w-32 rounded bg-white/[0.06]" />
-      <div className="mt-5 h-11 w-3/4 rounded-lg bg-white/[0.07]" />
+    <div aria-busy="true" aria-label="Loading the page" className="max-w-[50rem] motion-safe:animate-pulse">
+      <div className="h-4 w-32 rounded bg-lavender" />
+      <div className="mt-5 h-11 w-3/4 rounded-lg bg-lavender" />
       <div className="mt-6 space-y-3">
-        <div className="h-4 w-full rounded bg-white/[0.05]" />
-        <div className="h-4 w-11/12 rounded bg-white/[0.05]" />
-        <div className="h-4 w-2/3 rounded bg-white/[0.05]" />
+        <div className="h-4 w-full rounded bg-surface/80" />
+        <div className="h-4 w-11/12 rounded bg-surface/80" />
+        <div className="h-4 w-2/3 rounded bg-surface/80" />
       </div>
       <div className="mt-12 space-y-3">
-        <div className="h-4 w-full rounded bg-white/[0.04]" />
-        <div className="h-4 w-full rounded bg-white/[0.04]" />
-        <div className="h-4 w-4/5 rounded bg-white/[0.04]" />
+        <div className="h-4 w-full rounded bg-surface/80" />
+        <div className="h-4 w-full rounded bg-surface/80" />
+        <div className="h-4 w-4/5 rounded bg-surface/80" />
       </div>
     </div>
   );

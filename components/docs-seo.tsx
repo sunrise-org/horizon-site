@@ -3,25 +3,25 @@ import { JsonLd } from "@/components/json-ld";
 import { absolute, APP_ID, breadcrumbs, ORGANIZATION_ID, pageMetadata, WEBSITE_ID } from "@/components/site";
 
 const DOC_TITLES: Record<string, string> = {
-  index: "Horizon docs: Minecraft Java Edition rewritten in Rust",
-  install: "Install Horizon: download the launcher and first launch",
-  faq: "Horizon FAQ: Minecraft in Rust, mods, servers and more",
-  multiplayer: "Horizon multiplayer: friends, LAN and servers",
-  hosting: "Host a Horizon server: a Minecraft server without Java",
-  performance: "Horizon performance: Minecraft with less work",
-  "how-horizon-is-built": "How Horizon is built and checked against vanilla",
-  mods: "Horizon mods and data packs: what works today",
-  modpacks: "Modpacks in Horizon: what carries over from Java packs",
-  "make-a-mod": "Make a Horizon mod: from first file to the registry",
-  troubleshooting: "Horizon logs, crashes and bug reports",
-  settings: "Horizon settings: graphics, distant terrain, controllers",
+  index: "Sunrise docs: Minecraft Java Edition rewritten in Rust",
+  install: "Install Sunrise: download the launcher and first launch",
+  faq: "Sunrise FAQ: Minecraft in Rust, mods, servers and more",
+  multiplayer: "Sunrise multiplayer: friends, LAN and servers",
+  hosting: "Host a Sunrise server: a Minecraft server without Java",
+  performance: "Sunrise performance: Minecraft with less work",
+  "how-sunrise-is-built": "How Sunrise is built and checked against vanilla",
+  mods: "Sunrise mods and data packs: what works today",
+  modpacks: "Modpacks in Sunrise: what carries over from Java packs",
+  "make-a-mod": "Make a Sunrise mod: from first file to the registry",
+  troubleshooting: "Sunrise logs, crashes and bug reports",
+  settings: "Sunrise settings: graphics, distant terrain, controllers",
 };
 
 const DOC_DESCRIPTIONS: Record<string, string> = {
-  faq: "Answers about Horizon, Minecraft: Java Edition rewritten in Rust: buying Minecraft, Minecraft Rust Edition, Java mods, servers, worlds, updates and more.",
+  faq: "Answers about Sunrise, Minecraft: Java Edition rewritten in Rust: buying Minecraft, Minecraft Rust Edition, Java mods, servers, worlds, updates and more.",
 };
 
-export const docTitle = (doc: Doc) => DOC_TITLES[doc.slug] ?? `${doc.title} · Horizon docs`;
+export const docTitle = (doc: Doc) => DOC_TITLES[doc.slug] ?? `${doc.title} · Sunrise docs`;
 
 export const docImagePath = (slug: string) => `/og/docs/${slug}`;
 
@@ -31,7 +31,7 @@ export const docMetadata = (doc: Doc) =>
     description: DOC_DESCRIPTIONS[doc.slug] ?? (doc.description || doc.title),
     path: doc.path,
     type: doc.slug === "index" ? "website" : "article",
-    image: { url: docImagePath(doc.slug), width: 1200, height: 630, alt: `${doc.title}, in the Horizon docs` },
+    image: { url: docImagePath(doc.slug), width: 1200, height: 630, alt: `${doc.title}, in the Sunrise docs` },
   });
 
 function faqPage(doc: Doc) {

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const BUTTON =
-  "inline-flex size-10 items-center justify-center rounded-lg bg-white/10 text-lg text-white transition-colors outline-none hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-[#a98fff]";
+  "inline-flex size-10 items-center justify-center rounded-lg bg-lavender text-lg text-foreground transition-colors outline-none hover:bg-sky-surface focus-visible:ring-2 focus-visible:ring-accent";
 
 /** A project's screenshots: a strip that scrolls on phones, a grid on wider screens, each opening full size. */
 export function ModGallery({ name, shots }: { name: string; shots: string[] }) {
@@ -30,7 +30,7 @@ export function ModGallery({ name, shots }: { name: string; shots: string[] }) {
               type="button"
               onClick={() => setOpen(i)}
               aria-label={`${alt(i)}: open full size`}
-              className="relative block aspect-video w-full overflow-hidden rounded-xl bg-[#18112c] outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff]"
+              className="relative block aspect-video w-full overflow-hidden rounded-xl bg-surface outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               <Image
                 src={src}
@@ -61,7 +61,7 @@ export function ModGallery({ name, shots }: { name: string; shots: string[] }) {
             <div className="relative h-[min(78vh,calc(92vw*9/16))] w-full">
               <Image src={shots[open]} alt={alt(open)} fill unoptimized sizes="92vw" className="object-contain" />
             </div>
-            <div className="flex items-center justify-between gap-3 text-sm text-white/70">
+            <div className="flex items-center justify-between gap-3 text-sm text-muted">
               <span className="tabular-nums">
                 {open + 1} / {shots.length}
               </span>

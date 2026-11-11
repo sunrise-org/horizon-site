@@ -28,7 +28,7 @@ export type Draft = {
 };
 
 const KINDS: { id: Kind; title: string; note: string }[] = [
-  { id: "horizon", title: "Horizon", note: "Minecraft rebuilt in Rust, with Horizon mods" },
+  { id: "horizon", title: "Sunrise", note: "Minecraft rebuilt in Rust, with Sunrise mods" },
   { id: "vanilla", title: "Vanilla", note: "Minecraft as Mojang ships it" },
   { id: "modded", title: "Modded", note: "Fabric, Quilt, NeoForge or Forge" },
 ];
@@ -47,7 +47,7 @@ const loaderName = (id: LoaderId) => LOADERS.find((l) => l.id === id)?.name ?? "
 export function defaultName(draft: Draft) {
   if (draft.kind === "vanilla") return `Vanilla ${draft.mc}`;
   if (draft.kind === "modded") return `${loaderName(draft.loader)} ${draft.mc}`;
-  return "My Horizon";
+  return "My Sunrise";
 }
 
 export function draftFrom(instance: Instance | null, data: LauncherData): Draft {
@@ -144,13 +144,13 @@ export function InstanceModal({
   const nightly = data.nightlies.find((n) => n.id === draft.nightly) ?? data.nightlies[0];
   const summary =
     draft.kind === "horizon"
-      ? `Horizon · Nightly · ${nightly?.build ?? ""}`
+      ? `Sunrise · Nightly · ${nightly?.build ?? ""}`
       : draft.kind === "vanilla"
         ? `Vanilla · Minecraft ${draft.mc}`
         : `${loaderName(draft.loader)} · Minecraft ${draft.mc}`;
   const q = query.trim().toLowerCase();
   const versions = MC_VERSIONS.filter((v) => (v.kind === "release" || (v.kind === "snapshot" && snapshots) || (v.kind === "old" && old)) && (!q || v.id.includes(q)));
-  const title = editing ? `Edit ${editing.name}` : draft.kind === "horizon" ? "A new Horizon instance" : draft.kind === "vanilla" ? "A new vanilla instance" : "A new modded instance";
+  const title = editing ? `Edit ${editing.name}` : draft.kind === "horizon" ? "A new Sunrise instance" : draft.kind === "vanilla" ? "A new vanilla instance" : "A new modded instance";
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -243,7 +243,7 @@ export function InstanceModal({
             {draft.kind === "horizon" ? (
               <>
                 <Section title="Version">
-                  <ul role="listbox" aria-label="Horizon version" className="max-h-[248px] overflow-y-auto rounded-[16px] bg-white/[0.04] p-1.5">
+                  <ul role="listbox" aria-label="Sunrise version" className="max-h-[248px] overflow-y-auto rounded-[16px] bg-white/[0.04] p-1.5">
                     {data.nightlies.map((n, i) => (
                       <li key={n.id}>
                         <button
@@ -402,7 +402,7 @@ export function InstanceModal({
               <div className="flex flex-wrap gap-1.5">
                 {[
                   { id: "auto", label: "Made from the name", render: <PixelIcon id={name || "new"} size={40} /> },
-                  { id: "mark", label: "Horizon", render: <MarkTile size={40} /> },
+                  { id: "mark", label: "Sunrise", render: <MarkTile size={40} /> },
                   ...LOGO_ICONS.map(([k, label]) => ({ id: `logo:${k}`, label, render: <LogoIcon logo={LOGOS[k]} size={40} /> })),
                 ].map((o) => (
                   <button

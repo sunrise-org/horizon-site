@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { DragEvent } from "react";
 import { t } from "@/lib/perf/i18n";
+import { LocalCaptureError, loadLocalCapture, localCaptureUrl, localParam } from "@/lib/perf/local-capture";
 import { sharedFile } from "@/lib/perf/share-client";
 import { CaptureView } from "./capture-view";
 import { Landing } from "./landing";
@@ -14,13 +15,38 @@ export default function PerfViewer({ captureId }: { captureId?: string }) {
   const [dragging, setDragging] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   const [linkError, setLinkError] = useState<string | null>(null);
+  const [linkPending, setLinkPending] = useState(Boolean(captureId));
+  const [localUrl, setLocalUrl] = useState<string | null>(null);
+  const localStarted = useRef(false);
+
+  useEffect(() => {
+    const raw = localParam(window.location.hash);
+    if (raw === null) return;
+    window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    const url = localCaptureUrl(raw);
+    if (url) {
+      /* eslint-disable react-hooks/set-state-in-effect -- the fragment is only readable in the browser */
+      setLocalUrl(url);
+      setLinkPending(true);
+      /* eslint-enable react-hooks/set-state-in-effect */
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!localUrl || !reader || localStarted.current) return;
+    localStarted.current = true;
+    void loadLocalCapture(localUrl, open)
+      .catch((failure: unknown) => setLinkError(t(failure instanceof LocalCaptureError ? `local.${failure.failure}` : "local.expired")))
+      .finally(() => setLinkPending(false));
+  }, [localUrl, reader, open]);
 
   useEffect(() => {
     if (!captureId || !reader) return;
     const controller = new AbortController();
     void sharedFile(captureId, controller.signal)
       .then((file) => { if (!controller.signal.aborted) return open(file, file.name); })
-      .catch((failure: unknown) => { if (!controller.signal.aborted) setLinkError(failure instanceof Error ? failure.message : t("share.error.unavailable")); });
+      .catch((failure: unknown) => { if (!controller.signal.aborted) setLinkError(failure instanceof Error ? failure.message : t("share.error.unavailable")); })
+      .finally(() => { if (!controller.signal.aborted) setLinkPending(false); });
     return () => controller.abort();
   }, [captureId, reader, open]);
 
@@ -78,6 +104,10 @@ export default function PerfViewer({ captureId }: { captureId?: string }) {
           {error ? <p className={styles.error}>{t("error.capture", { message: error })}</p> : null}
           <CaptureView reader={reader} capture={capture} showSide={showSide} onClose={close} />
         </>
+      ) : linkPending && !readerError ? (
+        <section className={styles.opening} aria-busy="true">
+          <p className={styles.muted} role="status">{t(localUrl ? "local.opening" : "share.opening")}</p>
+        </section>
       ) : (
         <Landing
           ready={Boolean(reader)}

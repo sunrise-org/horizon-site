@@ -7,7 +7,7 @@ import { StaffApp } from "@/components/staff/staff-app";
 const STAFF_VIEWS = ["team", "mod", "sign-in", "setup", "staff-help"];
 
 export const metadata: Metadata = {
-  title: "Staff · Horizon hub",
+  title: "Staff · Sunrise hub",
   robots: { index: false, follow: false },
   referrer: "no-referrer",
 };

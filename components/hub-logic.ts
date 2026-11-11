@@ -1,8 +1,9 @@
 import type { Release } from "@/components/github-releases";
+import { GAME_REPO, gameBlob } from "@/components/game-repo";
 
-export const REPO = "horizon-rust/horizon";
+export const REPO = GAME_REPO;
 export const issueUrl = (n: number) => `https://github.com/${REPO}/issues/${n}`;
-export const fileUrl = (path: string) => `https://github.com/${REPO}/blob/main/${path}`;
+export const fileUrl = (path: string) => gameBlob(path);
 
 export type RoadmapItem = {
   id: string;
@@ -44,8 +45,8 @@ export const escape = (text: string) => text.replace(/[&<>"']/g, (c) => ESCAPES[
 
 function linkTarget(url: string) {
   if (/^https?:\/\//.test(url) || url.startsWith("#")) return url;
-  if (/^\/(docs|hub|releases|benchmarks)(\/|#|$)|^\/(#|$)/.test(url)) return url.replace(/^\/docs\/(?=#|$)/, "/docs");
-  if (url.startsWith("/")) return `https://playhorizon.dev${url}`;
+  if (/^\/(docs|hub|releases)(\/|#|$)|^\/(#|$)/.test(url)) return url.replace(/^\/docs\/(?=#|$)/, "/docs");
+  if (url.startsWith("/")) return `https://playsunrise.net${url}`;
   if (/^[\w.-]+(\/[\w.-]+)*\/?$/.test(url)) return fileUrl(url);
   return null;
 }

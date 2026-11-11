@@ -6,7 +6,7 @@ const perfCsp = [
   `script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline'${development ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
-  "connect-src 'self'",
+  "connect-src 'self' http://127.0.0.1:* http://localhost:*",
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "avatars.githubusercontent.com", pathname: "/u/**", search: "?v=4" },
+      { protocol: "https", hostname: "avatars.githubusercontent.com", pathname: "/*", search: "?size=128" },
       // The hub's People tab: Discord avatars, as Kira's /staff.json gives them (components/org-chart.ts checks the form).
       { protocol: "https", hostname: "cdn.discordapp.com", pathname: "/avatars/**", search: "?size=128" },
       { protocol: "https", hostname: "cdn.discordapp.com", pathname: "/embed/avatars/**", search: "" },
@@ -34,8 +35,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/:path*", has: [{ type: "host", value: "[^.]+\\.up\\.railway\\.app" }], destination: `${process.env.SITE_URL || "https://playsunrise.net"}/:path*`, permanent: true },
+      { source: "/docs/how-horizon-is-built", destination: "/docs/how-sunrise-is-built", permanent: true },
       { source: "/server", destination: "/docs/hosting", permanent: true },
       { source: "/server.html", destination: "/docs/hosting", permanent: true },
+      { source: "/benchmarks", destination: "/", permanent: true },
+      { source: "/es/benchmarks", destination: "/es", permanent: true },
       { source: "/roadmap", destination: "/hub#roadmap", permanent: true },
       // The staff dashboards moved into the hub (2026-11-01). Browsers keep the #fragment of old setup links across the redirect.
       { source: "/staff", destination: "/hub/sign-in", permanent: true },

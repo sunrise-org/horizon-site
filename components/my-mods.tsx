@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { ModIcon } from "@/components/mods-ui";
 import { KIND_NAMES, SUBMIT_URL } from "@/components/mods-logic";
 
-/** A version as "Your mods" lists it: what Horizon it is made for and, for the newest, whether it still builds. */
+/** A version as "Your mods" lists it: what Sunrise it is made for and, for the newest, whether it still builds. */
 export type OwnedVersion = {
   version: string;
   published: string;
@@ -29,21 +29,21 @@ export type OwnedProject = {
 type Submission = { number: number; title: string; state: string; merged: boolean; url: string; created: string };
 
 const BUTTON =
-  "inline-flex h-9 items-center rounded-lg bg-white/10 px-3.5 text-sm font-medium text-white transition-colors outline-none hover:bg-white/15 focus-visible:ring-2 focus-visible:ring-[#a98fff]";
+  "inline-flex h-9 items-center rounded-lg bg-lavender px-3.5 text-sm font-medium text-foreground transition-colors outline-none hover:bg-sky-surface focus-visible:ring-2 focus-visible:ring-accent";
 const PRIMARY =
-  "inline-flex h-11 items-center rounded-lg bg-white px-4 text-[15px] font-medium text-[#100a1f] transition-colors outline-none hover:bg-white/90 focus-visible:ring-2 focus-visible:ring-[#a98fff]";
-const CARD = "rounded-2xl bg-[#18112c] px-5 py-5 sm:px-6";
+  "inline-flex h-11 items-center rounded-lg bg-sky-surface px-4 text-[15px] font-medium text-foreground transition-colors outline-none hover:bg-accent/25 focus-visible:ring-2 focus-visible:ring-accent";
+const CARD = "rounded-2xl bg-surface px-5 py-5 sm:px-6";
 const LOGIN = "/api/mods/auth/login?back=/mods/mine";
 
 function Status({ v }: { v: OwnedVersion }) {
   if (v.broken) {
     return (
-      <span className="text-[#f07a6a]" title={`The registry's daily check: ${v.broken.code} on Horizon ${v.broken.horizon.slice(0, 7)}`}>
+      <span className="text-[#f07a6a]" title={`The registry's daily check: ${v.broken.code} on Sunrise ${v.broken.horizon.slice(0, 7)}`}>
         Doesn&apos;t build on the newest Nightly ({v.broken.code})
       </span>
     );
   }
-  return v.native ? <span className="text-[#8be0b4]">Builds on the newest Nightly</span> : null;
+  return v.native ? <span className="text-success-ink">Builds on the newest Nightly</span> : null;
 }
 
 function Project({ p }: { p: OwnedProject }) {
@@ -53,12 +53,12 @@ function Project({ p }: { p: OwnedProject }) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <ModIcon id={p.id} icon={p.icon} size={56} className="shrink-0 rounded-xl" />
         <div className="min-w-0 flex-1">
-          <h3 className="font-display text-xl font-semibold tracking-[-0.01em] text-white">
+          <h3 className="font-display text-xl font-semibold tracking-[-0.01em] text-foreground">
             <Link href={`/mods/${encodeURIComponent(p.id)}`} className="hover:underline">
               {p.name}
             </Link>
           </h3>
-          <p className="mt-1 text-sm text-white/55">
+          <p className="mt-1 text-sm text-muted">
             {KIND_NAMES[p.kind] ?? p.kind} · {p.downloads.toLocaleString("en-US")} downloads · <span className="font-mono">{p.id}</span>
           </p>
         </div>
@@ -73,7 +73,7 @@ function Project({ p }: { p: OwnedProject }) {
       </div>
       <table className="mt-5 w-full text-left text-[14px]">
         <caption className="sr-only">{p.name}&apos;s versions</caption>
-        <thead className="text-[12px] tracking-wide text-white/45 uppercase">
+        <thead className="text-[12px] tracking-wide text-muted uppercase">
           <tr>
             <th className="py-1.5 pr-4 font-medium">Version</th>
             <th className="py-1.5 pr-4 font-medium">Published</th>
@@ -81,13 +81,13 @@ function Project({ p }: { p: OwnedProject }) {
             <th className="py-1.5 font-medium">Status</th>
           </tr>
         </thead>
-        <tbody className="text-white/75">
+        <tbody className="text-muted">
           {[newest, ...older].map((v, i) => (
-            <tr key={v.version} className="border-t border-white/[0.06]">
-              <td className="py-2 pr-4 font-mono text-white">{v.version}</td>
+            <tr key={v.version} className="border-t border-line">
+              <td className="py-2 pr-4 font-mono text-foreground">{v.version}</td>
               <td className="py-2 pr-4 whitespace-nowrap">{v.published || "—"}</td>
               <td className="hidden py-2 pr-4 sm:table-cell">{v.madeFor}</td>
-              <td className="py-2">{i === 0 ? <Status v={v} /> : <span className="text-white/40">Older version</span>}</td>
+              <td className="py-2">{i === 0 ? <Status v={v} /> : <span className="text-muted">Older version</span>}</td>
             </tr>
           ))}
         </tbody>
@@ -100,17 +100,17 @@ function Submissions({ title, list, open }: { title: string; list: Submission[];
   if (!list.length) return null;
   return (
     <section className="mt-10">
-      <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">{title}</h2>
+      <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">{title}</h2>
       <ul className="mt-4 space-y-2">
         {list.map((s) => (
           <li key={s.number} className={`${CARD} flex flex-col gap-2 py-4 sm:flex-row sm:items-center sm:justify-between`}>
-            <span className="text-[15px] text-white">{s.title}</span>
-            <span className="flex items-center gap-3 text-sm text-white/55">
-              <span className={open ? "text-[#f2c46b]" : s.merged ? "text-[#8be0b4]" : "text-white/45"}>
+            <span className="text-[15px] text-foreground">{s.title}</span>
+            <span className="flex items-center gap-3 text-sm text-muted">
+              <span className={open ? "text-warning-ink" : s.merged ? "text-success-ink" : "text-muted"}>
                 {open ? "Waiting for review" : s.merged ? "Published" : "Closed"}
               </span>
               <span>{s.created}</span>
-              <a href={s.url} className="font-medium text-[#c4b5ff] underline underline-offset-4 hover:text-white">
+              <a href={s.url} className="font-medium text-accent-ink underline underline-offset-4 hover:text-foreground">
                 #{s.number}
               </a>
             </span>
@@ -142,11 +142,11 @@ export function MyMods({ projects }: { projects: OwnedProject[] }) {
       .catch(() => setSubmissions([]));
   }, [login]);
 
-  if (login === undefined) return <p className="mt-8 text-white/55">Checking who you are…</p>;
+  if (login === undefined) return <p className="mt-8 text-muted">Checking who you are…</p>;
   if (login === null) {
     return (
       <div className={`${CARD} mt-8 py-8`}>
-        <p className="max-w-xl text-[15px] leading-relaxed text-white/70">
+        <p className="max-w-xl text-[15px] leading-relaxed text-muted">
           Sign in with the GitHub account you submit with to see your mods, their versions and the submissions waiting for review. The site reads
           only your public profile.
         </p>
@@ -164,13 +164,13 @@ export function MyMods({ projects }: { projects: OwnedProject[] }) {
 
   return (
     <div className="mt-8">
-      <p className="text-[15px] text-white/60">
-        Signed in as <strong className="text-white">{login}</strong>.
+      <p className="text-[15px] text-muted">
+        Signed in as <strong className="text-foreground">{login}</strong>.
       </p>
       <Submissions title="Waiting for review" list={open} open />
       <section className="mt-10">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">Listed</h2>
+          <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">Listed</h2>
           <Link href={SUBMIT_URL} className={PRIMARY}>
             Submit a new one
           </Link>
@@ -182,7 +182,7 @@ export function MyMods({ projects }: { projects: OwnedProject[] }) {
             ))}
           </div>
         ) : (
-          <p className="mt-4 text-[15px] text-white/60">
+          <p className="mt-4 text-[15px] text-muted">
             Nothing listed with {login} among its owners yet. A submission shows here once a reviewer merges it.
           </p>
         )}

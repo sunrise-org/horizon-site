@@ -98,7 +98,7 @@ export const PLAYER = "Player46008";
 export const playerHead = (name: string, size = 64) => `https://mc-heads.net/avatar/${encodeURIComponent(name)}/${size}`;
 
 const SHOTS: Shot[] = [
-  { src: "/media/bench/village.webp", name: "2026-10-17_19.04.12.png" },
+  { src: "/media/village.webp", name: "2026-10-17_19.04.12.png" },
   { src: "/media/underwater.webp", name: "2026-10-17_19.21.40.png" },
   { src: "/media/nether.webp", name: "2026-10-17_19.36.05.png" },
   { src: "/media/night-800.webp", name: "2026-10-17_20.02.51.png" },
@@ -110,7 +110,7 @@ const FALLBACK_NIGHTLY: Nightly = {
   date: "2026-11-01",
   build: "c9d474d",
   published: "2026-11-01T19:09:04Z",
-  url: "https://github.com/horizon-rust/horizon/releases/tag/nightly",
+  url: "https://github.com/sunrise-org/horizon/releases/tag/nightly",
   changes: [
     { section: "New", text: "Native mods can open custom menus" },
     { section: "New", text: "OptiFine entity models: packs' .jem files reshape mobs" },
@@ -119,7 +119,7 @@ const FALLBACK_NIGHTLY: Nightly = {
   total: 3,
 };
 
-const RELEASES = "https://github.com/horizon-rust/horizon/releases/tag/";
+const RELEASES = "https://github.com/sunrise-org/horizon/releases/tag/";
 
 export const FALLBACK: LauncherData = {
   launcherVersion: "0.2.37",
@@ -133,7 +133,7 @@ export const FALLBACK: LauncherData = {
     {
       version: "0.2.37",
       published: "2026-11-02T08:25:07Z",
-      url: "https://github.com/horizon-rust/horizon/releases/tag/launcher%400.2.37",
+      url: "https://github.com/sunrise-org/horizon/releases/tag/launcher%400.2.37",
       items: [
         "Native mod builds: no space in the Windows build folder",
         "Native builds: a dev profile for mod developers",
@@ -142,9 +142,9 @@ export const FALLBACK: LauncherData = {
     },
   ],
   mods: [
-    { id: "zoom", kind: "native-mod", name: "Zoom", summary: "Hold a key to zoom in; the mouse wheel zooms further while you hold it.", authors: ["Horizon"], downloads: 17862, version: "2.0.0", license: "MIT", capabilities: ["hud"] },
-    { id: "fps_overlay", kind: "native-mod", name: "FPS Counter", summary: "Frames per second in a corner of the screen.", authors: ["Horizon"], downloads: 13845, version: "2.0.0", license: "MIT", capabilities: ["hud"] },
-    { id: "minimap", kind: "native-mod", name: "Minimap", summary: "A map of the world around you in a corner of the screen.", authors: ["Horizon"], downloads: 10830, version: "2.0.0", license: "MIT", capabilities: ["game-read", "hud"] },
+    { id: "zoom", kind: "native-mod", name: "Zoom", summary: "Hold a key to zoom in; the mouse wheel zooms further while you hold it.", authors: ["Sunrise"], downloads: 17862, version: "2.0.0", license: "MIT", capabilities: ["hud"] },
+    { id: "fps_overlay", kind: "native-mod", name: "FPS Counter", summary: "Frames per second in a corner of the screen.", authors: ["Sunrise"], downloads: 13845, version: "2.0.0", license: "MIT", capabilities: ["hud"] },
+    { id: "minimap", kind: "native-mod", name: "Minimap", summary: "A map of the world around you in a corner of the screen.", authors: ["Sunrise"], downloads: 10830, version: "2.0.0", license: "MIT", capabilities: ["game-read", "hud"] },
   ],
 };
 
@@ -153,7 +153,7 @@ export function seedInstances(nightlies: Nightly[]): Instance[] {
   return [
     {
       id: "horizon",
-      name: "Horizon",
+      name: "Sunrise",
       mark: true,
       edition: "rust",
       version: at(1),
@@ -218,7 +218,7 @@ export type ModrinthEntry = { id: string; name: string; kind: string; compat: Co
 export const MODRINTH: ModrinthEntry[] = [
   { id: "faithful_32x", name: "Faithful 32x", kind: "Resource pack", compat: "works", summary: "Vanilla's textures, drawn again at twice the resolution." },
   { id: "bare_bones", name: "Bare Bones", kind: "Resource pack", compat: "works", summary: "Flat, simplified textures in the style of the trailers." },
-  { id: "fresh_animations", name: "Fresh Animations", kind: "Resource pack", compat: "partly", summary: "Livelier mob animations. Horizon draws some of its models, the rest fall back to vanilla." },
+  { id: "fresh_animations", name: "Fresh Animations", kind: "Resource pack", compat: "partly", summary: "Livelier mob animations. Sunrise draws some of its models, the rest fall back to vanilla." },
   { id: "fabulously_optimized", name: "Fabulously Optimized", kind: "Modpack", compat: "partly", summary: "Its resource packs and options carry over. The Java mods inside it don't run." },
   { id: "complementary", name: "Complementary Shaders", kind: "Shader pack", compat: "none", summary: "Shader packs are removed for now. They come back later, written again from scratch." },
 ];
@@ -243,7 +243,7 @@ export type Server = {
 };
 
 export const BOOT_LINES = (stamp: string, world: string) => [
-  `[${stamp} INFO] Starting Horizon server for Minecraft 26.3`,
+  `[${stamp} INFO] Starting Sunrise server for Minecraft 26.3`,
   `[${stamp} INFO] Loading properties`,
   `[${stamp} INFO] Default game type: SURVIVAL`,
   `[${stamp} INFO] Preparing level "${world}"`,
@@ -276,7 +276,7 @@ export const SEED_SERVERS: Server[] = [
     ram: 0.57,
     chatter: 0,
     console: [
-      "[19:02:11 INFO] Starting Horizon server for Minecraft 26.3",
+      "[19:02:11 INFO] Starting Sunrise server for Minecraft 26.3",
       "[19:02:11 INFO] Loading properties",
       "[19:02:12 INFO] Default game type: SURVIVAL",
       '[19:02:13 INFO] Preparing level "Savanna village"',

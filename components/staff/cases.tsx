@@ -29,7 +29,7 @@ const DECIDED: Record<string, string> = { uphold: "upheld", ban: "upheld, banned
 const discordUrl = (u?: string | null) => (u && /^https:\/\/discord\.com\/channels\/\d+\/\d+\/\d+$/.test(u) ? u : undefined);
 
 function Who({ id, people, fallback }: { id?: string | null; people: People; fallback?: string | null }) {
-  if (!id) return <span className="text-white/45">unknown</span>;
+  if (!id) return <span className="text-muted">unknown</span>;
   if (id === "kira") return <span>Kira (automatic)</span>;
   return <span>{people[id] ?? fallback ?? id}</span>;
 }
@@ -37,7 +37,7 @@ function Who({ id, people, fallback }: { id?: string | null; people: People; fal
 function AppealBadge({ a }: { a: Case["appeal"] | Appeal | null | undefined }) {
   if (!a) return null;
   const text = a.status === "open" ? "appeal open" : `appeal ${DECIDED[a.decision ?? ""] ?? "decided"}`;
-  return <span className={`${BADGE} ${a.status === "open" ? "bg-[#f0932b]/20 text-[#ffd3a6]" : ""}`}>{text}</span>;
+  return <span className={`${BADGE} ${a.status === "open" ? "bg-[#f0932b]/20 text-warm-ink" : ""}`}>{text}</span>;
 }
 
 export function Cases() {
@@ -46,26 +46,26 @@ export function Cases() {
   useEffect(() => {
     api<CasesView>("GET", "mod/cases").then(setView, (e: Error) => setError(e.message));
   }, []);
-  if (error) return <p className="text-[15px] text-white/70">{error}</p>;
-  if (!view) return <p className="text-sm text-white/50">Loading…</p>;
+  if (error) return <p className="text-[15px] text-muted">{error}</p>;
+  if (!view) return <p className="text-sm text-muted">Loading…</p>;
   const people = view.people ?? {};
   const open = view.appeals.filter((a) => a.status === "open");
   return (
     <div className="space-y-6">
-      <p className="text-[15px] text-white/60">
+      <p className="text-[15px] text-muted">
         Every timeout, quarantine, ban, unban and kick, by a mod or by Kira, as Kira posts it in #mod-actions. Appeals are decided in their #mod-mail
         thread by a mod who didn&apos;t act.
       </p>
       <section className={CARD}>
-        <h2 className="font-display text-lg font-semibold text-white">Open appeals ({open.length})</h2>
+        <h2 className="font-display text-lg font-semibold text-foreground">Open appeals ({open.length})</h2>
         {open.length ? (
-          <ul className="mt-3 space-y-2 text-[15px] text-white/75">
+          <ul className="mt-3 space-y-2 text-[15px] text-muted">
             {open.map((a) => (
               <li key={a.id}>
-                <a href={discordUrl(a.url)} className="text-white hover:underline" target="_blank" rel="noreferrer">
+                <a href={discordUrl(a.url)} className="text-foreground hover:underline" target="_blank" rel="noreferrer">
                   Case #{a.case} · {a.label}
                 </a>{" "}
-                by <Who id={a.userId} people={people} /> <span className="text-white/45">· {when(a.at)} · {a.via === "web" ? "from the website" : "from Discord"}</span>
+                by <Who id={a.userId} people={people} /> <span className="text-muted">· {when(a.at)} · {a.via === "web" ? "from the website" : "from Discord"}</span>
               </li>
             ))}
           </ul>
@@ -74,11 +74,11 @@ export function Cases() {
         )}
       </section>
       <section className={CARD}>
-        <h2 className="font-display text-lg font-semibold text-white">Cases</h2>
+        <h2 className="font-display text-lg font-semibold text-foreground">Cases</h2>
         {view.cases.length ? (
           <div className="mt-3 overflow-x-auto">
-            <table className="w-full text-left text-[14px] text-white/75">
-              <thead className="text-xs text-white/45">
+            <table className="w-full text-left text-[14px] text-muted">
+              <thead className="text-xs text-muted">
                 <tr>
                   <th className="py-2 pr-3 font-medium">#</th>
                   <th className="py-2 pr-3 font-medium">Action</th>
@@ -91,25 +91,25 @@ export function Cases() {
               </thead>
               <tbody>
                 {view.cases.map((c) => (
-                  <tr key={c.n} id={`case-${c.n}`} className="border-t border-white/[0.06] align-top">
+                  <tr key={c.n} id={`case-${c.n}`} className="border-t border-line align-top">
                     <td className="py-2 pr-3">
-                      <a href={discordUrl(c.url)} className="text-white hover:underline" target="_blank" rel="noreferrer">
+                      <a href={discordUrl(c.url)} className="text-foreground hover:underline" target="_blank" rel="noreferrer">
                         {c.n}
                       </a>
                     </td>
                     <td className="py-2 pr-3 whitespace-nowrap">{c.label}</td>
                     <td className="py-2 pr-3">
                       <Who id={c.userId} people={people} fallback={c.tag} />
-                      {c.ign ? <span className="text-white/45"> · {c.ign}</span> : null}
+                      {c.ign ? <span className="text-muted"> · {c.ign}</span> : null}
                     </td>
                     <td className="py-2 pr-3">
                       <Who id={c.by} people={people} />
                     </td>
                     <td className="max-w-[24rem] py-2 pr-3 break-words">
-                      {c.reason || <span className="text-white/45">none given</span>}
-                      {!c.evidence && c.by && c.by !== "kira" ? <span className="text-white/45"> · no evidence yet</span> : null}
+                      {c.reason || <span className="text-muted">none given</span>}
+                      {!c.evidence && c.by && c.by !== "kira" ? <span className="text-muted"> · no evidence yet</span> : null}
                     </td>
-                    <td className="py-2 pr-3 whitespace-nowrap text-white/55">{when(c.at)}</td>
+                    <td className="py-2 pr-3 whitespace-nowrap text-muted">{when(c.at)}</td>
                     <td className="space-x-1 py-2">
                       {c.lifted ? <span className={BADGE}>lifted</span> : null}
                       <AppealBadge a={c.appeal} />

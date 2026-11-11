@@ -11,6 +11,7 @@ import type { GroupRow, TreeRow } from "@/lib/perf/types";
 import { amount } from "@/lib/perf/units";
 import { Icons } from "./icons";
 import { RowTools } from "./row-tools";
+import { ShowAll, useLimit } from "./show-all";
 import { Swatch } from "./tree-rows";
 import { useTreeEnv } from "./tree-state";
 import type { Target } from "./tree-state";
@@ -21,14 +22,16 @@ import tree from "./tree.module.css";
 const SPLIT_LIMIT = 10;
 const CALLERS_LIMIT = 8;
 const CALLERS_DEPTH = 3;
+const CALLEES_DEPTH = 2;
 
 function SplitList({ target, by }: { target: Target; by: ContextKey }) {
   const env = useTreeEnv();
+  const cap = useLimit(SPLIT_LIMIT);
   const { rows } = useRows<GroupRow>(
     env.reader,
     env.capture,
     "split",
-    { ...env.filters, ...target.scope.filters, by, limit: SPLIT_LIMIT },
+    { ...target.scope.filters, by, limit: cap.limit },
     true,
     [target.id],
   );
@@ -56,17 +59,20 @@ function SplitList({ target, by }: { target: Target; by: ContextKey }) {
           );
         })}
       </div>
+      {cap.capped(rows.length) ? <ShowAll count={rows.length} onClick={cap.show} /> : null}
     </section>
   );
 }
 
-function CallerList({ target }: { target: Target }) {
+/** The functions that call the line's function, or the ones it calls, merged across the tree. */
+function CallList({ target, op }: { target: Target; op: "callers" | "callees" }) {
   const env = useTreeEnv();
+  const cap = useLimit(CALLERS_LIMIT);
   const { rows, error } = useRows<TreeRow>(
     env.reader,
     env.capture,
-    "callers",
-    { ...env.filters, ...target.scope.filters, depth: CALLERS_DEPTH, limit: CALLERS_LIMIT },
+    op,
+    { ...target.scope.filters, depth: op === "callers" ? CALLERS_DEPTH : CALLEES_DEPTH, limit: cap.limit },
     true,
     [target.function],
   );
@@ -77,8 +83,8 @@ function CallerList({ target }: { target: Target }) {
   if (error) return <p className={tree.none}>{error}</p>;
   return (
     <section className={tree.detailBlock}>
-      <h4 className={tree.detailHeading}>{t("tree.callers")}</h4>
-      {nodes.length === 0 ? <p className={tree.none}>{t("tree.noCallers")}</p> : null}
+      <h4 className={tree.detailHeading}>{t(`tree.${op}`)}</h4>
+      {nodes.length === 0 ? <p className={tree.none}>{t(op === "callers" ? "tree.noCallers" : "tree.noCallees")}</p> : null}
       <div className={styles.meterList}>
         {flat.map((line) => {
           if (line.kind === "fold") {
@@ -96,9 +102,10 @@ function CallerList({ target }: { target: Target }) {
           }
           const { node } = line;
           const row = node.members[0];
+          const name = row.name === "(self)" ? t("tree.selfRow") : row.name;
           const canOpen = node.children.length > 0;
           return (
-            <div key={node.key} className={`${styles.meterRow} ${tree.detailRow}`} title={row.name}>
+            <div key={node.key} className={`${styles.meterRow} ${tree.detailRow}`} title={name}>
               <span className={styles.meterName} style={{ paddingLeft: line.depth * 14 }}>
                 {canOpen ? (
                   <button
@@ -120,8 +127,8 @@ function CallerList({ target }: { target: Target }) {
                 ) : (
                   <span className={styles.disclosureSpace} />
                 )}
-                <span className={tree.groupLabel}>{row.name}</span>
-                <RowTools id={row.function} name={row.name} />
+                <span className={tree.groupLabel}>{name}</span>
+                <RowTools id={row.function} name={name} />
               </span>
               <span className={styles.meterTrack} aria-hidden="true">
                 <span className={styles.meterFill} style={{ width: `${(row.total / max) * 100}%` }} />
@@ -132,6 +139,7 @@ function CallerList({ target }: { target: Target }) {
           );
         })}
       </div>
+      {cap.capped(rows.length) ? <ShowAll count={rows.length} onClick={cap.show} /> : null}
     </section>
   );
 }
@@ -205,7 +213,8 @@ export function TreeDetail({ target, focused, onFocus, onClose }: Props) {
       {CONTEXT_KEYS.map((by) => (
         <SplitList key={by} target={target} by={by} />
       ))}
-      <CallerList target={target} />
+      <CallList target={target} op="callers" />
+      <CallList target={target} op="callees" />
     </aside>
   );
 }

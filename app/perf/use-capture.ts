@@ -2,11 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { HorizonPerf } from "@/lib/perf/generated/horizon_perf";
-import type { Envelope, MetaRow, QueryRequest, Side } from "@/lib/perf/types";
+import { mergeFilters, wireFilters } from "@/lib/perf/filters";
+import type { Envelope, MetaRow, QueryOp, QueryRequest, RequestFilters, Side } from "@/lib/perf/types";
 import { t } from "@/lib/perf/i18n";
+import { QUERY_FILE } from "@/lib/perf/query-text";
+import { useFilters } from "./filters-context";
+import { useLogQuery } from "./query-log";
 
-/** What queries call the open capture: the replies echo it, so it is never the real file name. */
-export const QUERY_FILE = "capture";
+export { QUERY_FILE };
 
 export interface LoadedCapture {
   handle: number;
@@ -99,31 +102,71 @@ export function useReader() {
   return { reader, readerError, capture, loading, error, open, close, showSide };
 }
 
-/** One query's rows for the side on show; `filters` and `args` compare by value, and `enabled` false skips it. */
+export interface Rows<R> {
+  rows: R[];
+  error: string | null;
+  reply: Envelope<R> | null;
+  /** Exactly what the reader was asked. */
+  request: QueryRequest;
+}
+
+/** Runs a request, logging it for the view's query menu. */
+function useQuery<R>(
+  reader: HorizonPerf,
+  capture: LoadedCapture,
+  request: QueryRequest,
+  enabled: boolean,
+): Rows<R> {
+  const key = JSON.stringify(request);
+  const result = useMemo((): Rows<R> => {
+    const asked = JSON.parse(key) as QueryRequest;
+    if (!enabled) return { rows: [], error: null, reply: null, request: asked };
+    try {
+      const reply = reader.query<R>(capture.handle, asked);
+      return reply.ok
+        ? { rows: reply.rows, error: null, reply, request: asked }
+        : { rows: [], error: replyError(reply.error), reply, request: asked };
+    } catch (failure) {
+      return { rows: [], error: message(failure), reply: null, request: asked };
+    }
+  }, [reader, capture.handle, key, enabled]);
+  useLogQuery(enabled ? result.request : null, result.reply);
+  return result;
+}
+
+/** One query's rows for the side on show, narrowed by the filters the op reads; `filters` and `args` compare by value, and `enabled` false skips it. */
 export function useRows<R>(
   reader: HorizonPerf,
   capture: LoadedCapture,
-  op: string,
-  filters: QueryRequest["filters"] = {},
+  op: QueryOp,
+  filters: RequestFilters = {},
   enabled = true,
   args: readonly string[] = [],
-): { rows: R[]; error: string | null; reply: Envelope<R> | null } {
-  const key = JSON.stringify(filters);
-  const argsKey = JSON.stringify(args);
-  return useMemo(() => {
-    if (!enabled) return { rows: [], error: null, reply: null };
-    try {
-      const reply = reader.query<R>(capture.handle, {
-        op,
-        file: QUERY_FILE,
-        args: JSON.parse(argsKey) as string[],
-        filters: { side: capture.side, ...(JSON.parse(key) as QueryRequest["filters"]) },
-      });
-      return reply.ok
-        ? { rows: reply.rows, error: null, reply }
-        : { rows: [], error: replyError(reply.error), reply };
-    } catch (failure) {
-      return { rows: [], error: message(failure), reply: null };
-    }
-  }, [reader, capture.handle, capture.side, op, key, argsKey, enabled]);
+): Rows<R> {
+  const shared = useFilters().filters;
+  const request: QueryRequest = {
+    op,
+    ...(args.length > 0 ? { args: [...args] } : {}),
+    file: QUERY_FILE,
+    filters: mergeFilters({ side: capture.side, ...wireFilters(shared, op) }, filters),
+  };
+  return useQuery<R>(reader, capture, request, enabled);
+}
+
+/** Like `useRows`, but ignoring the shared filters: for what the filters are picked from. */
+export function useWholeRows<R>(
+  reader: HorizonPerf,
+  capture: LoadedCapture,
+  op: QueryOp,
+  filters: RequestFilters = {},
+  enabled = true,
+  args: readonly string[] = [],
+): Rows<R> {
+  const request: QueryRequest = {
+    op,
+    ...(args.length > 0 ? { args: [...args] } : {}),
+    file: QUERY_FILE,
+    filters: { side: capture.side, ...filters },
+  };
+  return useQuery<R>(reader, capture, request, enabled);
 }

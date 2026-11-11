@@ -1,16 +1,45 @@
 @import "tailwindcss";
 
 :root {
-  --background: #100a1f;
-  --foreground: #f4f1ff;
+  /* Dawn: a plum night warming to a rose and gold horizon. */
+  --background: #170c19;
+  --foreground: #fff1f6;
+  --muted: #e2c5d3;
+  --surface: #2a1428;
+  --sky-surface: #2f1730;
+  --lavender: #3a1b3b;
+  --line: #5a3053;
+  --accent: #ffc48f;
+  --accent-ink: #ffa8cf;
+  --brand: #c2366f;
+  --brand-hover: #d4457f;
+  --neon: #ff5aa8;
+  --warning-ink: #f5cd8b;
+  --warm-ink: #f5be9d;
+  --danger-ink: #ffb6b0;
+  --success-ink: #9ae2ba;
   color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-sky-surface: var(--sky-surface);
+  --color-lavender: var(--lavender);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-neon: var(--neon);
+  --color-warning-ink: var(--warning-ink);
+  --color-warm-ink: var(--warm-ink);
+  --color-danger-ink: var(--danger-ink);
+  --color-success-ink: var(--success-ink);
   --font-sans: var(--font-geist-sans);
-  --font-display: var(--font-bricolage);
+  --font-display: var(--font-sora);
 }
 
 body {
@@ -18,16 +47,91 @@ body {
   color: var(--foreground);
 }
 
+/* The browser paints a translucent select's open list on white, so give it the site's dark surface. */
+select option,
+select optgroup {
+  background: var(--background);
+  color: var(--foreground);
+}
+
 ::selection {
-  background: #6b4bff;
+  background: var(--brand);
   color: #fff;
 }
 
 .text-accent {
-  background: linear-gradient(90deg, #ddd3ff, #a98fff 55%, #8466ff);
+  background: linear-gradient(90deg, #ffd7a8, #ffa8cf 52%, #ff7fb8);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+.glass-panel {
+  --glass-glint: linear-gradient(135deg, rgb(255 214 180 / 0.1), rgb(255 130 190 / 0.05) 45%, transparent 72%);
+  /* Pointer light: --mx/--my come from components/pointer-glow.tsx; it shows on hover only. */
+  --glass-light: radial-gradient(22rem circle at var(--mx, 50%) var(--my, -30%), rgb(255 140 195 / var(--light, 0)), transparent 62%);
+  background: var(--glass-light), var(--glass-glint), var(--glass-tint, var(--surface));
+  box-shadow: inset 0 1px 0 rgb(255 214 232 / 0.12), 0 10px 32px rgb(12 4 10 / 0.24);
+}
+
+.glass-sky {
+  --glass-tint: var(--sky-surface);
+}
+
+.glass-chrome {
+  --glass-tint: var(--background);
+  --glass-opacity: 83%;
+}
+
+.glass-chrome[data-scrolled] {
+  --glass-opacity: 91%;
+}
+
+.glass-chrome[data-menu-open] {
+  --glass-opacity: 100%;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-panel {
+    background: var(--glass-light), var(--glass-glint), color-mix(in srgb, var(--glass-tint, var(--surface)) var(--glass-opacity, 58%), transparent);
+  }
+
+  .glass-panel:not(.soft-press, .rise) {
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    backdrop-filter: blur(20px) saturate(1.4);
+  }
+}
+
+.glass-panel.soft-press:hover {
+  --light: 0.16;
+  border-color: color-mix(in srgb, var(--line) 45%, var(--accent-ink));
+  box-shadow: inset 0 1px 0 rgb(255 214 232 / 0.16), 0 14px 40px -12px rgb(255 90 168 / 0.32);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .soft-press {
+    transition: translate 260ms cubic-bezier(0.22, 0.9, 0.3, 1.24), scale 180ms ease-out, border-color 220ms ease, background-color 180ms ease, color 180ms ease, box-shadow 320ms ease, --light 320ms ease;
+  }
+
+  .soft-press:active {
+    scale: 0.985;
+  }
+
+  .glass-enter {
+    animation: glass-arrive 380ms cubic-bezier(0.22, 0.9, 0.3, 1.14) both;
+  }
+
+  @keyframes glass-arrive {
+    from { opacity: 0; translate: 0 5px; }
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .soft-press:hover:not(:active) {
+    translate: 0 -3px;
+  }
 }
 
 @keyframes rise {
@@ -39,104 +143,6 @@ body {
 
 .rise {
   animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--delay, 0ms) backwards;
-}
-
-.stat-bar {
-  clip-path: inset(0 calc(100% - var(--fill)) 0 0 round 2px);
-  transition: clip-path 0.45s ease-out;
-  animation: stat-bar var(--dur) var(--ease, cubic-bezier(0.2, 0.7, 0.2, 1)) var(--delay) backwards;
-}
-
-@keyframes stat-bar {
-  from {
-    clip-path: inset(0 100% 0 0 round 2px);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-.fps-range {
-  appearance: none;
-  background: transparent;
-  cursor: pointer;
-  animation: fade-in 0.4s ease var(--delay, 0ms) backwards;
-}
-
-.fps-range:focus {
-  outline: none;
-}
-
-.fps-range::-webkit-slider-runnable-track {
-  height: 100%;
-  background: transparent;
-}
-
-.fps-range::-moz-range-track {
-  background: transparent;
-}
-
-.fps-range::-webkit-slider-thumb {
-  appearance: none;
-  width: 6px;
-  height: 20px;
-  margin-top: 2px;
-  border-radius: 2px;
-  background: #fff;
-  cursor: ew-resize;
-}
-
-.fps-range::-moz-range-thumb {
-  width: 6px;
-  height: 20px;
-  border: 0;
-  border-radius: 2px;
-  background: #fff;
-  cursor: ew-resize;
-}
-
-.fps-range:focus-visible::-webkit-slider-thumb {
-  outline: 2px solid #a98fff;
-  outline-offset: 2px;
-}
-
-.fps-range:focus-visible::-moz-range-thumb {
-  outline: 2px solid #a98fff;
-  outline-offset: 2px;
-}
-
-@keyframes overload-shake {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  25% {
-    translate: calc(var(--amp) * -1px) calc(var(--amp) * 0.6px);
-  }
-  50% {
-    translate: calc(var(--amp) * 0.8px) calc(var(--amp) * -0.6px);
-  }
-  75% {
-    translate: calc(var(--amp) * -0.5px) calc(var(--amp) * -0.4px);
-  }
-}
-
-.overload-shake {
-  animation: overload-shake var(--shake, 0.2s) linear infinite;
-}
-
-@keyframes overload-flow {
-  to {
-    background-position: 160px 0;
-  }
-}
-
-.overload-flow {
-  background: linear-gradient(90deg, #6b4bff, #c9bbff 25%, #7c5cff 50%, #e4dcff 75%, #6b4bff) 0 0 / 160px 100%;
-  animation: overload-flow var(--flow, 1s) linear infinite;
 }
 
 @supports (animation-timeline: view()) {
@@ -164,7 +170,7 @@ body {
 }
 
 .release-notes {
-  color: rgb(255 255 255 / 0.65);
+  color: var(--muted);
   font-size: 15px;
   line-height: 1.65;
   overflow-wrap: anywhere;
@@ -176,7 +182,7 @@ body {
 
 .release-notes :is(h1, h2, h3, h4) {
   margin-top: 1.5em;
-  color: #fff;
+  color: var(--foreground);
   font-size: 1rem;
   font-weight: 600;
 }
@@ -204,30 +210,30 @@ body {
 }
 
 .release-notes li::marker {
-  color: rgb(255 255 255 / 0.3);
+  color: var(--muted);
 }
 
 .release-notes a {
-  color: #a98fff;
+  color: var(--accent-ink);
   text-decoration: underline;
-  text-decoration-color: rgb(169 143 255 / 0.4);
+  text-decoration-color: color-mix(in srgb, var(--accent-ink) 40%, transparent);
   text-underline-offset: 3px;
 }
 
 .release-notes a:hover {
-  color: #c4b5ff;
+  color: var(--accent-ink);
 }
 
 .release-notes strong {
-  color: rgb(255 255 255 / 0.9);
+  color: var(--foreground);
   font-weight: 600;
 }
 
 .release-notes code {
   padding: 0.1em 0.35em;
   border-radius: 4px;
-  background: rgb(255 255 255 / 0.07);
-  color: #e7e1ff;
+  background: var(--lavender);
+  color: var(--foreground);
   font-size: 0.875em;
 }
 
@@ -235,7 +241,7 @@ body {
   overflow-x: auto;
   padding: 1em;
   border-radius: 10px;
-  background: rgb(255 255 255 / 0.04);
+  background: var(--lavender);
 }
 
 .release-notes pre code {
@@ -245,7 +251,7 @@ body {
 
 .release-notes blockquote {
   padding-left: 1em;
-  border-left: 2px solid rgb(255 255 255 / 0.15);
+  border-left: 2px solid var(--line);
 }
 
 .release-notes img {
@@ -262,11 +268,11 @@ body {
 
 .release-notes :is(th, td) {
   padding: 0.4em 0.7em;
-  border: 1px solid rgb(255 255 255 / 0.1);
+  border: 1px solid var(--line);
 }
 
 .release-notes hr {
-  border-color: rgb(255 255 255 / 0.1);
+  border-color: var(--line);
 }
 
 .hub[data-tab="overview"] [data-panel]:not([data-panel="overview"]),
@@ -281,58 +287,58 @@ body {
 }
 
 .hub-md a {
-  color: #a98fff;
+  color: var(--accent-ink);
   text-decoration: underline;
-  text-decoration-color: rgb(169 143 255 / 0.4);
+  text-decoration-color: color-mix(in srgb, var(--accent-ink) 40%, transparent);
   text-underline-offset: 3px;
 }
 
 .hub-md a:hover {
-  color: #c4b5ff;
+  color: var(--accent-ink);
 }
 
 .hub-md code {
   padding: 0.05em 0.35em;
   border-radius: 4px;
-  background: rgb(255 255 255 / 0.07);
-  color: #e7e1ff;
+  background: var(--lavender);
+  color: var(--foreground);
   font-size: 0.875em;
 }
 
 .hub-md strong {
-  color: rgb(255 255 255 / 0.9);
+  color: var(--foreground);
   font-weight: 600;
 }
 
 .docs-lede a,
 .docs-prose a {
-  color: #c4b5ff;
+  color: var(--accent-ink);
   text-decoration: underline;
-  text-decoration-color: rgb(196 181 255 / 0.35);
+  text-decoration-color: color-mix(in srgb, var(--accent-ink) 35%, transparent);
   text-underline-offset: 3px;
   transition: color 0.15s, text-decoration-color 0.15s;
 }
 
 .docs-lede a:hover,
 .docs-prose a:hover {
-  color: #e4dcff;
-  text-decoration-color: rgb(228 220 255 / 0.7);
+  color: var(--accent-ink);
+  text-decoration-color: color-mix(in srgb, var(--accent-ink) 70%, transparent);
 }
 
 .docs-lede code,
 .docs-prose :not(pre) > code {
   padding: 0.12em 0.38em;
   border-radius: 5px;
-  background: rgb(255 255 255 / 0.07);
-  color: #ebe5ff;
+  background: var(--lavender);
+  color: var(--foreground);
   font-family: var(--font-geist-mono), ui-monospace, monospace;
   font-size: 0.84em;
   overflow-wrap: anywhere;
 }
 
 .docs-prose {
-  color: rgb(255 255 255 / 0.72);
-  font-size: 16px;
+  color: var(--muted);
+  font-size: 1.0625rem;
   line-height: 1.7;
 }
 
@@ -341,7 +347,7 @@ body {
 }
 
 .docs-prose :is(h2, h3, h4) {
-  color: #fff;
+  color: var(--foreground);
   scroll-margin-top: 7rem;
 }
 
@@ -384,7 +390,7 @@ body {
 .docs-prose .heading-link::after {
   content: "#";
   margin-left: 0.4em;
-  color: rgb(196 181 255 / 0.55);
+  color: var(--accent);
   font-weight: 500;
   opacity: 0;
   transition: opacity 0.15s;
@@ -397,7 +403,7 @@ body {
 }
 
 .docs-prose strong {
-  color: rgb(255 255 255 / 0.92);
+  color: var(--foreground);
   font-weight: 600;
 }
 
@@ -417,101 +423,113 @@ body {
 }
 
 .docs-prose li::marker {
-  color: rgb(255 255 255 / 0.32);
+  color: var(--muted);
 }
 
 .docs-prose blockquote {
   padding: 0.9em 1.15em;
   border-radius: 12px;
-  background: rgb(169 143 255 / 0.09);
-  color: rgb(255 255 255 / 0.8);
+  background: var(--sky-surface);
+  color: var(--muted);
 }
 
 .docs-prose blockquote > * + * {
   margin-top: 0.6em;
 }
 
-.docs-prose .code-block {
-  position: relative;
+.docs-prose .code-block,
+.docs-prose .table-wrap {
+  max-width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.docs-prose .code-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.65rem;
+  border-bottom: 1px solid var(--line);
+  border-radius: 11px 11px 0 0;
+  background: linear-gradient(120deg, rgb(255 190 160 / 0.08), transparent 65%), var(--lavender);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.docs-prose .code-toolbar span {
+  margin-inline-end: auto;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+.docs-prose .code-toolbar button {
+  min-height: 32px;
+  padding-inline: 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--foreground);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.docs-prose .code-toolbar button:hover,
+.docs-prose .code-toolbar button[aria-pressed="true"] {
+  background: var(--sky-surface);
+  color: var(--accent-ink);
+}
+
+.docs-prose :is(pre, .table-wrap, .code-toolbar button):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .docs-prose pre {
   overflow-x: auto;
   padding: 1em 1.15em;
-  border-radius: 12px;
-  background: #0a0614;
-  color: #e7e1ff;
+  border-radius: 0 0 11px 11px;
   font-family: var(--font-geist-mono), ui-monospace, monospace;
-  font-size: 13.5px;
+  font-size: 0.875rem;
   line-height: 1.65;
   scrollbar-width: thin;
 }
 
-.docs-prose .code-copy {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  height: 1.75rem;
-  padding: 0 0.6rem;
-  border-radius: 6px;
-  background: rgb(255 255 255 / 0.08);
-  color: rgb(255 255 255 / 0.7);
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.15s, background-color 0.15s, color 0.15s;
-}
-
-.docs-prose .code-block:hover .code-copy,
-.docs-prose .code-copy:focus-visible {
-  opacity: 1;
-}
-
-.docs-prose .code-copy:hover {
-  background: rgb(255 255 255 / 0.14);
-  color: #fff;
-}
-
-.docs-prose .code-copy:focus-visible {
-  outline: 2px solid #a98fff;
-  outline-offset: 2px;
-}
-
-@media (hover: none) {
-  .docs-prose .code-copy {
-    opacity: 1;
-  }
+.docs-prose .code-wrapped pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .docs-prose .table-wrap {
   overflow-x: auto;
-  border-radius: 12px;
-  background: rgb(255 255 255 / 0.03);
   scrollbar-width: thin;
 }
 
 .docs-prose table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14.5px;
+  font-size: 0.9375rem;
   line-height: 1.55;
 }
 
 .docs-prose th {
-  color: #fff;
+  color: var(--foreground);
+  background: var(--lavender);
   font-weight: 600;
   text-align: left;
   white-space: nowrap;
 }
 
 .docs-prose :is(th, td) {
-  padding: 0.65em 0.9em;
+  padding: 0.7em 1em;
   vertical-align: top;
 }
 
-.docs-prose tbody tr:nth-child(odd) {
-  background: rgb(255 255 255 / 0.025);
+.docs-prose tbody tr:nth-child(even) {
+  background: var(--sky-surface);
+}
+
+.docs-prose td:first-child code {
+  white-space: nowrap;
 }
 
 .docs-prose figure {
@@ -524,12 +542,12 @@ body {
   width: 100%;
   height: auto;
   border-radius: 16px;
-  background: #f4f3fa;
+  background: var(--surface);
 }
 
 .docs-prose figcaption {
   margin-top: 0.75em;
-  color: rgb(255 255 255 / 0.5);
+  color: var(--muted);
   font-size: 14px;
 }
 
@@ -539,32 +557,810 @@ body {
   margin: 2.5em 0;
 }
 
-@keyframes race {
-  from {
-    transform: scaleX(0);
-  }
-}
-
-.race-fill {
-  transform-origin: left center;
-  animation: race var(--dur, 1s) linear both;
-}
-
-.race-time {
-  animation: fade-in 0.35s ease var(--dur, 0ms) both;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .logo-float,
-  .rise,
-  .stat-bar,
-  .fps-range,
-  .overload-shake,
-  .overload-flow,
-  .race-fill,
-  .race-time {
+  .rise {
     animation: none;
     transition: none;
+  }
+}
+
+/* /api-gaps: short classes, because its 77 rows would repeat long utility strings in the page and its payload */
+.ag-link {
+  @apply text-accent-ink underline decoration-accent-ink/40 underline-offset-4 transition-colors hover:text-white;
+}
+.ag-src {
+  @apply font-mono text-[13px] text-accent-ink underline decoration-accent-ink/40 underline-offset-4 transition-colors hover:text-white;
+}
+.ag-row {
+  @apply grid gap-x-6 gap-y-2 border-t border-white/10 px-5 py-4 first:border-t-0 sm:grid-cols-[1fr_auto];
+}
+.ag-title {
+  @apply text-[15px] leading-snug font-semibold text-white;
+}
+.ag-note {
+  @apply mt-1 max-w-[72ch] text-[15px] text-white/70;
+}
+.ag-tags {
+  @apply flex flex-wrap items-start gap-2 sm:justify-end;
+}
+.ag-wide {
+  @apply sm:col-span-2;
+}
+.ag-sum {
+  @apply cursor-pointer list-none marker:hidden [&::-webkit-details-marker]:hidden;
+}
+.ag-more {
+  @apply text-sm text-white/60 sm:col-span-2;
+}
+.ag-chev {
+  @apply mr-2 inline-block text-white/40 transition-transform group-open:rotate-90;
+}
+.ag-list {
+  @apply mt-2 list-disc space-y-1 pl-6 marker:text-white/30;
+}
+.ag-chip {
+  @apply inline-flex items-center gap-1.5 rounded-md bg-white/[0.06] px-2 py-0.5 text-xs;
+}
+.ag-badge {
+  @apply inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset;
+}
+.ag-covered {
+  @apply bg-emerald-400/15 text-emerald-200 ring-emerald-300/25;
+}
+.ag-partial {
+  @apply bg-amber-400/15 text-amber-200 ring-amber-300/25;
+}
+.ag-missing {
+  @apply bg-rose-400/15 text-rose-200 ring-rose-300/25;
+}
+.ag-na {
+  @apply bg-white/10 text-white/70 ring-white/15;
+}
+
+:focus-visible { outline-color: var(--accent); }
+
+/* ── Docs: the menu, the page and its motion ─────────────────────────────── */
+
+/* A bar under the header that fills as the page scrolls; browsers without scroll timelines show nothing. */
+.docs-progress {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .docs-progress {
+      display: block;
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 60;
+      height: 2px;
+      background: linear-gradient(90deg, var(--brand), var(--accent) 55%, var(--accent-ink));
+      transform-origin: 0 50%;
+      animation: docs-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    @keyframes docs-progress {
+      from { transform: scaleX(0); }
+    }
+  }
+}
+
+.docs-nav-panel {
+  --glass-opacity: 62%;
+}
+
+.docs-nav-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  overscroll-behavior: contain;
+  /* Fade the list out at both ends instead of cutting it. */
+  mask-image: linear-gradient(to bottom, transparent, #000 10px, #000 calc(100% - 18px), transparent);
+  padding-block: 8px 12px;
+}
+
+.docs-search-input {
+  border: 1px solid transparent;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.docs-search-input:focus {
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+/* The parts of the docs: a pill slides under the chosen one. */
+.docs-tabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--tabs), minmax(0, 1fr));
+  padding: 3px;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--background) 70%, transparent);
+  isolation: isolate;
+}
+
+.docs-tabs::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset-block: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / var(--tabs));
+  border-radius: 8px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 70%, transparent), color-mix(in srgb, var(--brand) 38%, var(--sky-surface)));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14), 0 4px 16px rgb(255 90 168 / 0.3);
+  translate: calc(var(--tab) * 100%) 0;
+}
+
+.docs-tab {
+  min-height: 32px;
+  padding-inline: 4px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  transition: color 160ms ease;
+}
+
+.docs-tab:hover,
+.docs-tab[aria-pressed="true"] {
+  color: var(--foreground);
+}
+
+.docs-tab:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+/* A group or a page's chapters: closed content has no height. */
+.docs-fold {
+  display: grid;
+  grid-template-rows: 0fr;
+}
+
+.docs-fold[data-open] {
+  grid-template-rows: 1fr;
+}
+
+.docs-nav-rail {
+  border-left: 1px solid var(--line);
+}
+
+.docs-nav-link {
+  position: relative;
+  display: block;
+  padding: 0.4rem 0.65rem;
+  border-radius: 8px;
+  color: var(--muted);
+  line-height: 1.35;
+  outline: none;
+  text-wrap: pretty;
+}
+
+.docs-nav-link::before {
+  content: "";
+  position: absolute;
+  inset-block: 0.45rem;
+  left: 0;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(var(--accent), var(--accent-ink));
+  scale: 1 0;
+}
+
+.docs-nav-link:hover {
+  background: color-mix(in srgb, var(--lavender) 70%, transparent);
+  color: var(--foreground);
+}
+
+.docs-nav-link:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.docs-nav-link[aria-current="page"] {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 34%, transparent), color-mix(in srgb, var(--brand) 8%, transparent));
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.docs-nav-link[aria-current="page"]::before {
+  scale: 1 1;
+}
+
+/* On this page: a rail with a marker that slides to the heading in view. */
+.docs-toc {
+  border-left: 1px solid var(--line);
+}
+
+.docs-toc-mark {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(var(--accent), var(--accent-ink));
+  list-style: none;
+}
+
+.docs-title {
+  background: linear-gradient(100deg, var(--foreground) 45%, #ffc2dc 78%, var(--accent));
+  filter: drop-shadow(0 0 22px rgb(255 110 175 / 0.22));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.docs-pager:hover .docs-pager-arrow {
+  color: var(--accent-ink);
+}
+
+/* Callouts: a quote, such as one that opens with a bold label ("Legacy.", "Early."). */
+.docs-prose blockquote {
+  position: relative;
+  padding: 0.95em 1.15em 0.95em 1.4em;
+  border: 1px solid color-mix(in srgb, var(--accent-ink) 22%, var(--line));
+  border-radius: 12px;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent-ink) 9%, transparent), transparent 70%), var(--sky-surface);
+  overflow: hidden;
+}
+
+.docs-prose blockquote::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(var(--accent), var(--accent-ink));
+}
+
+/* Reading width: about 75 characters a line; code and tables may use the whole column. */
+.docs-prose > :is(p, ul, ol, blockquote, h2, h3, h4) {
+  max-width: 44rem;
+}
+
+.docs-prose h2 {
+  margin-top: 2.9em;
+  padding-top: 1.1em;
+  border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+
+.docs-prose > h2:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.docs-prose li > :is(.code-block, p, .table-wrap) {
+  margin-top: 0.8em;
+}
+
+.docs-prose li > p:first-child {
+  margin-top: 0;
+}
+
+.docs-prose ol > li::marker {
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+.docs-prose .code-block {
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgb(12 4 10 / 0.26);
+  transition: border-color 220ms ease, box-shadow 320ms ease;
+}
+
+.docs-prose .code-block:hover {
+  border-color: color-mix(in srgb, var(--line) 45%, var(--accent-ink));
+  box-shadow: 0 14px 40px -14px rgb(255 90 168 / 0.3);
+}
+
+.docs-prose .code-toolbar span::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 0.55em;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: 1px;
+}
+
+.docs-prose .code-toolbar button {
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.docs-prose .code-toolbar button[data-done] {
+  border-color: var(--success-ink);
+  color: var(--success-ink);
+}
+
+.docs-prose pre {
+  background: color-mix(in srgb, var(--background) 55%, var(--surface));
+  color: #fbe6ef;
+  tab-size: 4;
+}
+
+.tok-comment { color: #c19aae; font-style: italic; }
+.tok-string { color: #a8e6c1; }
+.tok-keyword { color: #ff9cc8; }
+.tok-fn { color: #9fd4ff; }
+.tok-type { color: #f5cd8b; }
+.tok-attr { color: #f5be9d; }
+.tok-number { color: #ffb6b0; }
+
+.docs-prose tbody tr {
+  transition: background-color 140ms ease;
+}
+
+.docs-prose tbody tr:hover {
+  background: color-mix(in srgb, var(--brand) 16%, transparent);
+}
+
+.docs-prose th {
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .docs-prose :target {
+    animation: docs-target 1.6s ease-out;
+  }
+
+  @keyframes docs-target {
+    from { background: color-mix(in srgb, var(--brand) 38%, transparent); box-shadow: 0 0 0 8px color-mix(in srgb, var(--brand) 38%, transparent); }
+    to { background: transparent; box-shadow: 0 0 0 8px transparent; }
+  }
+
+  .docs-tabs::before {
+    transition: translate 320ms cubic-bezier(0.22, 0.9, 0.3, 1.12);
+  }
+
+  .docs-fold {
+    transition: grid-template-rows 260ms cubic-bezier(0.3, 0.8, 0.3, 1);
+  }
+
+  .docs-nav-link {
+    transition: background-color 160ms ease, color 160ms ease, padding-left 200ms cubic-bezier(0.22, 0.9, 0.3, 1.2);
+  }
+
+  .docs-nav-link::before {
+    transition: scale 260ms cubic-bezier(0.22, 0.9, 0.3, 1.3);
+  }
+
+  .docs-nav-link:hover,
+  .docs-nav-link[aria-current="page"] {
+    padding-left: 0.9rem;
+  }
+
+  .docs-nav-section {
+    animation: docs-swap 260ms cubic-bezier(0.22, 0.9, 0.3, 1) both;
+  }
+
+  @keyframes docs-swap {
+    from { opacity: 0; translate: 10px 0; }
+  }
+
+  .docs-toc-mark {
+    transition: translate 240ms cubic-bezier(0.22, 0.9, 0.3, 1.1), height 240ms ease;
+  }
+
+  /* A page arrives in beats: its heading, its text, its outline. */
+  .docs-page > article > :is(nav:first-child, h1, .docs-lede),
+  .docs-page > div:last-child,
+  .docs-body {
+    animation: docs-arrive 480ms cubic-bezier(0.22, 0.9, 0.3, 1) both;
+  }
+
+  .docs-page > article > h1 { animation-delay: 40ms; }
+  .docs-page > article > .docs-lede { animation-delay: 90ms; }
+  .docs-body { animation-delay: 150ms; }
+  .docs-page > div:last-child { animation-delay: 220ms; }
+
+  @keyframes docs-arrive {
+    from { opacity: 0; translate: 0 10px; }
+  }
+
+  .docs-cards > * {
+    animation: docs-arrive 520ms cubic-bezier(0.22, 0.9, 0.3, 1.1) both;
+  }
+
+  .docs-cards > :nth-child(1) { animation-delay: 120ms; }
+  .docs-cards > :nth-child(2) { animation-delay: 190ms; }
+  .docs-cards > :nth-child(3) { animation-delay: 260ms; }
+
+  .docs-pager-arrow {
+    transition: translate 240ms cubic-bezier(0.22, 0.9, 0.3, 1.3), color 160ms ease;
+  }
+
+  .docs-pager:hover .docs-pager-next { translate: 5px 0; }
+  .docs-pager:hover .docs-pager-prev { translate: -5px 0; }
+
+  .docs-source svg:last-child {
+    transition: translate 200ms ease;
+  }
+
+  .docs-source:hover svg:last-child {
+    translate: 2px -2px;
+  }
+
+  .docs-prose .code-toolbar button[data-done] {
+    animation: docs-pop 320ms cubic-bezier(0.22, 0.9, 0.3, 1.5);
+  }
+
+  @keyframes docs-pop {
+    40% { scale: 1.08; }
+  }
+
+  /* Blocks further down the page ease in as they scroll into view, where the browser can tie motion to scrolling. */
+  @supports (animation-timeline: view()) {
+    .docs-prose > :is(.code-block, .table-wrap, blockquote, figure) {
+      animation: docs-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+
+    @keyframes docs-reveal {
+      from { opacity: 0.25; translate: 0 14px; scale: 0.985; }
+    }
+  }
+}
+
+/* ── Dawn: the sky behind every page, the hover light and the few glowing lines ── */
+
+@property --light {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+/* Fixed behind the page (components/dawn-backdrop.tsx): a plum night above, a sun just under the horizon. */
+.dawn {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(180deg, #0f0812 0%, #170c19 30%, #241026 56%, #3a1530 78%, #4f1b36 100%);
+}
+
+.dawn > * {
+  position: absolute;
+}
+
+.dawn-stars {
+  inset: 0 0 45%;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 33% 62%, #ffd9e8 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 57% 27%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 74% 74%, #ffe6c8 50%, transparent 51%),
+    radial-gradient(1px 1px at 88% 12%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 46% 88%, #ffd9e8 50%, transparent 51%);
+  background-size: 23rem 17rem;
+  mask-image: linear-gradient(#000, transparent);
+}
+
+/* The sun and its rays rise a little as the page scrolls. */
+.dawn-rise {
+  inset: 0;
+}
+
+.dawn-sun {
+  left: 50%;
+  bottom: -62vmax;
+  width: 120vmax;
+  aspect-ratio: 1;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 222 160 / 0.7) 0%, rgb(255 168 140 / 0.45) 20%, rgb(255 92 156 / 0.22) 38%, rgb(150 40 110 / 0.08) 56%, transparent 70%);
+  mix-blend-mode: screen;
+}
+
+.dawn-rays {
+  left: 50%;
+  bottom: -62vmax;
+  width: 160vmax;
+  aspect-ratio: 1;
+  translate: -50% 20vmax;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgb(255 205 175 / 0.07) 0deg 2.2deg, transparent 2.2deg 11deg);
+  mask-image: radial-gradient(circle, #000 18%, transparent 58%);
+  mix-blend-mode: screen;
+}
+
+.dawn-haze {
+  inset: -10%;
+  background:
+    radial-gradient(40rem 22rem at 18% 70%, rgb(255 110 170 / 0.13), transparent 70%),
+    radial-gradient(36rem 20rem at 82% 64%, rgb(255 170 110 / 0.1), transparent 70%),
+    radial-gradient(44rem 26rem at 70% 18%, rgb(120 50 130 / 0.16), transparent 70%);
+}
+
+/* The horizon: the one bright neon line, with a darker land under it. */
+.dawn-horizon {
+  inset: auto 0 7vh;
+  height: 1px;
+  opacity: 0.7;
+  background: linear-gradient(90deg, transparent 4%, rgb(255 90 168 / 0.5) 30%, rgb(255 214 150 / 0.85) 50%, rgb(255 90 168 / 0.5) 70%, transparent 96%);
+  box-shadow: 0 0 10px 1px rgb(255 90 168 / 0.4), 0 0 46px 8px rgb(255 140 120 / 0.12);
+}
+
+.dawn-land {
+  inset: calc(100% - 7vh) 0 0;
+  background: linear-gradient(180deg, rgb(255 120 160 / 0.06), rgb(23 12 25 / 0.55) 40%, rgb(15 8 18 / 0.7));
+}
+
+.dawn-grain {
+  inset: 0;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dawn-sun {
+    animation: dawn-breathe 14s ease-in-out infinite;
+  }
+
+  @keyframes dawn-breathe {
+    50% { opacity: 0.82; scale: 1.04; }
+  }
+
+  .dawn-rays {
+    animation: dawn-turn 220s linear infinite;
+  }
+
+  @keyframes dawn-turn {
+    to { rotate: 1turn; }
+  }
+
+  .dawn-haze {
+    animation: dawn-drift 40s ease-in-out infinite alternate;
+  }
+
+  @keyframes dawn-drift {
+    to { translate: 3% -2%; }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .dawn-rise {
+      animation: dawn-rise linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    @keyframes dawn-rise {
+      from { translate: 0 6vh; }
+      to { translate: 0 -5vh; }
+    }
+  }
+}
+
+/* Text links: the underline fills in gold from the left. */
+.docs-lede a,
+.docs-prose a:not(.heading-link),
+.release-notes a,
+.hub-md a,
+.sun-link {
+  text-decoration: none;
+  background:
+    linear-gradient(90deg, var(--accent), var(--accent-ink)) 0 100% / 0% 1.5px no-repeat,
+    linear-gradient(color-mix(in srgb, currentColor 35%, transparent), color-mix(in srgb, currentColor 35%, transparent)) 0 100% / 100% 1px no-repeat;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding-bottom: 1px;
+}
+
+:is(.docs-lede a, .docs-prose a:not(.heading-link), .release-notes a, .hub-md a, .sun-link):hover {
+  color: #ffd2e4;
+  background-size: 100% 1.5px, 100% 1px;
+}
+
+/* The header's links: a short sunrise bar grows under the one pointed at, and stays under the current page. */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-ink), var(--accent), transparent);
+  opacity: 0;
+  scale: 0.2 1;
+}
+
+.nav-link:hover::after,
+.nav-link[aria-current="page"]::after {
+  opacity: 1;
+  scale: 1 1;
+}
+
+.nav-link[aria-current="page"]::after {
+  box-shadow: 0 0 8px rgb(255 90 168 / 0.6);
+}
+
+/* Main buttons: a warm glow and one pass of light across. */
+.sun-button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background-image: linear-gradient(135deg, var(--brand), #d9516c 60%, #e8735f);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 6px 22px -8px rgb(255 90 168 / 0.55);
+}
+
+.sun-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.28) 50%, transparent 65%);
+  translate: -110% 0;
+}
+
+.sun-button:hover {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.28), 0 10px 32px -8px rgb(255 90 168 / 0.8), 0 0 0 1px rgb(255 190 215 / 0.35);
+}
+
+/* Avatars in the team lists: a ring that lights on hover. */
+.team-chip img {
+  box-shadow: 0 0 0 1.5px rgb(255 168 207 / 0.25);
+}
+
+.team-chip:hover img {
+  box-shadow: 0 0 0 2px var(--accent-ink), 0 0 18px rgb(255 90 168 / 0.55);
+}
+
+.docs-nav-link[aria-current="page"]::before {
+  box-shadow: 0 0 10px var(--neon);
+}
+
+:focus-visible {
+  outline-color: var(--neon);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-link::after {
+    transition: scale 320ms cubic-bezier(0.22, 0.9, 0.3, 1.2), opacity 200ms ease;
+  }
+
+  :is(.docs-lede a, .docs-prose a:not(.heading-link), .release-notes a, .hub-md a, .sun-link) {
+    transition: background-size 380ms cubic-bezier(0.22, 0.9, 0.3, 1), color 200ms ease;
+  }
+
+  .sun-button {
+    transition: box-shadow 300ms ease, translate 260ms cubic-bezier(0.22, 0.9, 0.3, 1.24), scale 180ms ease-out;
+  }
+
+  .sun-button:hover::after {
+    translate: 110% 0;
+    transition: translate 750ms cubic-bezier(0.3, 0.7, 0.2, 1);
+  }
+
+  .team-chip img {
+    transition: box-shadow 260ms ease, scale 300ms cubic-bezier(0.22, 0.9, 0.3, 1.4);
+  }
+
+  .team-chip:hover img {
+    scale: 1.08;
+  }
+}
+
+/* Under the players' fire: a red-hot bar the flames stand on, its glow falling onto the section below. */
+.ember-divider {
+  position: relative;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #b5140b 15%, #ff3a14 35%, #ffd86a 50%, #ff3a14 65%, #b5140b 85%, transparent);
+  box-shadow: 0 0 14px 2px rgb(255 58 20 / 0.55), 0 0 60px 10px rgb(255 58 20 / 0.18);
+}
+
+.ember-divider::after {
+  content: "";
+  position: absolute;
+  inset: 2px 0 auto;
+  height: 7rem;
+  background: radial-gradient(60% 100% at 50% 0, rgb(255 58 20 / 0.16), transparent 70%);
+  pointer-events: none;
+}
+
+/* The footer's edge: a horizon line that glows, with a spark of light travelling along it. */
+.footer-horizon {
+  position: relative;
+  overflow-x: clip;
+}
+
+.footer-horizon::before,
+.footer-horizon::after {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 1px;
+  pointer-events: none;
+}
+
+.footer-horizon::before {
+  background: linear-gradient(90deg, transparent, rgb(255 90 168 / 0.55) 22%, rgb(255 214 150 / 0.9) 50%, rgb(255 90 168 / 0.55) 78%, transparent);
+  box-shadow: 0 0 12px 1px rgb(255 90 168 / 0.45), 0 -18px 50px 4px rgb(255 120 140 / 0.1);
+}
+
+.footer-horizon::after {
+  background: radial-gradient(closest-side, #fff 0%, rgb(255 214 150 / 0.9) 40%, transparent);
+  height: 3px;
+  top: -2px;
+  width: 9rem;
+  right: auto;
+  left: calc(50% - 4.5rem);
+  filter: blur(0.5px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .footer-horizon::after {
+    left: -9rem;
+    animation: footer-spark 9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+
+  @keyframes footer-spark {
+    to { translate: calc(100vw + 9rem) 0; }
+  }
+}
+
+/* Reading surface: the page's text sits on its own glass sheet, so the sky never runs through a paragraph. */
+.docs-body {
+  padding: clamp(1.15rem, 3.2vw, 2.75rem);
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  border-radius: 22px;
+  background: linear-gradient(160deg, rgb(255 200 220 / 0.04), transparent 40%), color-mix(in srgb, var(--background) 74%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  backdrop-filter: blur(18px) saturate(1.2);
+  box-shadow: inset 0 1px 0 rgb(255 214 232 / 0.08), 0 28px 70px -34px rgb(0 0 0 / 0.7);
+}
+
+/* Breathing room: blocks are set apart from the text around them, and lines and list items open up. */
+.docs-prose {
+  line-height: 1.75;
+}
+
+.docs-prose > * + * {
+  margin-top: 1.25em;
+}
+
+.docs-prose > :is(.code-block, .table-wrap, figure, blockquote) {
+  margin-block: 1.9em;
+}
+
+.docs-prose li + li,
+.docs-prose li > :is(ul, ol) {
+  margin-top: 0.6em;
+}
+
+.docs-prose h3 {
+  margin-top: 2.4em;
+}
+
+.docs-prose :not(pre) > code {
+  padding: 0.08em 0.4em;
+  border: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  background: color-mix(in srgb, var(--lavender) 75%, transparent);
+}
+
+/* The horizon belongs to the top of the page: once reading starts it fades, so it never strikes through text. */
+@supports (animation-timeline: scroll()) {
+  .dawn-horizon,
+  .dawn-land {
+    animation: dawn-set linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 70vh;
+  }
+
+  @keyframes dawn-set {
+    to { opacity: 0; }
   }
 }

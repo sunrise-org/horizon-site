@@ -1,10 +1,12 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { rawMainUrl, TAGS } from "@/components/github-fresh";
+import { rawGameUrl, TAGS } from "@/components/github-fresh";
 import { githubFetch } from "@/components/github-api";
+import { GAME_REPO } from "@/components/game-repo";
 import { journalJson, slimIssue } from "@/vendor/horizon-site/hub.js";
 import { isGame } from "@/vendor/horizon-site/versions.js";
 
-const REPO = "horizon-rust/horizon";
+const REPO = GAME_REPO;
+const [OWNER, NAME] = GAME_REPO.split("/");
 const TIMEOUT = 15_000;
 const FEED_LIFE = { stale: 300, revalidate: 600, expire: 3600 };
 const FAILED_LIFE = { stale: 30, revalidate: 60, expire: 300 };
@@ -28,7 +30,7 @@ export async function roadmapText(): Promise<string | null> {
   "use cache";
   cacheTag(TAGS.main);
   try {
-    const res = await fetch(await rawMainUrl(REPO, "roadmap/roadmap.json"), { signal: AbortSignal.timeout(TIMEOUT) });
+    const res = await fetch(await rawGameUrl("roadmap/roadmap.json"), { signal: AbortSignal.timeout(TIMEOUT) });
     if (!res.ok) throw new Error(`roadmap.json: ${res.status} from GitHub`);
     const text = await res.text();
     JSON.parse(text);
@@ -66,7 +68,7 @@ async function hubLive(roadmap: Roadmap) {
     const res = await fetch("https://api.github.com/graphql", {
       method: "POST",
       headers: githubHeaders(),
-      body: JSON.stringify({ query: `query { repository(owner: "horizon-rust", name: "horizon") { ${fields} } }` }),
+      body: JSON.stringify({ query: `query { repository(owner: "${OWNER}", name: "${NAME}") { ${fields} } }` }),
       signal: AbortSignal.timeout(TIMEOUT),
     });
     if (!res.ok) throw new Error(`GraphQL: ${res.status} from GitHub`);

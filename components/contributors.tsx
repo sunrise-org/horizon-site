@@ -1,16 +1,25 @@
 import Image from "next/image";
 import { cacheLife, cacheTag } from "next/cache";
 import { TAGS } from "@/components/github-fresh";
+import { GAME_REPO } from "@/components/game-repo";
 import { githubFetch } from "@/components/github-api";
 import { format, getMessages, NUMBER_LOCALE, rich, type Locale } from "@/components/i18n";
 import { ClaudeIcon, ExternalLinkIcon } from "@/components/icons";
 import { GITHUB_URL } from "@/components/links";
+import { avatarUrl, memberOf, profileUrl } from "@/components/team";
 
-const REPO = "horizon-rust/horizon";
+const REPO = GAME_REPO;
 
 const NOT_PEOPLE = new Set(["claude", "cursoragent", "noreply"]);
 
-const TEAM = [{ name: "Anthony S", role: "webDeveloper" as const, avatar: "/media/anthony-s.webp", url: "https://dezerx.com" }];
+// The site's makers, shown first; their own commits are not listed twice.
+const TEAM = ["Xmilon", "UMCEKO"].map((login) => ({
+  login,
+  name: memberOf(login)?.name ?? login,
+  role: "webDeveloper" as const,
+  avatar: avatarUrl(login),
+  url: profileUrl(login),
+}));
 
 const FEATURED = 6;
 
@@ -52,12 +61,11 @@ export async function Contributors({ locale }: { locale: Locale }) {
     avatar: c.avatar,
     url: c.url,
   });
-  const contributors = await getContributors();
+  const contributors = (await getContributors())?.filter((c) => !TEAM.some((m) => m.login.toLowerCase() === c.login.toLowerCase())) ?? null;
   const committers = FEATURED - TEAM.length;
   const cards: Card[] = [
-    ...(contributors?.slice(0, 1).map(committerCard) ?? []),
     ...TEAM.map((m) => ({ name: m.name, detail: t[m.role], avatar: m.avatar, url: m.url })),
-    ...(contributors?.slice(1, committers).map(committerCard) ?? []),
+    ...(contributors?.slice(0, committers).map(committerCard) ?? []),
   ];
   const rest = contributors?.slice(committers) ?? [];
 
@@ -95,7 +103,7 @@ export async function Contributors({ locale }: { locale: Locale }) {
             href={`${GITHUB_URL}/graphs/contributors`}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex shrink-0 items-center gap-1.5 text-[15px] font-medium text-[#a98fff] underline decoration-[#a98fff]/40 underline-offset-4 transition-colors hover:text-[#c4b5ff] hover:decoration-[#c4b5ff]"
+            className="inline-flex shrink-0 items-center gap-1.5 text-[15px] font-medium text-accent-ink underline decoration-accent-ink/40 underline-offset-4 transition-colors hover:text-[#ffd2e4] hover:decoration-[#ffd2e4]"
           >
             {t.all}
             <ExternalLinkIcon className="size-4" />
@@ -110,7 +118,7 @@ export async function Contributors({ locale }: { locale: Locale }) {
                 href={c.url}
                 target="_blank"
                 rel="noreferrer"
-                className="flex w-full items-center gap-4 rounded-xl bg-white/[0.04] p-4 transition-colors outline-none hover:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-[#a98fff]"
+                className="flex w-full items-center gap-4 rounded-xl bg-white/[0.04] p-4 transition-colors outline-none hover:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-accent-ink"
               >
                 <Image src={c.avatar} alt="" width={48} height={48} className="size-12 shrink-0 rounded-full" />
                 <span className="min-w-0">
@@ -131,7 +139,7 @@ export async function Contributors({ locale }: { locale: Locale }) {
                   target="_blank"
                   rel="noreferrer"
                   title={`${c.login} · ${commitCount(c.commits)}`}
-                  className="block rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff]"
+                  className="block rounded-full outline-none focus-visible:ring-2 focus-visible:ring-accent-ink"
                 >
                   <Image
                     src={c.avatar}

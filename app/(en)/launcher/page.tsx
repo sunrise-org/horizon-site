@@ -7,7 +7,7 @@ import type { ModProject } from "@/components/mods-logic";
 import "./launcher.css";
 
 export const metadata: Metadata = {
-  title: "Launcher · Horizon",
+  title: "Launcher · Sunrise",
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
   referrer: "no-referrer",
 };

@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState, useSyncExternalStore } from "react";
-import { GitHubIcon, HorizonMark, MenuIcon, XIcon } from "@/components/icons";
+import { GitHubIcon, MenuIcon, XIcon } from "@/components/icons";
+import { HeaderExtras } from "@/components/header-extras";
+import { LogoLink } from "@/components/logo-link";
 import type { LauncherBuild } from "@/components/github-releases";
 import type { Messages } from "@/components/i18n";
 import { format, localePath, type Locale } from "@/components/i18n-text";
@@ -16,24 +18,22 @@ type NavKey = keyof Messages["header"]["nav"];
 const NAV: { key: NavKey; href: string }[] = [
   { key: "about", href: "/#about" },
   { key: "hub", href: "/hub" },
-  { key: "benchmarks", href: "/benchmarks" },
   { key: "mods", href: "/mods" },
   { key: "releases", href: "/releases" },
   { key: "docs", href: "/docs" },
   { key: "players", href: "/stats" },
+  { key: "apiGaps", href: "/api-gaps" },
+  { key: "faq", href: "/faq" },
 ];
 
-// The shop's entry, shown while something is on sale or the founder claim is open (components/shop-data.ts).
-const SHOP: { key: NavKey; href: string } = { key: "shop", href: "/shop" };
-
-const NAV_LINK = "inline-flex items-center gap-1.5 transition-colors hover:text-white";
+const NAV_LINK = "nav-link inline-flex items-center gap-1.5 transition-colors hover:text-foreground";
 
 const subscribe = (onChange: () => void) => {
   window.addEventListener("scroll", onChange, { passive: true });
   return () => window.removeEventListener("scroll", onChange);
 };
 
-type SiteHeaderProps = { locale: Locale; t: Messages["header"]; releaseIds?: number[]; launcher?: LauncherBuild | null; shop?: boolean };
+type SiteHeaderProps = { locale: Locale; t: Messages["header"]; releaseIds?: number[]; launcher?: LauncherBuild | null };
 
 // The current path is runtime data: read outside <Suspense> it stops Next.js from rendering pages that aren't
 // prerendered (CLIENT_HOOK_DYNAMIC). The fallback is the same header with no link marked as current.
@@ -49,8 +49,8 @@ function SiteHeaderAtPath(props: SiteHeaderProps) {
   return <SiteHeaderView {...props} pathname={usePathname()} />;
 }
 
-function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, shop = false, pathname }: SiteHeaderProps & { pathname: string }) {
-  const nav = (shop ? [...NAV, SHOP] : NAV).map((item) => ({ ...item, href: localePath(locale, item.href) }));
+function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, pathname }: SiteHeaderProps & { pathname: string }) {
+  const nav = NAV.map((item) => ({ ...item, href: localePath(locale, item.href) }));
   const scrolled = useSyncExternalStore(
     subscribe,
     () => window.scrollY > 8,
@@ -74,31 +74,30 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, shop = fa
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter] duration-300 ${
-        menuOpen ? "bg-[#100a1f]" : scrolled ? "bg-[#100a1f]/75 backdrop-blur-md" : ""
-      }`}
+      className="glass-panel glass-chrome fixed inset-x-0 top-0 z-50 border-b border-line/70"
+      data-scrolled={scrolled || undefined}
+      data-menu-open={menuOpen || undefined}
     >
-      <div className="mx-auto flex h-18 w-full max-w-6xl items-center gap-12 px-6 lg:px-10">
-        <Link href={localePath(locale, "/")} className="flex items-center gap-2 text-white">
-          <HorizonMark className="size-8" />
-          <span className="font-display text-[19px] font-semibold tracking-[-0.02em]">Horizon</span>
-        </Link>
+      <HeaderExtras />
+      <div className="mx-auto flex h-18 w-full max-w-6xl items-center gap-8 px-6 xl:gap-12 lg:px-10">
+        <LogoLink href={localePath(locale, "/")}>
+          <span className="font-display text-[19px] font-semibold tracking-[-0.02em]">Sunrise</span>
+        </LogoLink>
 
-        {/* With the shop's entry the row is one link longer: tighter gaps below xl keep Download inside 1024 px. */}
-        <nav aria-label={t.mainNav} className={`hidden items-center text-sm text-white/65 lg:flex ${shop ? "gap-5 xl:gap-8" : "gap-8"}`}>
+        <nav aria-label={t.mainNav} className={`hidden items-center text-sm text-muted lg:flex gap-5 xl:gap-8`}>
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               aria-current={isCurrent(item.href) ? "page" : undefined}
-              className={isCurrent(item.href) ? `${NAV_LINK} text-white` : NAV_LINK}
+              className={isCurrent(item.href) ? `${NAV_LINK} text-foreground` : NAV_LINK}
             >
               {t.nav[item.key]}
               {item.key === "releases" && unseen > 0 && (
                 <>
                   <span
                     aria-hidden
-                    className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#a98fff] px-1 text-[10px] leading-none font-semibold text-background tabular-nums shadow-[0_0_10px_rgba(169,143,255,0.7)]"
+                    className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-lavender px-1 text-[10px] leading-none font-semibold text-foreground tabular-nums shadow-[0_0_10px_rgba(255,90,168,0.7)]"
                   >
                     {unseen > 9 ? "9+" : unseen}
                   </span>
@@ -112,14 +111,14 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, shop = fa
         <div className="ml-auto flex items-center gap-1.5">
           <a
             href={GITHUB_URL}
-            className="hidden h-9 items-center gap-2 px-3 text-sm text-white/65 transition-colors hover:text-white sm:inline-flex"
+            className="hidden h-9 items-center gap-2 px-3 text-sm text-muted transition-colors hover:text-foreground sm:inline-flex lg:hidden xl:inline-flex"
           >
             <GitHubIcon className="size-4" />
             GitHub
           </a>
           <LauncherLink
             build={launcher}
-            className="inline-flex h-9 items-center rounded-lg bg-white/10 px-4 text-sm font-medium text-white transition-colors hover:bg-white/15"
+            className="sun-button soft-press inline-flex h-9 items-center rounded-lg px-4 text-sm font-medium text-white"
           >
             {t.download}
           </LauncherLink>
@@ -132,7 +131,7 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, shop = fa
               setMenuOpen((o) => !o);
               setMenuPath(pathname);
             }}
-            className="ml-1 inline-flex size-9 items-center justify-center rounded-lg bg-white/[0.06] text-white/80 transition-colors hover:bg-white/10 hover:text-white lg:hidden"
+            className="ml-1 inline-flex size-9 items-center justify-center rounded-lg bg-lavender text-muted transition-colors hover:bg-lavender hover:text-foreground lg:hidden"
           >
             {menuOpen ? <XIcon className="size-[18px]" /> : <MenuIcon className="size-[18px]" />}
           </button>
@@ -148,19 +147,19 @@ function SiteHeaderView({ locale, t, releaseIds = [], launcher = null, shop = fa
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
                   aria-current={isCurrent(item.href) ? "page" : undefined}
-                  className={`flex h-12 items-center justify-between rounded-lg px-3 text-[17px] transition-colors hover:bg-white/[0.05] ${
-                    isCurrent(item.href) ? "bg-white/[0.06] text-white" : "text-white/75"
+                  className={`flex h-12 items-center justify-between rounded-lg px-3 text-[17px] transition-colors hover:bg-surface/80 ${
+                    isCurrent(item.href) ? "bg-lavender text-foreground" : "text-muted"
                   }`}
                 >
                   {t.nav[item.key]}
                   {item.key === "releases" && unseen > 0 && (
-                    <span className="text-sm text-[#c4b5ff]">{format(t.unseenMenu, { n: unseen > 9 ? "9+" : unseen })}</span>
+                    <span className="text-sm text-accent-ink">{format(t.unseenMenu, { n: unseen > 9 ? "9+" : unseen })}</span>
                   )}
                 </Link>
               </li>
             ))}
             <li>
-              <a href={GITHUB_URL} className="flex h-12 items-center gap-2.5 rounded-lg px-3 text-[17px] text-white/75 transition-colors hover:bg-white/[0.05]">
+              <a href={GITHUB_URL} className="flex h-12 items-center gap-2.5 rounded-lg px-3 text-[17px] text-muted transition-colors hover:bg-surface/80">
                 <GitHubIcon className="size-4" />
                 GitHub
               </a>

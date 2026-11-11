@@ -1,10 +1,13 @@
 [
-  { "group": "Start here", "pages": ["index", "install", "how-horizon-is-built"] },
-  { "group": "Playing", "pages": ["settings", "multiplayer", "troubleshooting"] },
-  { "group": "Hosting", "pages": ["hosting"] },
-  { "group": "Going further", "pages": ["modpacks", "mods", "performance", "agents"] },
-  { "group": "Make a mod", "pages": ["make-a-mod", "mod-manifest", "mod-code", "content-mods", "test-a-mod", "publish-a-mod"] },
-  { "group": "Build on Horizon", "pages": ["apis", "api", "api/stability"] },
-  { "group": "API reference", "pages": ["api/mod-index", "api/server", "api/server-reference", "api/agent-control", "api/launcher", "api/data-formats", "api/shaders"] },
-  { "group": "Project", "pages": ["contributing", "faq"] }
+  {"group": "Start here", "section": "Guides", "pages": ["index", "install", "how-sunrise-is-built"]},
+  {"group": "Playing", "section": "Guides", "pages": ["settings", "multiplayer", "troubleshooting"]},
+  {"group": "Hosting", "section": "Guides", "pages": ["hosting"]},
+  {"group": "Going further", "section": "Guides", "pages": ["modpacks", "mods", "performance", "agents"]},
+  {"group": "Project", "section": "Guides", "pages": ["contributing", "faq"]},
+  {"group": "Make a mod", "section": "Modding", "pages": ["make-a-mod", "build-your-first-block", "mod-code", "mod-manifest", "test-a-mod", "publish-a-mod"]},
+  {"group": "Background", "section": "Modding", "pages": ["content-mods", "what-changed"]},
+  {"group": "Legacy (.hnmod)", "section": "Modding", "pages": ["legacy-native-mods", "legacy-bundle", "legacy-hook-points"]},
+  {"book": "modding", "section": "Book"},
+  {"group": "Build on Sunrise", "section": "API", "pages": ["apis", "api", "api/stability"]},
+  {"group": "API reference", "section": "API", "pages": ["api/mod-index", "api/server", "api/server-reference", "api/agent-control", "api/launcher", "api/data-formats", "api/shaders"]}
 ]

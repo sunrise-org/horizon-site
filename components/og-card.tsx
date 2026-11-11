@@ -9,7 +9,7 @@ const OG_HEIGHT = 630;
 const DEFAULT_FOOTER = "Free and open source · Windows, macOS and Linux";
 const MAX_ICON_BYTES = 512 * 1024;
 const ALLOWED_ICON_HOSTS = new Set([
-  "horizon-rust.github.io",
+  "sunrise-org.github.io",
   "cdn.modrinth.com",
   "raw.githubusercontent.com",
   "media.forgecdn.net",
@@ -156,12 +156,13 @@ export async function ogCard({ kicker, title, accent, footer = DEFAULT_FOOTER, i
         <div style={{ position: "absolute", top: 0, left: 0, width: OG_WIDTH, height: OG_HEIGHT, background: "rgba(16, 10, 31, 0.8)" }} />
         <div style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%", height: "100%", padding: "64px 72px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <svg width={52} height={52} viewBox="0 0 16 16">
-              <path fill="#ffffff" d="M4 3h2v4H4zM10 3h2v4h-2z" />
-              <path fill="#ffffff" fillOpacity={0.4} d="M4 8h2v4H4zM10 8h2v4h-2z" />
-              <path fill="#a98fff" d="M1 7h14v1H1z" />
+            <svg width={64} height={64} viewBox="0 0 16 16">
+              <path fill="#e0458a" d="M1 12h14v1H1zM1 13h14v1H1z" />
+              <path fill="#ffcf5c" d="M6 7h4v1H6zM4 8h8v1H4zM3 9h10v1H3z" />
+              <path fill="#ffb48a" d="M3 10h10v1H3z" />
+              <path fill="#ffe39a" d="M7 3h2v1H7zM7 4h2v1H7zM2 5h2v1H2zM12 5h2v1h-2zM2 6h2v1H2zM12 6h2v1h-2z" />
             </svg>
-            <span style={{ fontSize: 40, fontWeight: 600, letterSpacing: -0.8 }}>Horizon</span>
+            <span style={{ fontSize: 40, fontWeight: 600, letterSpacing: -0.8 }}>Sunrise</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 36 }}>
             {iconData ? (
@@ -185,7 +186,7 @@ export async function ogCard({ kicker, title, accent, footer = DEFAULT_FOOTER, i
               <span style={{ fontSize: 30, fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>{kicker}</span>
               <div style={{ display: "flex", flexDirection: "column", marginTop: 18, fontSize, fontWeight: 600, lineHeight: 1.04, letterSpacing: -fontSize * 0.035 }}>
                 <span>{title}</span>
-                {accent ? <span style={{ color: "#a98fff" }}>{accent}</span> : null}
+                {accent ? <span style={{ color: "#ff8fc4" }}>{accent}</span> : null}
               </div>
             </div>
           </div>

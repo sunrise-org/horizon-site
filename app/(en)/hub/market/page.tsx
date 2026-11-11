@@ -4,13 +4,13 @@ import { PixelAurora } from "@/components/pixel-aurora";
 import { pageMetadata } from "@/components/site";
 
 export const metadata = pageMetadata({
-  title: "The Official Horizon SMP's market: live prices and charts",
+  title: "The Official Sunrise SMP's market: live prices and charts",
   description:
-    "Item prices on the Official Horizon SMP, moved by what players buy and sell: buy and sell prices, their change over an hour and a day, volumes and charts.",
+    "Item prices on the Official Sunrise SMP, moved by what players buy and sell: buy and sell prices, their change over an hour and a day, volumes and charts.",
   path: "/hub/market",
 });
 
-const LINK = "text-[#c4b5ff] underline decoration-[#c4b5ff]/40 underline-offset-4 transition-colors hover:text-white";
+const LINK = "text-accent-ink underline decoration-accent/40 underline-offset-4 transition-colors hover:text-foreground";
 
 export default function MarketPage() {
   return (
@@ -18,21 +18,21 @@ export default function MarketPage() {
       <section className="relative isolate overflow-hidden pt-36 pb-12 sm:pt-44 sm:pb-16">
         <PixelAurora moonTop={104} className="absolute top-0 left-0 -z-10" />
         <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
-          <p className="flex items-center text-sm font-medium text-white/60">
-            <Link href="/hub" className="hover:text-white">
+          <p className="flex items-center text-sm font-medium text-muted">
+            <Link href="/hub" className="hover:text-foreground">
               Hub
             </Link>
-            <span aria-hidden className="mx-2 text-white/30">
+            <span aria-hidden className="mx-2 text-muted">
               ·
             </span>
-            Official Horizon SMP
+            Official Sunrise SMP
           </p>
-          <h1 className="mt-5 font-display text-[clamp(2.5rem,7vw,4.75rem)] leading-[1.02] font-semibold tracking-[-0.035em] text-white">
+          <h1 className="mt-5 font-display text-[clamp(2.5rem,7vw,4.75rem)] leading-[1.02] font-semibold tracking-[-0.035em] text-foreground">
             <span className="block">The server&apos;s</span>
             <span className="text-accent block pb-1">market.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/70">
-            On the Official Horizon SMP (play.playhorizon.dev) prices move with what players sell and buy, once a minute, and drift back
+            On the Official Sunrise SMP (play.playsunrise.net) prices move with what players sell and buy, once a minute, and drift back
             toward their base between trades. In game, <code>/market</code> shows
             the same prices and gives a chart as a map. See also the server&apos;s{" "}
             <Link href="/stats#official" className={LINK}>

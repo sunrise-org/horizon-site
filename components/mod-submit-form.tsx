@@ -19,8 +19,8 @@ import { AREA, CARD, Field, GHOST_SM, INPUT, LINK, PRIMARY, SECONDARY_SM } from 
 import { zipKind } from "@/components/zip-kind";
 
 const API = "/api/mods";
-const REGISTRY = "https://github.com/horizon-rust/horizon-mods";
-const INDEX = "https://horizon-rust.github.io/horizon-mods/index.json";
+const REGISTRY = "https://github.com/sunrise-org/horizon-mods";
+const INDEX = "https://sunrise-org.github.io/horizon-mods/index.json";
 const MAX_FILE = 64 << 20;
 // Each extension and the kinds it can be. A .zip is one of three: the form reads its folders, or asks.
 const EXTENSIONS: Record<string, string[]> = {
@@ -35,7 +35,7 @@ const KIND_OPTIONS: Record<string, string> = {
   "native-mod": "Native mod (.hnmod)",
   modpack: "Modpack (.hpack)",
   resourcepack: "Resource pack (.zip)",
-  shader: "Shader pack (.hshader, Horizon's own format)",
+  shader: "Shader pack (.hshader, Sunrise's own format)",
   shaderpack: "Shader pack (.zip with a shaders/ folder)",
   datapack: "Data pack (.zip)",
 };
@@ -50,10 +50,10 @@ type Problems = Partial<Record<"file" | "kind" | "description" | "categories" | 
 const extension = (name: string) => name.split(".").pop()?.toLowerCase() ?? "";
 
 function Hint({ children }: { children: ReactNode }) {
-  return <span className="mt-1.5 block text-[13px] leading-relaxed text-white/45">{children}</span>;
+  return <span className="mt-1.5 block text-[13px] leading-relaxed text-muted">{children}</span>;
 }
 
-const code = "font-mono text-[#e7e1ff]";
+const code = "font-mono text-foreground";
 
 export function ModSubmitForm({ known }: { known: KnownProject[] }) {
   const [me, setMe] = useState<Me | null | undefined>(undefined);
@@ -264,7 +264,7 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
   let auth: ReactNode;
   if (closed) {
     auth = (
-      <p className="text-[15px] text-white/65">
+      <p className="text-[15px] text-muted">
         The form isn&apos;t open right now. You can{" "}
         <a href={REGISTRY} className={LINK}>
           open a pull request by hand
@@ -273,21 +273,21 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
       </p>
     );
   } else if (me === undefined) {
-    auth = <p className="text-sm text-white/50">Checking whether you are signed in…</p>;
+    auth = <p className="text-sm text-muted">Checking whether you are signed in…</p>;
   } else if (me === null) {
     auth = (
       <div className="space-y-3">
-        <p className="text-[15px] text-white/65">Sign in to submit: reviewers and updates go through your GitHub account.</p>
+        <p className="text-[15px] text-muted">Sign in to submit: reviewers and updates go through your GitHub account.</p>
         <a href={`${API}/auth/login?back=/mods/submit`} className={PRIMARY}>
           Sign in with GitHub
         </a>
-        <p className="text-[13px] text-white/45">It only reads your public profile: your GitHub name goes on the pull request and in the project&apos;s owners.</p>
+        <p className="text-[13px] text-muted">It only reads your public profile: your GitHub name goes on the pull request and in the project&apos;s owners.</p>
       </div>
     );
   } else {
     auth = (
-      <p className="flex flex-wrap items-center gap-2 text-[15px] text-white/65">
-        Signed in as <strong className="text-white">{me.login}</strong>.
+      <p className="flex flex-wrap items-center gap-2 text-[15px] text-muted">
+        Signed in as <strong className="text-foreground">{me.login}</strong>.
         <button type="button" onClick={signOut} className={GHOST_SM}>
           Sign out
         </button>
@@ -302,7 +302,7 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
         <form ref={form} onSubmit={submit} className="space-y-8">
           <fieldset className={`${CARD} space-y-4`}>
             <legend className="sr-only">The file</legend>
-            <h2 className="font-display text-xl font-semibold text-white">The file</h2>
+            <h2 className="font-display text-xl font-semibold text-foreground">The file</h2>
             <Field label="Kind">
               <select name="kind" value={kind} onChange={(e) => pickKind(e.target.value)} className={INPUT} aria-invalid={Boolean(problems.kind)}>
                 {kind === "" && (
@@ -328,22 +328,22 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
                 required
                 onChange={onFile}
                 aria-invalid={Boolean(problems.file)}
-                className="block w-full text-sm text-white/70 file:mr-3 file:h-9 file:rounded-lg file:border-0 file:bg-white/10 file:px-3 file:text-sm file:font-medium file:text-white hover:file:bg-white/15"
+                className="block w-full text-sm text-muted file:mr-3 file:h-9 file:rounded-lg file:border-0 file:bg-lavender file:px-3 file:text-sm file:font-medium file:text-foreground hover:file:bg-sky-surface"
               />
-              {zipNote && <span className="mt-1.5 block text-[13px] text-white/70">{zipNote}</span>}
+              {zipNote && <span className="mt-1.5 block text-[13px] text-muted">{zipNote}</span>}
               <Problem id="file-problem" text={problems.file} />
               <Hint>
                 A .hmod, a native mod&apos;s .hnmod, a .hpack, a .hshader, or a .zip: a resource pack, a data pack (<code className={code}>pack.mcmeta</code> and{" "}
                 <code className={code}>data/</code>) or a shader pack with a <code className={code}>shaders/</code> folder. At most 64 MB. Run{" "}
                 <code className={code}>cargo horizon-mod check</code> on a mod first. A .hshader is what <code className={code}>horizon-shader pack</code> makes (
                 <Link href="/docs/api/shaders" className={LINK}>
-                  Horizon&apos;s own format
+                  Sunrise&apos;s own format
                 </Link>
                 ).
               </Hint>
             </Field>
             {kind === "shaderpack" && (
-              <label className="flex items-start gap-3 text-[14px] leading-relaxed text-white/70">
+              <label className="flex items-start gap-3 text-[14px] leading-relaxed text-muted">
                 <input
                   type="checkbox"
                   checked={ownWork}
@@ -352,10 +352,10 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
                     setProblems((p) => ({ ...p, own: undefined }));
                   }}
                   aria-invalid={Boolean(problems.own)}
-                  className="mt-1 size-4 accent-[#a98fff]"
+                  className="mt-1 size-4 accent-accent-ink"
                 />
                 <span>
-                  I made this pack and its licence allows Horizon&apos;s registry to distribute it.
+                  I made this pack and its licence allows Sunrise&apos;s registry to distribute it.
                   <Problem id="own-problem" text={problems.own} />
                 </span>
               </label>
@@ -383,12 +383,12 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
                 <input name="game" required defaultValue="26.3" className={INPUT} />
               </Field>
             </div>
-            <p className="-mt-1 text-[13px] text-white/45">The id is its manifest&apos;s id: a-z, 0-9 and _. A pack&apos;s is yours to pick.</p>
+            <p className="-mt-1 text-[13px] text-muted">The id is its manifest&apos;s id: a-z, 0-9 and _. A pack&apos;s is yours to pick.</p>
             {existing && (
-              <div className="flex flex-col items-start gap-3 rounded-xl bg-white/[0.04] px-4 py-3 text-[14px] text-white/70 sm:flex-row sm:items-center">
+              <div className="flex flex-col items-start gap-3 rounded-xl bg-surface/80 px-4 py-3 text-[14px] text-muted sm:flex-row sm:items-center">
                 <span className="min-w-0 flex-1">
-                  <strong className="text-white">{existing.name}</strong> is listed: this adds a version, and the page fields you send replace its page.
-                  {filled && <span className="mt-1 block text-[13px] text-white/55">{filled}</span>}
+                  <strong className="text-foreground">{existing.name}</strong> is listed: this adds a version, and the page fields you send replace its page.
+                  {filled && <span className="mt-1 block text-[13px] text-muted">{filled}</span>}
                 </span>
                 <button type="button" onClick={fillFromPage} className={SECONDARY_SM}>
                   Fill in from its page
@@ -403,7 +403,7 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
 
           <fieldset className={`${CARD} space-y-5`}>
             <legend className="sr-only">Its page</legend>
-            <h2 className="font-display text-xl font-semibold text-white">Its page</h2>
+            <h2 className="font-display text-xl font-semibold text-foreground">Its page</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Name">
                 <input name="name" required maxLength={64} className={INPUT} />
@@ -435,7 +435,7 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
                 problem={problems.categories}
               />
             ) : (
-              <p className="text-[13px] text-white/45">Pick the kind above to see its categories.</p>
+              <p className="text-[13px] text-muted">Pick the kind above to see its categories.</p>
             )}
             <TagsField
               value={tags}
@@ -480,8 +480,8 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
 
           <fieldset className={`${CARD} space-y-4`}>
             <legend className="sr-only">Signature</legend>
-            <h2 className="font-display text-xl font-semibold text-white">Signature</h2>
-            <p className="text-[14px] leading-relaxed text-white/60">
+            <h2 className="font-display text-xl font-semibold text-foreground">Signature</h2>
+            <p className="text-[14px] leading-relaxed text-muted">
               Optional, and recommended: with your{" "}
               <a href="https://jedisct1.github.io/minisign/" className={LINK}>
                 minisign
@@ -497,14 +497,14 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
                 name="signature"
                 type="file"
                 accept=".minisig,application/octet-stream,text/plain"
-                className="block w-full text-sm text-white/70 file:mr-3 file:h-9 file:rounded-lg file:border-0 file:bg-white/10 file:px-3 file:text-sm file:font-medium file:text-white hover:file:bg-white/15"
+                className="block w-full text-sm text-muted file:mr-3 file:h-9 file:rounded-lg file:border-0 file:bg-lavender file:px-3 file:text-sm file:font-medium file:text-foreground hover:file:bg-sky-surface"
               />
               <Hint>The file&apos;s .minisig.</Hint>
             </Field>
           </fieldset>
 
-          <label className="flex items-start gap-3 text-[14px] leading-relaxed text-white/70">
-            <input type="checkbox" required className="mt-1 size-4 accent-[#a98fff]" />
+          <label className="flex items-start gap-3 text-[14px] leading-relaxed text-muted">
+            <input type="checkbox" required className="mt-1 size-4 accent-accent-ink" />
             <span>
               I made it, or I may publish it under this licence, and its source is at the address above. I accept the{" "}
               <Link href="/mods/policy" className={LINK}>
@@ -520,9 +520,9 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
             </button>
           </p>
           <div role="status" aria-live="polite">
-            {result && "pending" in result && <p className="text-sm text-white/60">Checking the file and opening the pull request…</p>}
+            {result && "pending" in result && <p className="text-sm text-muted">Checking the file and opening the pull request…</p>}
             {result && "ok" in result && result.ok && (
-              <p className="text-lg text-white/80">
+              <p className="text-lg text-muted">
                 Submitted. Follow the review in{" "}
                 <a href={result.url} rel="noreferrer" className={LINK}>
                   its pull request
@@ -530,7 +530,7 @@ export function ModSubmitForm({ known }: { known: KnownProject[] }) {
                 : the checks&apos; report is there, and reviewers answer there.
               </p>
             )}
-            {result && "ok" in result && !result.ok && <p className="rounded-xl bg-[#f07a6a]/10 px-4 py-3 text-sm text-[#f7b2a8]">{result.message}</p>}
+            {result && "ok" in result && !result.ok && <p className="rounded-xl bg-[#f07a6a]/10 px-4 py-3 text-sm text-danger-ink">{result.message}</p>}
           </div>
         </form>
       )}

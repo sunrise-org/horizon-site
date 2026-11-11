@@ -5,16 +5,16 @@ import en from "@/messages/en.json";
 
 export const SITE_URL = (process.env.SITE_URL || "https://playsunrise.net").replace(/\/+$/, "");
 export const SITE_HOST = new URL(SITE_URL).host;
-export const SITE_NAME = "Horizon";
+export const SITE_NAME = "Sunrise";
 export const SITE_TITLE = en.meta.title;
 export const SITE_DESCRIPTION = en.meta.description;
-export const ALTERNATE_NAMES = ["Minecraft Rust Edition", "Horizon Minecraft", "Horizon launcher"];
+export const ALTERNATE_NAMES = ["Minecraft Rust Edition", "Sunrise Minecraft", "Sunrise launcher"];
 export const KEYWORDS = [
   "Minecraft Rust Edition",
   "Minecraft in Rust",
   "Minecraft rewritten in Rust",
-  "Horizon Minecraft",
-  "Horizon launcher",
+  "Sunrise Minecraft",
+  "Sunrise launcher",
   "Rust Minecraft client",
   "Minecraft Java Edition 26.3",
   "Minecraft without Java",
@@ -22,8 +22,8 @@ export const KEYWORDS = [
   "open source Minecraft client",
 ];
 export const OPERATING_SYSTEMS = "Windows x64 or ARM64, macOS 12 or later on Apple Silicon or Intel, Linux x86-64";
-export const AUTHOR = { "@type": "Person", name: "Ludovic Marie", url: "https://lu4ovic.com" } as const;
-export const SAME_AS = [GITHUB_URL, "https://github.com/horizon-rust", DISCORD_URL];
+export const AUTHOR = { "@type": "Organization", name: "Sunrise", url: "https://github.com/sunrise-org" } as const;
+export const SAME_AS = [GITHUB_URL, "https://github.com/sunrise-org", ...(DISCORD_URL ? [DISCORD_URL] : [])];
 
 export const absolute = (path: string) => `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 
@@ -35,7 +35,7 @@ export function fitDescription(text: string, max = 160) {
   return `${clean.slice(0, max - 1).replace(/[\s,;:]+\S*$/, "")}…`;
 }
 
-export const OG_IMAGE = { url: "/opengraph-image", width: 1200, height: 630, alt: "Horizon: Minecraft: Java Edition 26.3, rebuilt in Rust" };
+export const OG_IMAGE = { url: "/opengraph-image", width: 1200, height: 630, alt: "Sunrise: Minecraft: Java Edition 26.3, rebuilt in Rust" };
 
 type PageSeo = {
   title: string;
@@ -68,7 +68,7 @@ export function breadcrumbs(items: { name: string; path: string }[]) {
 
 export const WEBSITE_ID = `${SITE_URL}/#website`;
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
-export const APP_ID = `${SITE_URL}/#horizon`;
+export const APP_ID = `${SITE_URL}/#sunrise`;
 
 // The root layouts' metadata (app/(en)/layout.tsx, app/es/layout.tsx, app/global-not-found.tsx).
 export function rootMetadata(locale: Locale): Metadata {
@@ -91,6 +91,6 @@ export function rootMetadata(locale: Locale): Metadata {
 }
 
 export const VIEWPORT: Viewport = {
-  themeColor: "#100a1f",
+  themeColor: "#170c19",
   colorScheme: "dark",
 };

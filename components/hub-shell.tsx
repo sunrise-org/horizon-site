@@ -61,10 +61,10 @@ function setHash(id: string) {
 }
 
 const TAB_CLASS =
-  "inline-flex h-9 shrink-0 items-center rounded-lg px-3.5 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff]";
-const TAB_ON = "bg-white text-background";
-const TAB_OFF = "text-white/65 hover:bg-white/[0.08] hover:text-white";
-const BAR = "sticky top-18 z-30 border-b border-white/[0.08] bg-background/80 backdrop-blur-md";
+  "inline-flex h-9 shrink-0 items-center rounded-lg px-3.5 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent";
+const TAB_ON = "bg-sky-surface text-foreground";
+const TAB_OFF = "text-muted hover:bg-lavender hover:text-foreground";
+const BAR = "glass-panel glass-chrome sticky top-18 z-30 border-b border-line";
 const BAR_ROW = "mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-3 sm:flex-row sm:items-center sm:justify-between lg:px-10";
 export const STAFF_TABS: Record<Dashboard, string> = { team: "Team", mod: "Moderation" };
 
@@ -77,7 +77,7 @@ export function useStaffTabs(): Dashboard[] {
 function StaffTabs({ dashboards, current }: { dashboards: Dashboard[]; current?: string }) {
   if (!dashboards.length) return null;
   return (
-    <nav aria-label="Staff" className="flex shrink-0 gap-1 border-l border-white/[0.12] pl-2">
+    <nav aria-label="Staff" className="flex shrink-0 gap-1 border-l border-line pl-2">
       {dashboards.map((d) => (
         <Link key={d} href={`/hub/${d}`} aria-current={d === current ? "page" : undefined} className={`${TAB_CLASS} ${d === current ? TAB_ON : TAB_OFF}`}>
           {STAFF_TABS[d]}
@@ -189,15 +189,15 @@ export function HubShell({
             <StaffTabs dashboards={staff} />
           </div>
 
-          <div role="group" aria-label="Detail" className="flex shrink-0 rounded-lg bg-white/[0.06] p-1">
+          <div role="group" aria-label="Detail" className="flex shrink-0 rounded-lg bg-lavender p-1">
             {(["plain", "dev"] as const).map((mode) => (
               <button
                 key={mode}
                 type="button"
                 aria-pressed={detail === mode}
                 onClick={() => setDetail(mode)}
-                className={`h-7 rounded-md px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff] ${
-                  detail === mode ? "bg-[#6b4bff] text-white" : "text-white/60 hover:text-white"
+                className={`h-7 rounded-md px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                  detail === mode ? "bg-brand text-white" : "text-muted hover:text-foreground"
                 }`}
               >
                 {mode === "plain" ? "Simple" : "Technical"}
@@ -216,7 +216,7 @@ export function HubShell({
               placeholder="Is it planned? Search the roadmap"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="h-11 w-full max-w-md rounded-lg bg-white/[0.06] px-3.5 text-[15px] text-white placeholder:text-white/40 outline-none transition-colors focus:bg-white/[0.09] focus-visible:ring-2 focus-visible:ring-[#a98fff]"
+              className="h-11 w-full max-w-md rounded-lg bg-lavender px-3.5 text-[15px] text-foreground placeholder:text-muted outline-none transition-colors focus:bg-lavender focus-visible:ring-2 focus-visible:ring-accent"
             />
             <div role="group" aria-label="Area" className="mt-3 flex flex-wrap gap-1.5">
               {[{ id: "all", name: "All" }, ...areas].map((a) => {
@@ -227,8 +227,8 @@ export function HubShell({
                     type="button"
                     aria-pressed={area === a.id}
                     onClick={() => setArea(a.id)}
-                    className={`inline-flex h-8 items-center gap-1.5 rounded-lg px-3 text-[13px] font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff] ${
-                      area === a.id ? "bg-[#6b4bff]/30 text-[#e4dcff] ring-1 ring-[#a98fff]/40 ring-inset" : "bg-white/[0.05] text-white/60 hover:bg-white/[0.09] hover:text-white"
+                    className={`inline-flex h-8 items-center gap-1.5 rounded-lg px-3 text-[13px] font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                      area === a.id ? "bg-brand/30 text-accent-ink ring-1 ring-accent/40 ring-inset" : "bg-surface/80 text-muted hover:bg-lavender hover:text-foreground"
                     } ${count === 0 && area !== a.id ? "opacity-50" : ""}`}
                   >
                     {a.name}
@@ -238,7 +238,7 @@ export function HubShell({
               })}
             </div>
             {visible.size === 0 && (
-              <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-white/60" role="status">
+              <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-muted" role="status">
                 Nothing on the roadmap matches{query.trim() ? ` \u201c${query.trim()}\u201d` : ""}
                 {area !== "all" ? " in this area" : ""}. Not planned yet? Suggest it in #horizon-ideas on Discord.
               </p>

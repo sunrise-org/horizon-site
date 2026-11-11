@@ -42,12 +42,12 @@ function Header({ view, message }: { view: string; message?: string }) {
   const [kicker, title] = TITLES[view] ?? TITLES["sign-in"];
   return (
     <div>
-      <p className="text-sm font-medium text-white/60">
-        Hub <span className="mx-1.5 text-white/30">·</span> {kicker}
+      <p className="text-sm font-medium text-muted">
+        Hub <span className="mx-1.5 text-muted">·</span> {kicker}
       </p>
-      <h1 className="mt-3 font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-white">{title}</h1>
+      <h1 className="mt-3 font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-foreground">{title}</h1>
       {message && (
-        <p role="status" className="mt-4 text-lg text-white/70">
+        <p role="status" className="mt-4 text-lg text-muted">
           {message}
         </p>
       )}
@@ -85,7 +85,7 @@ function Login({ onSignedIn }: { onSignedIn: (who: Who) => void }) {
         Sign in
       </h2>
       <p className="text-[15px] leading-relaxed text-white/65">
-        For the Horizon Team and the Mods. Your username is your Discord username. No password yet, or forgot it? Run <code className="font-mono text-[#e7e1ff]">/staff password</code> on
+        For the Sunrise Team and the Mods. Your username is your Discord username. No password yet, or forgot it? Run <code className="font-mono text-[#e7e1ff]">/staff password</code> on
         Discord: Kira DMs you a link to set one.
       </p>
       <form onSubmit={submit} className={`${CARD} mt-6 space-y-4`}>
@@ -143,17 +143,17 @@ function Setup() {
     }
   };
 
-  if (token === null) return <p className="text-sm text-white/50">Checking your link…</p>;
+  if (token === null) return <p className="text-sm text-muted">Checking your link…</p>;
   const intro =
     error || (!token ? "This page needs the link Kira DMs you. Run /staff password on Discord to get one." : !link ? "Checking your link…" : null);
-  if (intro) return <p className="max-w-xl text-[15px] leading-relaxed text-white/70">{intro}</p>;
+  if (intro) return <p className="max-w-xl text-[15px] leading-relaxed text-muted">{intro}</p>;
   return (
     <section aria-labelledby="set-password" className="max-w-md">
       <h2 id="set-password" className="sr-only">
         Set your password
       </h2>
-      <p className="text-[15px] leading-relaxed text-white/70">
-        For <strong className="text-white">{link!.name}</strong>: the link works once and expires{" "}
+      <p className="text-[15px] leading-relaxed text-muted">
+        For <strong className="text-foreground">{link!.name}</strong>: the link works once and expires{" "}
         {new Date(link!.expiresAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}.
       </p>
       <form onSubmit={submit} className={`${CARD} mt-6 space-y-4`}>
@@ -177,7 +177,7 @@ function Setup() {
 
 function HelpList({ items }: { items: ReactNode[] }) {
   return (
-    <ul className="mt-3 list-disc space-y-2 pl-5 text-[15px] leading-relaxed text-white/70 marker:text-white/30">
+    <ul className="mt-3 list-disc space-y-2 pl-5 text-[15px] leading-relaxed text-muted marker:text-muted">
       {items.map((item, i) => (
         <li key={i}>{item}</li>
       ))}
@@ -186,12 +186,12 @@ function HelpList({ items }: { items: ReactNode[] }) {
 }
 
 function Help() {
-  const h2 = "mt-10 scroll-mt-28 font-display text-2xl font-semibold tracking-[-0.02em] text-white";
-  const code = "font-mono text-[#e7e1ff]";
+  const h2 = "mt-10 scroll-mt-28 font-display text-2xl font-semibold tracking-[-0.02em] text-foreground";
+  const code = "font-mono text-foreground";
   return (
     <section className="max-w-3xl">
       <p className="text-lg leading-relaxed text-white/70">
-        The Horizon Team and the Mods run these two dashboards together. Here is how they work.{" "}
+        The Sunrise Team and the Mods run these two dashboards together. Here is how they work.{" "}
         <Link href="/hub/sign-in" className={LINK}>
           Back to the dashboards
         </Link>
@@ -203,7 +203,7 @@ function Help() {
       <HelpList
         items={[
           <>
-            Run <code className={code}>/staff password</code> on Horizon&apos;s Discord: Kira DMs you a link that works once, for 30 minutes. Choose a password of 12
+            Run <code className={code}>/staff password</code> on Sunrise&apos;s Discord: Kira DMs you a link that works once, for 30 minutes. Choose a password of 12
             characters or more.
           </>,
           <>
@@ -218,30 +218,30 @@ function Help() {
       <HelpList
         items={[
           <>
-            <strong className="text-white">Who votes.</strong> Team applications: the Team. Mod applications: the Mods. Support applications: the Mods and the Team. Nobody
+            <strong className="text-foreground">Who votes.</strong> Team applications: the Team. Mod applications: the Mods. Support applications: the Mods and the Team. Nobody
             votes on their own application, and you can recuse yourself.
           </>,
           <>
-            <strong className="text-white">Your vote.</strong> For, Against or Abstain. Against needs a short comment. You can change your vote until the vote closes.
+            <strong className="text-foreground">Your vote.</strong> For, Against or Abstain. Against needs a short comment. You can change your vote until the vote closes.
           </>,
           <>
-            <strong className="text-white">Blind until you vote.</strong> You see the others&apos; votes and comments only once you have voted, or when the vote closes, so
+            <strong className="text-foreground">Blind until you vote.</strong> You see the others&apos; votes and comments only once you have voted, or when the vote closes, so
             nobody just follows the crowd. Ludovic doesn&apos;t vote: while a vote runs he sees only the counts and the Against comments, without names.
           </>,
           <>
-            <strong className="text-white">Enough votes.</strong> An active voter is someone who signed in or acted here in the last 30 days. A vote needs at least 2 votes,
+            <strong className="text-foreground">Enough votes.</strong> An active voter is someone who signed in or acted here in the last 30 days. A vote needs at least 2 votes,
             and at least 40% of the active voters. With fewer than 2 active voters, Ludovic decides.
           </>,
           <>
-            <strong className="text-white">Passing.</strong> At least two thirds of the For and Against votes are For (abstentions don&apos;t count either way), with enough
+            <strong className="text-foreground">Passing.</strong> At least two thirds of the For and Against votes are For (abstentions don&apos;t count either way), with enough
             votes.
           </>,
           <>
-            <strong className="text-white">How long.</strong> 72 hours from the first vote, or less once every active voter has voted. Without enough votes it gets 48 more
+            <strong className="text-foreground">How long.</strong> 72 hours from the first vote, or less once every active voter has voted. Without enough votes it gets 48 more
             hours once; after that it goes to Ludovic.
           </>,
           <>
-            <strong className="text-white">Verified contributors</strong> (GitHub linked and proved on Discord) are listed first, with their merged pull requests.
+            <strong className="text-foreground">Verified contributors</strong> (GitHub linked and proved on Discord) are listed first, with their merged pull requests.
           </>,
         ]}
       />
@@ -264,14 +264,14 @@ function Help() {
           "Every vote, change, recusal, veto and decision is written in a log that can't be edited. Voters and Ludovic see it under “More” on each application.",
           "The applicant only gets a polite yes or no in their DMs: never the votes, the comments or who voted. After a no, they can apply again in 14 days.",
           <>
-            <strong className="text-white">Your password:</strong> only a scrypt hash, never the password itself; nobody can read it back.{" "}
-            <strong className="text-white">Sessions:</strong> only until they end (above).
+            <strong className="text-foreground">Your password:</strong> only a scrypt hash, never the password itself; nobody can read it back.{" "}
+            <strong className="text-foreground">Sessions:</strong> only until they end (above).
           </>,
           <>
-            <strong className="text-white">Links Kira DMs:</strong> a password link works once, for 30 minutes; an application link once, for a day.
+            <strong className="text-foreground">Links Kira DMs:</strong> a password link works once, for 30 minutes; an application link once, for a day.
           </>,
           <>
-            <strong className="text-white">Applications:</strong> answers, vote comments and GitHub details are deleted 90 days after the decision; only the role, the
+            <strong className="text-foreground">Applications:</strong> answers, vote comments and GitHub details are deleted 90 days after the decision; only the role, the
             outcome and the date stay (
             <Link href="/privacy" className={LINK}>
               privacy
@@ -279,10 +279,10 @@ function Help() {
             ).
           </>,
           <>
-            <strong className="text-white">Statistics:</strong> daily counts only, kept 120 days: no messages, nothing from anyone&apos;s private DMs.
+            <strong className="text-foreground">Statistics:</strong> daily counts only, kept 120 days: no messages, nothing from anyone&apos;s private DMs.
           </>,
           <>
-            <strong className="text-white">The board, the roadmap notes and the decisions:</strong> kept until the Team removes them; decisions are never deleted, only
+            <strong className="text-foreground">The board, the roadmap notes and the decisions:</strong> kept until the Team removes them; decisions are never deleted, only
             withdrawn.
           </>,
         ]}
@@ -294,9 +294,9 @@ function Help() {
 function Signed({ view, who, onSignedOut }: { view: Dashboard; who: Who; onSignedOut: (all: boolean) => void }) {
   return (
     <>
-      <div className="mb-8 flex flex-col gap-4 rounded-2xl bg-[#18112c] px-4 py-3 sm:flex-row sm:items-center sm:justify-end">
+      <div className="mb-8 flex flex-col gap-4 rounded-2xl bg-surface px-4 py-3 sm:flex-row sm:items-center sm:justify-end">
         <div className="flex flex-wrap items-center gap-2 text-sm">
-          <span className="text-white/60">Signed in as {who.name}</span>
+          <span className="text-muted">Signed in as {who.name}</span>
           <button type="button" onClick={() => onSignedOut(false)} className={SECONDARY_SM}>
             Sign out
           </button>
@@ -307,7 +307,7 @@ function Signed({ view, who, onSignedOut }: { view: Dashboard; who: Who; onSigne
       </div>
       {!who.dashboards.includes(view) ? (
         <p className="text-lg text-white/70">
-          This dashboard is for the {view === "team" ? "Horizon Team" : "Mods"}.{" "}
+          This dashboard is for the {view === "team" ? "Sunrise Team" : "Mods"}.{" "}
           {who.dashboards.map((d, i) => (
             <span key={d}>
               {i > 0 && " or "}
@@ -358,7 +358,7 @@ export function StaffApp({ view }: { view: string }) {
 
   useEffect(() => {
     const [, title] = TITLES[view] ?? TITLES["sign-in"];
-    document.title = `${title} · Horizon hub`;
+    document.title = `${title} · Sunrise hub`;
   }, [view]);
 
   const signOut = async (all: boolean) => {
@@ -375,7 +375,7 @@ export function StaffApp({ view }: { view: string }) {
   if (view === "staff-help") body = <Help />;
   else if (view === "setup") body = <Setup />;
   else if (message && who === undefined) body = null;
-  else if (who === undefined) body = <p className="text-sm text-white/50">Checking your session…</p>;
+  else if (who === undefined) body = <p className="text-sm text-muted">Checking your session…</p>;
   else if (who === null)
     body = (
       <Login
@@ -385,7 +385,7 @@ export function StaffApp({ view }: { view: string }) {
         }}
       />
     );
-  else if (!isDashboard(view)) body = <p className="text-sm text-white/50">Opening your dashboard…</p>;
+  else if (!isDashboard(view)) body = <p className="text-sm text-muted">Opening your dashboard…</p>;
   else body = <Signed view={view} who={who} onSignedOut={signOut} />;
 
   return (

@@ -111,7 +111,18 @@ export const Icons = {
       <path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4" />
     </Icon>
   ),
-  query: (props: IconProps) => (
+  chart: (props: IconProps) => (
+    <Icon {...props}>
+      <path d="M3 3v18h18" />
+      <path d="m7 15 4-6 4 3 4-7" />
+    </Icon>
+  ),
+  close: (props: IconProps) => (
+    <Icon {...props}>
+      <path d="M18 6 6 18M6 6l12 12" />
+    </Icon>
+  ),
+  code: (props: IconProps) => (
     <Icon {...props}>
       <polyline points="4 17 10 11 4 5" />
       <path d="M12 19h8" />

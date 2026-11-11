@@ -21,8 +21,8 @@ import {
 } from "@/components/mods-logic";
 import { GitHubStars, ModIcon, Stars } from "@/components/mods-ui";
 
-const SEGMENT = "h-8 rounded-md px-3 text-sm font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff]";
-const segment = (on: boolean) => `${SEGMENT} ${on ? "bg-white text-[#100a1f]" : "text-white/65 hover:text-white"}`;
+const SEGMENT = "h-8 rounded-md px-3 text-sm font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent";
+const segment = (on: boolean) => `${SEGMENT} ${on ? "bg-sky-surface text-foreground" : "text-muted hover:text-foreground"}`;
 
 const isKind = (k: string | null): k is string => k === "all" || KINDS.some(([value]) => value === k);
 const isSort = (s: string | null): s is Sort => SORTS.some(([value]) => value === s);
@@ -100,8 +100,8 @@ export function ModsList({ projects, ratings, t, numberLocale }: { projects: Mod
   return (
     <div>
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <label className="flex h-11 w-full items-center gap-2.5 rounded-lg bg-white/[0.06] px-3.5 transition-colors focus-within:bg-white/[0.09] focus-within:ring-2 focus-within:ring-[#a98fff] md:max-w-sm">
-          <SearchIcon className="size-4 shrink-0 text-white/45" />
+        <label className="flex h-11 w-full items-center gap-2.5 rounded-lg bg-lavender px-3.5 transition-colors focus-within:bg-lavender focus-within:ring-2 focus-within:ring-accent md:max-w-sm">
+          <SearchIcon className="size-4 shrink-0 text-muted" />
           <input
             type="search"
             value={text}
@@ -110,28 +110,28 @@ export function ModsList({ projects, ratings, t, numberLocale }: { projects: Mod
             aria-label={t.searchLabel}
             autoComplete="off"
             spellCheck={false}
-            className="h-full w-full min-w-0 bg-transparent text-[15px] text-white outline-none placeholder:text-white/35"
+            className="h-full w-full min-w-0 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted"
           />
         </label>
         <div className="flex shrink-0 flex-wrap items-center gap-2">
-          <Link href="/mods/policy" className="inline-flex h-11 items-center px-2 text-[15px] font-medium text-white/60 transition-colors hover:text-white">
+          <Link href="/mods/policy" className="inline-flex h-11 items-center px-2 text-[15px] font-medium text-muted transition-colors hover:text-foreground">
             {t.policy}
           </Link>
           <Link
             href="/docs/make-a-mod"
-            className="inline-flex h-11 items-center rounded-lg bg-white/10 px-4 text-[15px] font-medium text-white transition-colors outline-none hover:bg-white/15 focus-visible:ring-2 focus-visible:ring-[#a98fff]"
+            className="inline-flex h-11 items-center rounded-lg bg-lavender px-4 text-[15px] font-medium text-foreground transition-colors outline-none hover:bg-sky-surface focus-visible:ring-2 focus-visible:ring-accent"
           >
             {t.make}
           </Link>
           <Link
             href="/mods/mine"
-            className="inline-flex h-11 items-center rounded-lg bg-white/10 px-4 text-[15px] font-medium text-white transition-colors outline-none hover:bg-white/15 focus-visible:ring-2 focus-visible:ring-[#a98fff]"
+            className="inline-flex h-11 items-center rounded-lg bg-lavender px-4 text-[15px] font-medium text-foreground transition-colors outline-none hover:bg-sky-surface focus-visible:ring-2 focus-visible:ring-accent"
           >
             {t.mine}
           </Link>
           <Link
             href={SUBMIT_URL}
-            className="inline-flex h-11 items-center gap-2 rounded-lg bg-white px-4 text-[15px] font-medium text-[#100a1f] transition-colors outline-none hover:bg-white/90 focus-visible:ring-2 focus-visible:ring-[#a98fff]"
+            className="inline-flex h-11 items-center gap-2 rounded-lg bg-sky-surface px-4 text-[15px] font-medium text-foreground transition-colors outline-none hover:bg-accent/25 focus-visible:ring-2 focus-visible:ring-accent"
           >
             {t.submit}
           </Link>
@@ -139,7 +139,7 @@ export function ModsList({ projects, ratings, t, numberLocale }: { projects: Mod
       </div>
 
       <div className="mt-3 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-        <div role="group" aria-label={t.kindGroup} className="flex flex-wrap gap-1 rounded-lg bg-white/[0.06] p-1 sm:w-fit">
+        <div role="group" aria-label={t.kindGroup} className="flex flex-wrap gap-1 rounded-lg bg-lavender p-1 sm:w-fit">
           {[["all", t.all] as const, ...KINDS.map(([value]) => [value, t.kinds[value]] as const)].map(([value, label]) => (
             <button key={value} type="button" aria-pressed={kind === value} onClick={() => pickKind(value)} className={segment(kind === value)}>
               {label}{" "}
@@ -147,7 +147,7 @@ export function ModsList({ projects, ratings, t, numberLocale }: { projects: Mod
             </button>
           ))}
         </div>
-        <div role="group" aria-label={t.orderGroup} className="flex w-fit rounded-lg bg-white/[0.06] p-1">
+        <div role="group" aria-label={t.orderGroup} className="flex w-fit rounded-lg bg-lavender p-1">
           {SORTS.map(([value]) => (
             <button key={value} type="button" aria-pressed={order === value} onClick={() => setOrder(value)} className={segment(order === value)}>
               {t.sorts[value]}
@@ -157,18 +157,18 @@ export function ModsList({ projects, ratings, t, numberLocale }: { projects: Mod
       </div>
 
       {categories.length > 0 && (
-        <label className="mt-3 flex w-full items-center gap-2.5 text-sm text-white/60 sm:w-fit">
+        <label className="mt-3 flex w-full items-center gap-2.5 text-sm text-muted sm:w-fit">
           {t.category}
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="h-10 min-w-0 flex-1 rounded-lg bg-white/[0.06] px-3 text-[15px] text-white outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff] sm:w-64 sm:flex-none"
+            className="h-10 min-w-0 flex-1 rounded-lg bg-lavender px-3 text-[15px] text-foreground outline-none focus-visible:ring-2 focus-visible:ring-accent sm:w-64 sm:flex-none"
           >
-            <option value="" className="bg-[#18112c]">
+            <option value="" className="bg-surface">
               {t.everyCategory}
             </option>
             {categories.map((c) => (
-              <option key={c} value={c} className="bg-[#18112c]">
+              <option key={c} value={c} className="bg-surface">
                 {label(c)} ({inCategory[c] ?? 0})
               </option>
             ))}
@@ -176,36 +176,36 @@ export function ModsList({ projects, ratings, t, numberLocale }: { projects: Mod
         </label>
       )}
 
-      <p className="mt-5 text-sm text-white/50" aria-live="polite">
+      <p className="mt-5 text-sm text-muted" aria-live="polite">
         {shown.length === projects.length ? format(t.count, { n: projects.length }) : format(t.countOf, { shown: shown.length, n: projects.length })}
       </p>
 
       {shown.length ? (
-        <ul className="mt-3 divide-y divide-white/[0.06] overflow-hidden rounded-2xl bg-[#18112c]">
+        <ul className="glass-panel mt-3 divide-y divide-line overflow-hidden rounded-2xl border border-line">
           {shown.map((p) => {
             const rating = ratingOf(ratings, p.id);
             return (
               <li key={p.id}>
                 <Link
                   href={`/mods/${p.id}`}
-                  className="grid grid-cols-[3rem_minmax(0,1fr)] items-start gap-x-4 gap-y-2 px-4 py-4 transition-colors outline-none hover:bg-white/[0.03] focus-visible:bg-white/[0.05] sm:grid-cols-[3rem_minmax(0,1fr)_auto] sm:items-center sm:px-5"
+                  className="grid grid-cols-[3rem_minmax(0,1fr)] items-start gap-x-4 gap-y-2 px-4 py-4 transition-colors outline-none hover:bg-sky-surface/75 focus-visible:bg-sky-surface/75 sm:grid-cols-[3rem_minmax(0,1fr)_auto] sm:items-center sm:px-5"
                 >
                   <ModIcon id={p.id} icon={p.icon} />
                   <span className="min-w-0">
-                    <span className="block text-[16px] font-semibold text-white">{p.name}</span>
-                    <span className="mt-0.5 line-clamp-2 block text-[14px] leading-snug text-white/60">{p.summary}</span>
+                    <span className="block text-[16px] font-semibold text-foreground">{p.name}</span>
+                    <span className="mt-0.5 line-clamp-2 block text-[14px] leading-snug text-muted">{p.summary}</span>
                   </span>
-                  <span className="col-start-2 text-[13px] text-white/50 sm:col-start-auto sm:text-right">
+                  <span className="col-start-2 text-[13px] text-muted sm:col-start-auto sm:text-right">
                     <span className="flex flex-wrap items-center gap-x-1.5 sm:justify-end">
                       {rating && (
                         <>
-                          <Stars rating={rating} className="text-white/70" t={t.stars} comma={comma} />
+                          <Stars rating={rating} className="text-muted" t={t.stars} comma={comma} />
                           <span aria-hidden>·</span>
                         </>
                       )}
                       {p.stars > 0 && (
                         <>
-                          <GitHubStars stars={p.stars} className="text-white/70" t={t.stars} numberLocale={numberLocale} />
+                          <GitHubStars stars={p.stars} className="text-muted" t={t.stars} numberLocale={numberLocale} />
                           <span aria-hidden>·</span>
                         </>
                       )}
@@ -222,8 +222,8 @@ export function ModsList({ projects, ratings, t, numberLocale }: { projects: Mod
           })}
         </ul>
       ) : (
-        <div className="mt-3 rounded-2xl bg-[#18112c] px-5 py-10 text-center">
-          <p className="text-[15px] text-white/70">
+        <div className="mt-3 rounded-2xl bg-surface px-5 py-10 text-center">
+          <p className="text-[15px] text-muted">
             {text.trim()
               ? format(t.noMatch, {
                   query: text.trim(),
@@ -234,7 +234,7 @@ export function ModsList({ projects, ratings, t, numberLocale }: { projects: Mod
                 ? format(t.noneInCategory, { kind: kindName(kind)?.toLowerCase() ?? t.project, category: label(category).toLowerCase() })
                 : t.nothing}
           </p>
-          <Link href={SUBMIT_URL} className="mt-3 inline-flex text-sm font-medium text-[#c4b5ff] underline underline-offset-4 hover:text-white">
+          <Link href={SUBMIT_URL} className="mt-3 inline-flex text-sm font-medium text-accent-ink underline underline-offset-4 hover:text-foreground">
             {t.submit}
           </Link>
         </div>

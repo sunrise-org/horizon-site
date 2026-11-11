@@ -1,8 +1,8 @@
 {
   "languageName": "Español",
   "meta": {
-    "title": "Horizon: Minecraft Rust Edition, Java 26.3 reescrito en Rust",
-    "description": "Minecraft: Java Edition 26.3 reescrito en Rust. Gratis, de código abierto y comprobado frente a vanilla. Descarga el launcher de Horizon para Windows, macOS y Linux."
+    "title": "Sunrise: Minecraft Rust Edition, Java 26.3 reescrito en Rust",
+    "description": "Minecraft: Java Edition 26.3 reescrito en Rust. Gratis, de código abierto y comprobado frente a vanilla. Descarga el launcher de Sunrise para Windows, macOS y Linux."
   },
   "common": {
     "newTab": "(se abre en una pestaña nueva)"
@@ -11,12 +11,12 @@
     "nav": {
       "about": "Qué es",
       "hub": "Hub",
-      "benchmarks": "Benchmarks",
       "mods": "Mods",
       "releases": "Versiones",
       "docs": "Docs",
       "players": "Jugadores",
-      "shop": "Tienda"
+      "apiGaps": "Brechas de API",
+      "faq": "FAQ"
     },
     "mainNav": "Principal",
     "download": "Descargar",
@@ -28,16 +28,19 @@
   "footer": {
     "disclaimer": "No es un producto oficial de Minecraft. No está aprobado por Mojang ni Microsoft ni asociado con ellos.",
     "whoTitle": "Quién lo hace",
-    "who": "Horizon lo hace Ludovic Marie; puedes contactarle en <lu4ovic>lu4ovic.com</lu4ovic>. Este sitio lo desarrolla Anthony S, de <dezerx>DezerX</dezerx>, que es su responsable. Horizon no contiene código, recursos ni datos de Minecraft, y este sitio no ofrece archivos del juego: necesitas tu propia copia legal de Minecraft: Java Edition. Minecraft es una marca de Mojang Synergies AB. Los cosméticos de Horizon los vende Ludovic Marie a través de Paddle.com, el comerciante registrado.",
+    "who": "Sunrise lo hace su equipo: <members>Sunrise</members>, con <team>todas las personas que contribuyen</team>. Parte de <horizon>Horizon</horizon>, de Ludovic Marie y los contribuidores de horizon-rust, y este sitio lo hacen <umut>Umut</umut> y <xmilon>Xmilon</xmilon>, y lo aloja <umut>Umut</umut>. Escríbenos en <github>GitHub</github>. Sunrise no contiene código, recursos ni datos de Minecraft, y este sitio no ofrece archivos del juego: necesitas tu propia copia legal de Minecraft: Java Edition. Minecraft es una marca de Mojang Synergies AB.",
     "licencesTitle": "Licencias",
-    "licences": "El trabajo original de Horizon está bajo la <mit>licencia MIT</mit>. Las fuentes son Geist, Geist Mono y Bricolage Grotesque, bajo la <ofl>SIL Open Font License</ofl>. Todos los recursos de este sitio figuran en LEGAL.md.",
+    "licences": "El código de Sunrise está bajo la <mit>licencia MIT</mit>, como el de Horizon. Las fuentes son Geist, Geist Mono y Sora, con Bricolage Grotesque en las tarjetas para compartir, bajo la <ofl>SIL Open Font License</ofl>. Todos los recursos de este sitio figuran en LEGAL.md.",
     "privacyTitle": "Privacidad",
-    "privacy": "Este sitio no usa cookies, no tiene analíticas ni rastreadores y no carga nada de terceros salvo GitHub. Cuando abres una versión, el servidor guarda un hash irreversible de tu dirección IP para que esa versión cuente cada visitante una sola vez; la dirección en sí nunca se guarda. Para mostrar las últimas versiones, notas de parche, enlaces y colaboradores, tu navegador los pide a api.github.com y raw.githubusercontent.com, y las fotos de los colaboradores a avatars.githubusercontent.com; la <github>declaración de privacidad de GitHub</github> cubre esas peticiones. El launcher no envía nada salvo que lo permitas: <telemetry>qué puede enviar y cómo borrarlo</telemetry>.",
+    "privacy": "Este sitio no usa cookies para los visitantes y no tiene analíticas ni rastreadores. Abrir una versión guarda un hash con clave de tu dirección IP, y compartir una captura de rendimiento guarda el archivo que subes; las descargas vienen de GitHub, bajo la <github>declaración de privacidad de GitHub</github>. El launcher no envía nada salvo que lo permitas: <telemetry>qué puede enviar y cómo borrarlo</telemetry>.",
     "legal": {
-      "privacy": "Política de privacidad",
-      "terms": "Condiciones de venta",
-      "refunds": "Reembolsos",
-      "shop": "Tienda"
+      "privacy": "Política de privacidad"
+    },
+    "linksLabel": "Más",
+    "links": {
+      "faq": "FAQ",
+      "apiGaps": "Brechas de API",
+      "moddingTeam": "Equipo de mods"
     },
     "madeInRust": "Hecho en abierto, en Rust."
   },
@@ -61,24 +64,17 @@
       "downloadsTitle": "Descargas del launcher desde GitHub, todas las versiones, actualizaciones incluidas",
       "downloads": "<n>{n}</n> descargas"
     },
-    "frameRate": {
-      "eyebrow": "Benchmarks",
-      "title": "<accent>{ratio}×</accent> los fotogramas.",
-      "lead": "Fotogramas por segundo de media en vanilla 26.3 sin mods instalados.",
-      "standard": "Launcher estándar",
-      "sliderLabel": "Fotogramas del launcher estándar",
-      "hint": "Arrastra la barra del launcher estándar para probar tus propios fotogramas. Los resultados varían según el hardware."
-    },
     "about": {
       "eyebrow": "Qué es",
       "title": "Mismas entradas, salidas idénticas.",
-      "lead": "Horizon, a veces llamado Minecraft Rust Edition, rehace Minecraft: Java Edition 26.3 en Rust, subsistema a subsistema, y somete cada pieza a las mismas entradas que el juego vanilla hasta que las salidas son idénticas.",
+      "fork": "Sunrise es un fork de la comunidad de <upstream>Horizon</upstream>.",
+      "lead": "Sunrise, a veces llamado Minecraft Rust Edition, rehace Minecraft: Java Edition 26.3 en Rust, subsistema a subsistema, y somete cada pieza a las mismas entradas que el juego vanilla hasta que las salidas son idénticas.",
       "contributors": "Ver colaboradores",
       "imageAlt": "Un molino de Minecraft sobre un campo de lavanda",
       "points": {
         "copy": {
           "title": "Tu propia copia",
-          "body": "Instala Java Edition con el launcher oficial y juega a la 26.3 una vez. Horizon crea sus recursos a partir de esos archivos en tu equipo, y nunca descarga ni comparte archivos del juego."
+          "body": "Instala Java Edition con el launcher oficial y juega a la 26.3 una vez. Sunrise crea sus recursos a partir de esos archivos en tu equipo, y nunca descarga ni comparte archivos del juego."
         },
         "native": {
           "title": "Nativo en tres plataformas",
@@ -86,18 +82,19 @@
         },
         "open": {
           "title": "Código abierto",
-          "body": "El código de Horizon es MIT. No contiene código, recursos ni datos de Minecraft; esos pertenecen a Mojang y Microsoft bajo el EULA de Minecraft."
+          "body": "El código de Sunrise es MIT. No contiene código, recursos ni datos de Minecraft; esos pertenecen a Mojang y Microsoft bajo el EULA de Minecraft."
         }
+      },
+      "credits": {
+        "title": "Créditos",
+        "built": "Sunrise se construye sobre <horizon>Horizon</horizon>, de los colaboradores de horizon-rust.",
+        "api": "La API de mods nativa sigue el diseño y la documentación de <neoforge>NeoForge</neoforge>, con agradecimiento.",
+        "modders": "<ari>Ari (arismoko)</ari>, <xmilon>Xmilon</xmilon> y <levzzz>levzzz</levzzz> construyen la API de mods con <team>el equipo de mods</team>, en <repo>arismoko/horizon</repo>.",
+        "profiler": "Perfilador: con la ayuda de <gigger>gigger</gigger>"
+      },
+      "team": {
+        "title": "Equipo"
       }
-    },
-    "sponsor": {
-      "title": "Tu servidor<br/>de Minecraft, <accent>online 24/7.</accent>",
-      "lead": "¡Consigue tu servidor ahora en menos de ~60 segundos!",
-      "cta": "Quiero mi servidor",
-      "copy": "Copiar el código {code}",
-      "copied": "Cupón copiado al portapapeles",
-      "selected": "Seleccionado: pulsa Ctrl+C para copiar",
-      "hide": "Ocultar este socio"
     },
     "community": {
       "eyebrow": "Comunidad",
@@ -108,10 +105,6 @@
           "title": "Discord",
           "body": "Preguntas, informes de errores y capturas."
         },
-        "sponsor": {
-          "title": "Patrocinar",
-          "body": "Los patrocinadores en GitHub financian la próxima versión."
-        },
         "source": {
           "title": "Código",
           "body": "Issues y pull requests son bienvenidos."
@@ -121,12 +114,12 @@
           "body": "Quién lo escribe, cómo se comprueban los cambios y por qué es seguro ejecutarlo."
         }
       },
-      "artists": "¿Haces modelos 3D? <link>Horizon busca artistas 3D</link>."
+      "artists": "¿Haces modelos 3D? <link>Sunrise busca artistas 3D</link>."
     },
     "gallery": {
       "eyebrow": "Dibujado por",
-      "title": "El juego que te encanta, <accent>6× más rápido.</accent>",
-      "lead": "Cada fotograma de aquí lo renderizó Horizon, con los modelos de bloques, la iluminación, el cielo y la niebla de vanilla.",
+      "title": "El juego que te encanta, <accent>fotograma a fotograma.</accent>",
+      "lead": "Cada fotograma de aquí lo renderizó Sunrise, con los modelos de bloques, la iluminación, el cielo y la niebla de vanilla.",
       "shots": {
         "nether": "Un piglin con una espada de oro en un bosque carmesí sobre un mar de lava en el Nether",
         "village": "Una aldea de sabana con casas de paja entre acacias bajo un cielo azul",
@@ -143,10 +136,10 @@
       "all": "Todos los colaboradores en GitHub",
       "oneCommit": "1 commit",
       "commits": "{n} commits",
-      "webDeveloper": "Desarrollador web"
+      "webDeveloper": "Creador del sitio"
     },
     "parity": {
-      "harnesses": "pruebas diferenciales cuando empezamos: cada una pasa las mismas entradas por Horizon y por el cliente y el servidor vanilla, y compara lo que sale.",
+      "harnesses": "pruebas diferenciales cuando empezamos: cada una pasa las mismas entradas por Sunrise y por el cliente y el servidor vanilla, y compara lo que sale.",
       "title": "Dónde empezó el proyecto.",
       "lead": "Abajo está la primera auditoría del proyecto de cada subsistema: qué comparaban entonces sus pruebas y cuánto cubrían. No es una afirmación de paridad: los jugadores aún encuentran diferencias, y el trabajo de paridad en la 26.3 continúa, empezando por la redstone.",
       "audited": "Auditado el <date/><dot/>los jugadores aún encuentran diferencias: <link>los informes abiertos</link>",
@@ -171,7 +164,7 @@
         },
         "network": {
           "name": "Protocolo de red y multijugador",
-          "detail": "Se une a servidores vanilla; el servidor dedicado (--dedicated) coincide con los archivos de vanilla, el ping de estado, el inicio de sesión, la configuración, el juego, los chunks, el chat, las recetas, los logros y el árbol de comandos, un cliente hecho con el código de paquetes de vanilla se une a él, Horizon se une a un servidor vanilla, y el descubrimiento LAN coincide en 462 casos (solo en modo offline)."
+          "detail": "Se une a servidores vanilla; el servidor dedicado (--dedicated) coincide con los archivos de vanilla, el ping de estado, el inicio de sesión, la configuración, el juego, los chunks, el chat, las recetas, los logros y el árbol de comandos, un cliente hecho con el código de paquetes de vanilla se une a él, Sunrise se une a un servidor vanilla, y el descubrimiento LAN coincide en 462 casos (solo en modo offline)."
         },
         "chunks": {
           "name": "Almacenamiento de chunks y paletas",
@@ -222,13 +215,13 @@
   },
   "releases": {
     "meta": {
-      "title": "Descarga el launcher de Horizon: versiones y nightlies",
-      "description": "Descarga el launcher de Horizon para Windows, macOS y Linux. Cada versión del juego, del launcher y nightly, con sus notas y descargas, directamente desde GitHub."
+      "title": "Descarga el launcher de Sunrise: versiones y nightlies",
+      "description": "Descarga el launcher de Sunrise para Windows, macOS y Linux. Cada versión del juego, del launcher y nightly, con sus notas y descargas, directamente desde GitHub."
     },
     "eyebrow": "Versiones",
     "title": "Cada versión,",
     "titleAccent": "tal como sale.",
-    "lead": "Horizon, su launcher y las builds nightly, directamente desde GitHub. Abre una para leer sus notas; las que ya abriste quedan marcadas como vistas.",
+    "lead": "Sunrise, su launcher y las builds nightly, directamente desde GitHub. Abre una para leer sus notas; las que ya abriste quedan marcadas como vistas.",
     "browse": "Ver versiones",
     "allOnGitHub": "Todas las versiones en GitHub",
     "changelog": "Registro de cambios",
@@ -236,7 +229,7 @@
     "latestFallback": "Las versiones están en GitHub.",
     "unreachable": "Ahora mismo no se pudo contactar con GitHub. Todas las versiones están en <link>la página de versiones de GitHub</link>.",
     "kinds": {
-      "horizon": "Horizon",
+      "horizon": "Sunrise",
       "launcher": "Launcher",
       "nightly": "Nightly"
     },
@@ -246,7 +239,7 @@
     "list": {
       "tabs": {
         "all": "Todas",
-        "horizon": "Horizon",
+        "horizon": "Sunrise",
         "launcher": "Launcher",
         "nightly": "Nightly"
       },
@@ -260,277 +253,16 @@
       "views": "{n} visitas"
     }
   },
-  "benchmarks": {
-    "meta": {
-      "title": "Horizon frente a Minecraft Java: FPS, memoria y carga",
-      "description": "Horizon frente a Minecraft: Java Edition 26.3 en un ThinkPad de 2016, un Mac mini y un PC gaming: FPS, tirones, carga y memoria, medidos de la misma forma."
-    },
-    "titleA": "Horizon frente a",
-    "titleB": "Java Edition.",
-    "lead": "Los mismos tres ordenadores ejecutaron ambos juegos en el mismo mundo, con la misma ruta de vuelo y los mismos ajustes. Esto es lo que notarías, en palabras sencillas, incluido dónde Java Edition sigue ganando.",
-    "compare": "Compara un ordenador",
-    "estimate": "Estima el tuyo",
-    "inShort": "En resumen",
-    "summary": {
-      "noHitches": "Ningún tirón en Horizon; {java} por minuto en Java Edition.",
-      "fewer": "Alrededor de un {pct} % menos de tirones, y {h} FPS de media frente a {v}.",
-      "smooth": "Fluido en ambos. {lead}{far}.",
-      "leadMore": "Horizon tiene de media un {pct} % más de FPS a distancia de renderizado 12",
-      "leadSame": "Ambos juegos rinden de media casi igual a distancia de renderizado 12",
-      "javaFar": "; Java Edition es más rápido a 32"
-    },
-    "metrics": {
-      "avgFps": "FPS medios",
-      "low1": "FPS en los peores momentos",
-      "hitches": "Tirones por minuto",
-      "world": "Del arranque al mundo",
-      "terrain": "Carga de terreno nuevo",
-      "memory": "Memoria en uso"
-    },
-    "units": {
-      "fps": "{n} FPS",
-      "seconds": "{n} s",
-      "gb": "{n} GB"
-    },
-    "losses": {
-      "title": "Donde Java Edition sigue siendo más rápido",
-      "intro": "Cada caso de estas pruebas en el que el juego original lo hizo mejor. Unos fotogramas más estables a distancias de renderizado largas están en la <link>hoja de ruta</link> como trabajo en curso.",
-      "where": "{machine}, distancia de renderizado {rd}",
-      "java": "Java Edition {value}",
-      "horizon": "Horizon {value}"
-    },
-    "yours": {
-      "title": "¿Y tu ordenador?",
-      "lead": "Elige tu tarjeta gráfica y tu procesador. La estimación parte del ordenador medido más parecido al tuyo y lo escala según las especificaciones de los chips, así que es un rango, no una promesa."
-    },
-    "method": {
-      "title": "Cómo se midió",
-      "p1": "Cada juego empieza en un mundo nuevo (semilla 1234, creativo), espera a que todos los chunks alrededor del punto de aparición estén cargados y dibujados, y luego visita una aldea, un bosque, un océano y una montaña. En cada uno espera al terreno, se detiene 2 segundos y vuela una ruta recta de 192 bloques en 12 segundos, registrando cada fotograma.",
-      "p2": "VSync desactivado, sin límite de fotogramas, una ventana de 1280x720, distancia de simulación 12 y todo lo demás con los valores por defecto de vanilla. Java Edition 26.3 se ejecuta tal como la reciben los jugadores, con las opciones de Java del launcher oficial. Cada cifra es la mediana de las pruebas{measured}.",
-      "measuredOn": ", medidas el {day}",
-      "measuredBetween": ", medidas entre el {from} y el {to}",
-      "p3": "El método completo y sus salvedades están en <link>docs/benchmark.md</link> (en inglés)."
-    },
-    "own": {
-      "title": "Mide tu propio ordenador",
-      "lead": "Ejecuta esto en una terminal. Vuela la misma ruta y guarda un informe en la carpeta benchmarks de la carpeta del juego. Compártelo en Discord y tu máquina ayudará a mejorar estas cifras.",
-      "copyLabel": "Copiar el comando del benchmark",
-      "copy": "Copiar el comando",
-      "copied": "Copiado",
-      "docs": "Más en la documentación"
-    },
-    "explorer": {
-      "pickTitle": "Elige un ordenador",
-      "pickLead": "Tres máquinas del propio proyecto, de un portátil de 2016 a un PC gaming.",
-      "renderDistance": "Distancia de renderizado",
-      "renderDistanceShort": "Distancia",
-      "distances": {
-        "12": "(normal)",
-        "32": "(lejos)"
-      },
-      "computer": "Ordenador",
-      "showing12": "{missing} Se muestra la distancia de renderizado 12.",
-      "horizon": "Horizon",
-      "java": "Java Edition",
-      "java263": "Java Edition 26.3",
-      "classes": {
-        "smooth": "Más de 120 FPS",
-        "fine": "De 60 a 120",
-        "slow": "De 30 a 60",
-        "stutter": "Menos de 30"
-      },
-      "times": "{n} veces",
-      "percent": "un {n} %",
-      "verdict": {
-        "never": "Horizon nunca bajó de 60 FPS en el {machine}; Java Edition lo hizo {java} veces por minuto.",
-        "fewer": "En el {machine}, Horizon dio {h} tirones por minuto frente a {v} de Java Edition.",
-        "javaSmoother": "En el {machine}, Java Edition fue más fluido aquí: {v} tirones por minuto frente a {h} de Horizon.",
-        "same": "En el {machine}, ambos juegos fueron casi igual de fluidos.",
-        "faster": "entró en el mundo {amount} más rápido",
-        "half": "usó la mitad de memoria",
-        "less": "usó un {pct} % menos de memoria",
-        "and": " y ",
-        "it": "Horizon {rest}.",
-        "javaFaster": "Java Edition entró en el mundo más rápido."
-      },
-      "hitches": {
-        "title": "Tirones en un minuto de juego",
-        "body": "Un tirón es un fotograma más lento que un refresco de una pantalla de 60 Hz, así que ves la misma imagen dos veces. Las marcas rojas son los largos, por debajo de 30 FPS, que notas como un parón.",
-        "stutters": "Parones largos por minuto: Horizon {h}, Java Edition {v}."
-      },
-      "fps": {
-        "title": "Fotogramas por segundo",
-        "average": "De media",
-        "worst": "En los peores momentos",
-        "lows": "mínimos del 1 %",
-        "capped": "Aquí la pantalla del Mac limita Horizon a {n}, así que su media no puede subir más. Mira los peores momentos."
-      },
-      "waiting": {
-        "title": "Esperas",
-        "again": "Repetir"
-      },
-      "memory": {
-        "title": "Memoria durante el juego",
-        "peak": "pico de {h} y {v}",
-        "needs": "Java Edition necesita {times} más, algo que importa en un ordenador con 8 GB.",
-        "same": "Más o menos igual."
-      },
-      "frames": {
-        "title": "Dónde cayó cada fotograma",
-        "share": "{label}: {pct} %"
-      },
-      "feel": {
-        "title": "Siente la diferencia",
-        "lead": "Ambas vistas se desplazan a la misma velocidad, pero cada una solo avanza cuando su juego termina un fotograma, con los tiempos de fotograma medidos en el {machine} a distancia de renderizado {rd}. Cada congelación y cada salto que ves es un tirón.",
-        "speed": "Velocidad de reproducción",
-        "realTime": "Tiempo real",
-        "slower": "{n}x más lento",
-        "play": "Reproducir",
-        "pause": "Pausa",
-        "soFar": "{n} tirones hasta ahora",
-        "note": "Una reproducción de la distribución medida de los tiempos de fotograma, no una grabación. Tu pantalla muestra como mucho su propia frecuencia de refresco, así que en tiempo real todos los fotogramas más rápidos que eso se ven igual. {n}x más lento reproduce los mismos fotogramas a una cuarta parte de la velocidad, para que cada uno dure lo bastante como para verlo."
-      },
-      "chipPhotos": "Fotos de los chips:",
-      "aboutRuns": "Sobre las pruebas de este ordenador"
-    },
-    "estimator": {
-      "gpu": "Tarjeta gráfica",
-      "cpu": "Procesador",
-      "renderDistance": "Distancia de renderizado",
-      "gpuSelect": {
-        "choose": "Elige una tarjeta gráfica",
-        "search": "Buscar tarjetas gráficas",
-        "placeholder": "Buscar entre {n} tarjetas gráficas",
-        "none": "Ninguna tarjeta gráfica coincide con “{query}”. Elige la más parecida que encuentres."
-      },
-      "cpuSelect": {
-        "choose": "Elige un procesador",
-        "search": "Buscar procesadores",
-        "placeholder": "Buscar entre {n} procesadores",
-        "none": "Ningún procesador coincide con “{query}”. Elige el más parecido que encuentres."
-      },
-      "tflops": "{n} TFLOPS",
-      "ghz": "{n} GHz",
-      "headlineExact": "Medido en esta misma combinación: en los peores momentos, {h} FPS en Horizon y {v} en Java Edition.",
-      "headline": "En los peores momentos, cuenta con unos {h} FPS en Horizon y {v} en Java Edition.",
-      "atLeast": "al menos {n}",
-      "range": "{low}–{high}",
-      "line": "{range} FPS de media · entra al mundo en {low}–{high} s",
-      "measured": "Son las cifras medidas en el {machine}.",
-      "scaled": "Escalado a partir del {machine}, el ordenador medido más parecido al tuyo, según las especificaciones publicadas de los dos chips.",
-      "caveat": "Los drivers, la refrigeración y el sistema operativo pueden importar tanto como el chip, así que tómalo como una idea aproximada y ejecuta el benchmark de abajo para obtener tu cifra real.",
-      "floor": " La media de Horizon estaba limitada por la pantalla, así que la estimación solo da un mínimo.",
-      "none": "Todavía no hay ningún ordenador medido a esta distancia de renderizado del que partir.",
-      "machines": {
-        "ThinkPad (i7-7500U, HD Graphics 620)": "portátil ThinkPad",
-        "Mac mini (M4 Pro)": "Mac mini",
-        "Desktop (RTX 4080, i7-13700KF)": "PC gaming"
-      }
-    },
-    "machines": {
-      "thinkpad": {
-        "name": "Portátil ThinkPad",
-        "inSentence": "portátil ThinkPad",
-        "kind": "Un portátil de 2016",
-        "alt": "Un portátil Lenovo ThinkPad T470 cuya pantalla muestra una aldea dibujada por Horizon",
-        "caption": "En la foto: un ThinkPad T470, que se vendía con el mismo Core i7-7500U. La pantalla muestra Horizon.",
-        "specs": [
-          {
-            "label": "Procesador",
-            "value": "Intel Core i7-7500U, 2 núcleos"
-          },
-          {
-            "label": "Gráficos",
-            "value": "Intel HD Graphics 620, integrada"
-          },
-          {
-            "label": "Memoria",
-            "value": "32 GB"
-          },
-          {
-            "label": "Sistema",
-            "value": "Linux"
-          }
-        ],
-        "buy": [
-          "De segunda mano en eBay",
-          "Ficha técnica de Lenovo"
-        ],
-        "missing32": "Sin medir a 32: en este portátil ningún juego terminó de cargar el punto de aparición en 5 minutos, así que los dos no habrían dibujado el mismo mundo."
-      },
-      "macmini": {
-        "name": "Mac mini",
-        "inSentence": "Mac mini",
-        "kind": "El sobremesa compacto de Apple",
-        "alt": "La parte frontal de un Apple Mac mini con M4 Pro",
-        "caption": "",
-        "specs": [
-          {
-            "label": "Chip",
-            "value": "Apple M4 Pro, CPU de 14 núcleos, GPU de 20 núcleos"
-          },
-          {
-            "label": "Memoria",
-            "value": "64 GB"
-          },
-          {
-            "label": "Sistema",
-            "value": "macOS"
-          }
-        ],
-        "buy": [
-          "Comprar en apple.com",
-          "Comparar modelos de Mac mini"
-        ],
-        "missing32": ""
-      },
-      "desktop": {
-        "name": "PC gaming",
-        "inSentence": "PC gaming",
-        "kind": "Un PC de sobremesa",
-        "alt": "Una tarjeta gráfica NVIDIA GeForce RTX 4080 Founders Edition",
-        "caption": "En la foto: su tarjeta gráfica, la GeForce RTX 4080 Founders Edition.",
-        "specs": [
-          {
-            "label": "Gráficos",
-            "value": "NVIDIA GeForce RTX 4080, 16 GB"
-          },
-          {
-            "label": "Procesador",
-            "value": "Intel Core i7-13700KF, 16 núcleos"
-          },
-          {
-            "label": "Memoria",
-            "value": "32 GB"
-          },
-          {
-            "label": "Sistema",
-            "value": "Linux"
-          }
-        ],
-        "buy": [
-          "RTX 4080 en Best Buy",
-          "Core i7-13700KF en Amazon"
-        ],
-        "missing32": ""
-      }
-    },
-    "credits": {
-      "kabyLake": "un i5-7200U, el mismo encapsulado que el i7-7500U, de Rjluna2 (CC BY-SA 4.0)",
-      "appleSilicon": "un Apple M1, un chip anterior de la misma familia, de Henriok (CC0)",
-      "raptorLake": "un i7-13700K, el 13700KF con sus gráficos activados, de 4300streetcar (CC BY 4.0)"
-    }
-  },
   "mods": {
     "meta": {
-      "title": "Mods, modpacks y paquetes de recursos, shaders y datos para Horizon",
-      "description": "Mods, modpacks y paquetes de recursos, de shaders y de datos hechos para Horizon. Cada uno se revisó antes de publicarse, y el launcher comprueba cada archivo antes de instalarlo."
+      "title": "Mods, modpacks y paquetes de recursos, shaders y datos para Sunrise",
+      "description": "Mods, modpacks y paquetes de recursos, de shaders y de datos hechos para Sunrise. Cada uno se revisó antes de publicarse, y el launcher comprueba cada archivo antes de instalarlo."
     },
-    "srTitle": "Mods de Horizon",
+    "srTitle": "Mods de Sunrise",
     "unreachable": {
       "title": "El registro no respondió",
       "body": "No se pudo cargar la lista de mods. Se volverá a intentar en un minuto, o puedes verla en el sitio oficial.",
-      "link": "Mods en playhorizon.dev"
+      "link": "Mods en playsunrise.net"
     },
     "list": {
       "search": "Buscar entre {n} proyectos",
@@ -653,13 +385,13 @@
   },
   "stats": {
     "meta": {
-      "title": "Jugadores de Horizon: cuántos juegan ahora mismo",
-      "description": "Cuántas personas juegan a Horizon ahora mismo, sus picos y su historial, a partir del ping anónimo que envía cada partida en marcha."
+      "title": "Jugadores de Sunrise: cuántos juegan ahora mismo",
+      "description": "Cuántas personas juegan a Sunrise ahora mismo, sus picos y su historial, a partir del ping anónimo que envía cada partida en marcha."
     },
     "kicker": "Jugadores",
     "kickerLive": "En directo, cada minuto",
     "titleA": "Quién juega",
-    "titleB": "a Horizon ahora.",
+    "titleB": "a Sunrise ahora.",
     "lead": "Cada partida en marcha envía un ping anónimo de “estoy jugando” una vez por minuto: sin cuenta, sin dirección, nada de lo que haces en el juego (<link>qué contiene</link>, en inglés). El recuento de abajo es exacto, y el historial solo guarda totales.",
     "live": {
       "ranges": {
@@ -707,24 +439,24 @@
       "nobody": "Nadie está jugando ahora mismo.",
       "overTime": "A lo largo del tiempo",
       "historyNote": "Cada punto es el recuento más alto y la media de sus 5 minutos (24 horas), su hora (7 días), sus 3 horas (30 días) o su día (todo, días UTC). Las horas están en tu zona horaria.",
-      "officialTitle": "El Official Horizon SMP",
-      "officialLead": "El Official Horizon SMP, el servidor de supervivencia que aparece primero en la lista de servidores del juego. Cada minuto, el servidor de telemetría le pregunta cuántos juegan, con el mismo ping de estado que envía la lista de Multijugador de tu juego.",
+      "officialTitle": "El Official Sunrise SMP",
+      "officialLead": "El Official Sunrise SMP, el servidor de supervivencia que aparece primero en la lista de servidores del juego. Cada minuto, el servidor de telemetría le pregunta cuántos juegan, con el mismo ping de estado que envía la lista de Multijugador de tu juego.",
       "playingThere": "jugando allí ahora",
       "atAgain": "A las {time}, de nuevo cada minuto",
       "notAnswering": "Sin responder desde las {time}",
       "playersTitle": "Jugadores",
-      "officialHistory": "En el Official Horizon SMP"
+      "officialHistory": "En el Official Sunrise SMP"
     }
   },
   "artists": {
     "meta": {
-      "title": "Artistas 3D · Horizon",
-      "description": "Horizon da la bienvenida a artistas 3D para crear cosméticos para sus jugadores: sombreros, objetos para la espalda, mascotas para el hombro, estelas y gestos con estilo de bloques. Saluda en Discord."
+      "title": "Artistas 3D · Sunrise",
+      "description": "Sunrise da la bienvenida a artistas 3D para crear cosméticos para sus jugadores: sombreros, objetos para la espalda, mascotas para el hombro, estelas y gestos con estilo de bloques. Saluda en Discord."
     },
     "kicker": "Artistas 3D",
     "titleA": "Buscamos",
     "titleB": "artistas 3D.",
-    "lead": "Horizon da la bienvenida a artistas 3D para crear cosméticos para los jugadores de Horizon: cosas que llevan puestas o encima y que los demás jugadores de Horizon ven en cada mundo y en cada servidor. Si te gusta hacer modelos pequeños y de bloques, nos encantaría saber de ti.",
+    "lead": "Sunrise da la bienvenida a artistas 3D para crear cosméticos para los jugadores de Sunrise: cosas que llevan puestas o encima y que los demás jugadores de Sunrise ven en cada mundo y en cada servidor. Si te gusta hacer modelos pequeños y de bloques, nos encantaría saber de ti.",
     "make": {
       "title": "Lo que haríamos juntos",
       "items": [
@@ -748,9 +480,49 @@
     },
     "contact": {
       "title": "Ponte en contacto",
-      "body": "Únete al Discord de Horizon y di que eres artista 3D, con algunas piezas que hayas hecho: valen enlaces o imágenes. Si prefieres escribir en privado, hazlo a través de <link>lu4ovic.com</link>.",
+      "body": "Únete al Discord de Sunrise y di que eres artista 3D, con algunas piezas que hayas hecho: valen enlaces o imágenes. Si prefieres escribir en privado, hazlo a través de <link>lu4ovic.com</link>.",
       "discord": "Únete al Discord"
     },
     "newTab": " (se abre en una pestaña nueva)"
+  },
+  "faq": {
+    "meta": {
+      "title": "FAQ · Sunrise",
+      "description": "Respuestas sobre Sunrise: qué es, en qué se diferencia de Horizon, si necesitas Minecraft, dónde está el código, qué mods funcionan y cómo informar de un fallo."
+    },
+    "kicker": "FAQ",
+    "titleA": "Preguntas,",
+    "titleB": "respondidas.",
+    "lead": "Las respuestas cortas sobre Sunrise y dónde leer más.",
+    "items": [
+      {
+        "q": "¿Qué es Sunrise?",
+        "a": "Sunrise es una reconstrucción gratuita y de código abierto de Minecraft: Java Edition 26.3 en Rust. Funciona como un programa nativo y somete cada pieza del juego a las mismas entradas que el juego vanilla hasta que las salidas son idénticas. No es oficial: no está aprobado por Mojang ni Microsoft ni asociado con ellos."
+      },
+      {
+        "q": "¿En qué se diferencia de Horizon?",
+        "a": "Sunrise es un fork de la comunidad de <horizon>Horizon</horizon>, que hacen los colaboradores de horizon-rust, y mantiene el juego de Horizon como base. El fork añade capas de compatibilidad que ejecutan mods de Java (primero Forge, después Fabric), compatibilidad con más de una versión del juego, un perfilador integrado, y ni anuncios ni telemetría: el launcher no envía nada salvo que lo permitas. Parte de esto sigue en desarrollo; <releases>Versiones</releases> lista lo que ya se ha publicado."
+      },
+      {
+        "q": "¿Necesito tener Minecraft?",
+        "a": "Sí. Necesitas tu propia copia legal de Minecraft: Java Edition. Instálala con el launcher oficial y juega a la 26.3 una vez; Sunrise crea sus recursos a partir de esos archivos en tu equipo. Nunca descarga ni comparte archivos del juego, y este sitio no ofrece ninguno."
+      },
+      {
+        "q": "¿Es seguro y dónde está el código?",
+        "a": "El código es abierto, con licencia MIT, y público: <source>{repo}</source>, rama {ref}. El launcher y el juego se descargan de las páginas de versiones de GitHub, donde puedes ver lo que instalas. Sunrise es un proyecto joven, así que trátalo como cualquier programa que no has escrito tú y descárgalo solo desde <releases>Versiones</releases>."
+      },
+      {
+        "q": "¿Qué mods funcionan?",
+        "a": "Los mods de contenido y los mods nativos en Rust de la página <mods>Mods</mods> funcionan hoy. Ejecutar mods de Java está en desarrollo: la compatibilidad con Forge no está terminada y no todos los mods cargan todavía, y Fabric llegará después. Para la API de mods nativa, <apigaps>Brechas de API</apigaps> muestra qué está cubierto, qué es parcial y qué falta."
+      },
+      {
+        "q": "¿Cómo informo de un fallo o colaboro?",
+        "a": "Abre una incidencia en <issues>{repo}</issues>: cuenta qué hiciste, qué esperabas y qué ocurrió, y adjunta el registro del juego si lo tienes. Para el trabajo de la API de mods, el <board>tablero del proyecto</board> sigue las brechas abiertas."
+      },
+      {
+        "q": "¿Qué datos guarda este sitio?",
+        "a": "Casi ninguno: sin cookies para los visitantes, sin analíticas, sin rastreadores y sin anuncios. Los detalles están en la <privacy>página de privacidad</privacy>."
+      }
+    ]
   }
 }

@@ -20,7 +20,7 @@ export function ModEditLink({ id, owners }: { id: string; owners: string[] }) {
   return (
     <Link
       href={`/mods/${encodeURIComponent(id)}/edit`}
-      className="inline-flex h-9 items-center rounded-lg bg-white/10 px-3.5 text-sm font-medium text-white transition-colors outline-none hover:bg-white/15 focus-visible:ring-2 focus-visible:ring-[#a98fff]"
+      className="inline-flex h-9 items-center rounded-lg bg-lavender px-3.5 text-sm font-medium text-foreground transition-colors outline-none hover:bg-sky-surface focus-visible:ring-2 focus-visible:ring-accent"
     >
       Edit project
     </Link>

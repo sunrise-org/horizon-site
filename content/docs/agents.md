@@ -1,4 +1,4 @@
-# Control Horizon with your AI agent
+# Control Sunrise with your AI agent
 
 Your own AI agent can drive the launcher and the game: Claude Code, Codex, Cursor or any client that speaks MCP (the Model Context Protocol). It runs on your computer and uses the same commands you can type in a terminal. It can install a version, start the game, play it, change settings and manage your worlds. Before it deletes anything, it asks you. If you don't want any of this, one **No AI** switch hides and turns off every AI feature.
 
@@ -16,20 +16,20 @@ Everything you can do with the mouse and keyboard, through commands instead of c
   - read what is on screen (every button, slider, field and slot, by name), click and type;
   - move, look, mine, place, attack, use items and pick from the hotbar;
   - the inventory, chests and every other container, crafting, trading, books and signs;
-  - every options page, including Horizon Settings, and any option by its key;
+  - every options page, including Sunrise Settings, and any option by its key;
   - worlds (create, open, rename, back up, delete), servers, LAN and Play with Friends;
   - chat and commands, screenshots, F3 data, waiting for an event and the game's log.
 
-The full lists are in the repository: [launcher commands](https://github.com/horizon-rust/horizon/blob/main/docs/launcher-commands.md) and [game commands](https://github.com/horizon-rust/horizon/blob/main/docs/horizon-ctl-commands.md).
+The full lists are in the repository: [launcher commands](https://github.com/sunrise-org/horizon/blob/main/docs/launcher-commands.md) and [game commands](https://github.com/sunrise-org/horizon/blob/main/docs/horizon-ctl-commands.md).
 
 ## Connect it from the launcher
 
 The easiest way. Open the launcher's **Settings** and scroll to **AI**:
 
 1. Under **Connect an AI agent**, pick your client: **Claude Code**, **Codex**, **Cursor** or **Any MCP client**.
-2. For Claude Code and Codex, **Add to Claude Code** (or **Add to Codex**) runs that client's own command to add Horizon. The command is shown above the button, and runs only when you click it. For the others, **Copy** the config and paste it into the file named above it.
-3. **Test the connection** starts Horizon's MCP server the way your client will and says how many tools it offers.
-4. Restart your agent if it was open, then ask it: "Say hello from Horizon".
+2. For Claude Code and Codex, **Add to Claude Code** (or **Add to Codex**) runs that client's own command to add Sunrise. The command is shown above the button, and runs only when you click it. For the others, **Copy** the config and paste it into the file named above it.
+3. **Test the connection** starts Sunrise's MCP server the way your client will and says how many tools it offers.
+4. Restart your agent if it was open, then ask it: "Say hello from Sunrise".
 
 One server, called `horizon`, covers both the launcher and the game. Ask your agent to start the game and it starts it under its control. The game's tools are the ones whose names begin with `game_`.
 
@@ -38,7 +38,7 @@ One server, called `horizon`, covers both the launcher and the game. Ask your ag
 The launcher prints these with the exact path of your copy: `horizon-launcher agent-config`. The paths below are the usual ones:
 
 - **macOS:** `/Applications/Horizon.app/Contents/MacOS/horizon-launcher`
-- **Windows:** where you extracted the zip, for example `C:\Horizon\horizon-launcher.exe`
+- **Windows:** where you extracted the zip, for example `C:\Sunrise\horizon-launcher.exe`
 - **Linux:** where you put the AppImage or binary
 
 **Claude Code**, in a terminal:
@@ -78,7 +78,7 @@ The server talks over its standard input and output, so it needs no port and is 
 
 ## A game you started yourself
 
-A game your agent starts is under its control. A game you start with **Play** is not, unless you allow it. In the game, open **Options**, then **Horizon Settings**, then **AI Agent...**:
+A game your agent starts is under its control. A game you start with **Play** is not, unless you allow it. In the game, open **Options**, then **Sunrise Settings**, then **AI Agent...**:
 
 - **Agent Control: On** lets agents on this computer reach the game you started. It is off by default.
 - The page shows whether an agent is connected and when it last sent a command.
@@ -116,7 +116,7 @@ The same commands, for scripts and terminals. `--json` prints JSON.
 
 ## No AI: turn it all off
 
-In the launcher's **Settings**, under **AI**, turn on **No AI**. You can also use **No AI** in the game's **Horizon Settings**, or type `horizon-launcher no-ai on`. Then:
+In the launcher's **Settings**, under **AI**, turn on **No AI**. You can also use **No AI** in the game's **Sunrise Settings**, or type `horizon-launcher no-ai on`. Then:
 
 - the **Connect an AI agent** section and the game's **AI Agent** page are hidden;
 - the game opens no control socket, even when it is started with one;

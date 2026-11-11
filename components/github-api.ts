@@ -5,16 +5,16 @@
 const API = "https://api.github.com";
 const TIMEOUT = 20_000;
 
-export async function githubFetch(path: string, { full = false }: { full?: boolean } = {}): Promise<Response> {
+export async function githubFetch(path: string, { full = false, headers }: { full?: boolean; headers?: Record<string, string> } = {}): Promise<Response> {
   const proxy = process.env.GITHUB_PROXY_URL?.trim().replace(/\/+$/, "");
   const secret = process.env.REVALIDATE_SECRET?.trim();
   if (proxy && secret) {
     try {
       const res = await fetch(`${proxy}${path}`, {
-        headers: { Authorization: `Bearer ${secret}`, ...(full ? { "X-GitHub-Accept": "full" } : {}) },
+        headers: { Authorization: `Bearer ${secret}`, ...(full ? { "X-GitHub-Accept": "full" } : {}), ...headers },
         signal: AbortSignal.timeout(TIMEOUT),
       });
-      if (res.ok) return res;
+      if (res.ok || (res.status === 304 && headers?.["If-None-Match"])) return res;
       if (res.status !== 404) console.error(`Kira's GitHub proxy answered ${res.status} for ${path}: reading GitHub directly`);
     } catch (error) {
       console.error(`Kira's GitHub proxy failed for ${path}: reading GitHub directly`, error);
@@ -24,6 +24,7 @@ export async function githubFetch(path: string, { full = false }: { full?: boole
     headers: {
       Accept: full ? "application/vnd.github.full+json" : "application/vnd.github+json",
       ...(process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {}),
+      ...headers,
     },
     signal: AbortSignal.timeout(TIMEOUT),
   });

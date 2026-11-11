@@ -3,7 +3,7 @@
 // italic and links. Everything is escaped first, so its output never carries raw HTML.
 // Shared by build.mjs (Node) and main.js (browser).
 
-const REPO_BLOB = "https://github.com/horizon-rust/horizon/blob/main/";
+const REPO_BLOB = "https://github.com/sunrise-org/horizon/blob/release/sunrise/";
 
 export function escape(text) {
   return String(text ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);

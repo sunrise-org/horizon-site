@@ -48,13 +48,23 @@ export type Unit =
 export interface Selection {
   side: Side | null;
   thread: string | null;
+  /** The seconds the reply covers. */
+  from?: number | null;
+  to?: number | null;
   ticks: number | null;
   samples: number | null;
+}
+
+/** An id and the name it stands for, offered when a name was unknown or ambiguous. */
+export interface Candidate {
+  id: string;
+  name: string;
 }
 
 export interface Envelope<R> {
   ok: boolean;
   op: string;
+  candidates?: Candidate[];
   unit?: Unit;
   captures?: CaptureInfo[];
   selection?: Selection;
@@ -198,6 +208,22 @@ export interface MemoryRow {
   unit: string;
 }
 
+/** `[path, in the first snapshot, in the second, the change]`. */
+export type MemoryChange = [string, number, number, number];
+
+/** What grew and shrank between two snapshots; `resident_mb` is `[first, second, change]`. */
+export interface MemoryDiffRow {
+  from: string;
+  to: string;
+  seconds: number;
+  resident_mb: [number, number, number] | null;
+  grew_mb: MemoryChange[];
+  shrank_mb: MemoryChange[];
+  counts: MemoryChange[];
+  only_in_a: string[];
+  only_in_b: string[];
+}
+
 export interface NetTotalRow {
   id: string;
   players: number;
@@ -210,6 +236,10 @@ export interface NetTotalRow {
 export interface NetPlayerRow {
   id: string;
   index: number;
+  /** Empty on a client's own connection and in captures made before names were kept. */
+  name?: string;
+  brand?: string;
+  view_distance?: number;
   joined_t: number;
   left_t: number | null;
   out_bytes: number;
@@ -303,6 +333,16 @@ export interface HotRow {
   samples: number;
 }
 
+/** A named function's inclusive and own time; a capture without it has null. */
+export interface FrameRow {
+  id: string;
+  name: string;
+  full: string;
+  values: (number | null)[];
+  self: (number | null)[];
+  samples: (number | null)[];
+}
+
 /** One group of samples: `key` is null for the samples with no context (no entity, block...). */
 export interface GroupRow {
   by: string;
@@ -322,12 +362,70 @@ export interface CostRow {
   us_per_mob: number;
 }
 
-export interface QueryRequest {
-  op: string;
-  args?: string[];
+/** The ops the reader answers (docs/perf-platform.md §6.2). */
+export type QueryOp =
+  | "spans"
+  | "ticks"
+  | "tick"
+  | "series"
+  | "world"
+  | "net"
+  | "gpu"
+  | "gpu_frames"
+  | "meta"
+  | "memory"
+  | "marks"
+  | "warnings"
+  | "hot"
+  | "tree"
+  | "callers"
+  | "callees"
+  | "split"
+  | "group"
+  | "frames"
+  | "bench";
+
+/** Which samples a sample query weighs. */
+export type SampleKind = "cpu" | "running" | "waiting" | "wall" | "alloc" | "live";
+
+/** What a sample can carry besides its stack; `--where` narrows by these. */
+export type ContextKey = "span" | "entity" | "block" | "chunk" | "dim";
+
+/** The values wanted per context key: a repeated key is an OR. */
+export type ContextFilter = Partial<Record<ContextKey, string[]>>;
+
+/** A `from` or `to`: seconds, negative from the end, or `mark:NAME`. */
+export type BoundArg = number | string;
+
+/** Every filter and option of a request the reader reads (`QueryRequest` in the reader's request.rs). */
+export interface RequestFilters {
+  side?: Side;
+  thread?: string;
+  select?: SampleKind;
+  slow?: boolean;
+  where?: ContextFilter;
+  from?: BoundArg;
+  to?: BoundArg;
+  limit?: number;
+  names?: string[];
+  worst?: number;
+  over?: number;
+  every?: number;
+  diff?: boolean;
+  min_mb?: number;
   by?: string;
+  match?: string;
+  depth?: number;
+  min_pct?: number;
+  self_share?: boolean;
+  stats?: boolean;
+}
+
+export interface QueryRequest {
+  op: QueryOp;
+  args?: string[];
   file?: string;
-  filters?: Record<string, unknown>;
+  filters?: RequestFilters;
 }
 
 /** A benchmark metric over a run's repeats. */

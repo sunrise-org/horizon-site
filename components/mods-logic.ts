@@ -8,9 +8,9 @@ export type ModVersion = {
   side?: string;
   capabilities?: string[];
   requires?: { id: string; version: string }[];
-  /** A native mod's hook points version: it builds on any Horizon that has them. */
+  /** A native mod's hook points version: it builds on any Sunrise that has them. */
   hooks?: number;
-  /** The Horizon commits the registry's daily check found it doesn't build on, with the error. */
+  /** The Sunrise commits the registry's daily check found it doesn't build on, with the error. */
   broken_on?: { horizon: string; code: string }[];
   file: ModFile;
 };
@@ -51,8 +51,8 @@ export type ModSummary = {
 export type Rating = { average: number; count: number };
 export type Ratings = Record<string, Rating>;
 
-export const REGISTRY = "https://github.com/horizon-rust/horizon-mods";
-export const OFFICIAL_MODS = "https://playhorizon.dev/mods";
+export const REGISTRY = "https://github.com/sunrise-org/horizon-mods";
+export const OFFICIAL_MODS = "https://playsunrise.net/mods";
 export const SUBMIT_URL = "/mods/submit";
 export const POLICY_URL = "/mods/policy";
 
@@ -189,7 +189,7 @@ const SLUG = /^[a-z0-9][a-z0-9-]{0,23}$/;
 export const categoriesOf = (p: ModProject) => strings(p.categories).filter((c) => CATEGORIES[p.kind]?.includes(c));
 export const tagsOf = (p: ModProject) => strings(p.tags).filter((t) => SLUG.test(t));
 /** Its screenshots, only from the registry's own Pages site (where it mirrors every image). */
-export const screenshotsOf = (p: ModProject) => strings(p.screenshots).filter((u) => u.startsWith("https://horizon-rust.github.io/horizon-mods/"));
+export const screenshotsOf = (p: ModProject) => strings(p.screenshots).filter((u) => u.startsWith("https://sunrise-org.github.io/horizon-mods/"));
 
 export const fileSize = (bytes: number) => (bytes >= 1 << 20 ? `${(bytes / (1 << 20)).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`);
 
@@ -262,20 +262,20 @@ export function matches(p: ModSummary, kind: string, text: string, category = ""
 export function apiLabel(api?: string) {
   if (!api) return "";
   const native = /^native-\d+\/([0-9a-f]{40})\//.exec(api);
-  return native ? `made on Horizon ${native[1].slice(0, 7)}` : `API ${api}`;
+  return native ? `made on Sunrise ${native[1].slice(0, 7)}` : `API ${api}`;
 }
 
-/** Whether a native version builds on Horizon beyond the commit it was made on: the registry's daily check, or its hook points. */
+/** Whether a native version builds on Sunrise beyond the commit it was made on: the registry's daily check, or its hook points. */
 export function buildsOn(v: ModVersion): { ok: boolean; text: string } | null {
   const broken = v.broken_on?.[0];
-  if (broken) return { ok: false, text: `Doesn't build on Horizon ${broken.horizon.slice(0, 7)} (${broken.code})` };
-  return v.hooks ? { ok: true, text: `Builds on every Horizon with native hook points v${v.hooks}` } : null;
+  if (broken) return { ok: false, text: `Doesn't build on Sunrise ${broken.horizon.slice(0, 7)} (${broken.code})` };
+  return v.hooks ? { ok: true, text: `Builds on every Sunrise with native hook points v${v.hooks}` } : null;
 }
 
 const LOGIN = /^(?!-)(?!.*--)[A-Za-z0-9-]{1,39}(?<!-)$/;
 export const owners = (p: ModProject) => (p.owners ?? []).filter((o) => LOGIN.test(o));
 
 export const isOfficial = (p: ModProject) =>
-  (p.authors ?? []).length === 1 && p.authors?.[0] === "Horizon" && /^https:\/\/github\.com\/horizon-rust\//.test(p.source ?? "");
+  (p.authors ?? []).length === 1 && ["Sunrise", "Horizon"].includes(p.authors?.[0] ?? "") && /^https:\/\/github\.com\/(sunrise-org|horizon-rust)\//.test(p.source ?? "");
 
 export const installCommand = (id: string) => `horizon-launcher mods install --source horizon ${id}`;

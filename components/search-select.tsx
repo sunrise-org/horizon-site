@@ -39,7 +39,7 @@ function Highlight({ text, query }: { text: string; query: string }) {
   }
   return parts.map((p, i) =>
     p.hit ? (
-      <span key={i} className="font-semibold text-white">
+      <span key={i} className="font-semibold text-foreground">
         {p.text}
       </span>
     ) : (
@@ -138,7 +138,7 @@ export function SearchSelect({
 
   return (
     <div ref={root} className="relative" onBlur={onBlur}>
-      <span id={`${id}-label`} className="text-sm font-medium text-white/80">
+      <span id={`${id}-label`} className="text-sm font-medium text-muted">
         {label}
       </span>
       <button
@@ -150,16 +150,16 @@ export function SearchSelect({
         aria-labelledby={`${id}-label ${id}-button`}
         onClick={() => (open ? close(false) : show())}
         onKeyDown={onTriggerKey}
-        className="group mt-2 flex h-11 w-full items-center justify-between gap-3 rounded-lg bg-white/[0.06] px-3 text-left text-[15px] text-white outline-none transition-colors hover:bg-white/[0.09] focus-visible:ring-2 focus-visible:ring-[#a98fff] aria-expanded:bg-white/[0.09]"
+        className="group mt-2 flex h-11 w-full items-center justify-between gap-3 rounded-lg bg-lavender px-3 text-left text-[15px] text-foreground outline-none transition-colors hover:bg-lavender focus-visible:ring-2 focus-visible:ring-accent aria-expanded:bg-lavender"
       >
         <span className="truncate">{selected?.label ?? text.choose}</span>
-        <ChevronDownIcon className="size-4 shrink-0 text-white/50 transition-transform duration-200 group-aria-expanded:rotate-180" />
+        <ChevronDownIcon className="size-4 shrink-0 text-muted transition-transform duration-200 group-aria-expanded:rotate-180" />
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 z-30 mt-1.5 w-full rounded-xl bg-[#231a3d] p-1.5 ring-1 ring-white/[0.08] lg:w-max lg:max-w-[28rem] lg:min-w-full">
-          <div className="flex items-center gap-2 rounded-md bg-white/[0.06] px-2.5">
-            <SearchIcon className="size-4 shrink-0 text-white/45" />
+        <div className="absolute top-full left-0 z-30 mt-1.5 w-full rounded-xl bg-lavender p-1.5 ring-1 ring-line lg:w-max lg:max-w-[28rem] lg:min-w-full">
+          <div className="flex items-center gap-2 rounded-md bg-lavender px-2.5">
+            <SearchIcon className="size-4 shrink-0 text-muted" />
             <input
               ref={input}
               type="text"
@@ -178,7 +178,7 @@ export function SearchSelect({
                 setActive(0);
               }}
               onKeyDown={onSearchKey}
-              className="h-10 w-full min-w-0 bg-transparent text-[15px] text-white outline-none placeholder:text-white/35"
+              className="h-10 w-full min-w-0 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted"
             />
           </div>
           {results.length ? (
@@ -201,19 +201,19 @@ export function SearchSelect({
                     data-active={i === active || undefined}
                     onPointerMove={() => setActive(i)}
                     onClick={() => choose(o)}
-                    className="flex cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-[14px] text-white/70 data-active:bg-white/[0.07] data-active:text-white/90"
+                    className="flex cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-[14px] text-muted data-active:bg-lavender data-active:text-foreground"
                   >
-                    <CheckIcon className={`size-4 shrink-0 text-[#a98fff] ${isSelected ? "" : "invisible"}`} />
-                    <span className={`min-w-0 flex-1 ${isSelected ? "text-white" : ""}`}>
+                    <CheckIcon className={`size-4 shrink-0 text-accent-ink ${isSelected ? "" : "invisible"}`} />
+                    <span className={`min-w-0 flex-1 ${isSelected ? "text-foreground" : ""}`}>
                       <Highlight text={o.label} query={query} />
                     </span>
-                    {o.detail && <span className="shrink-0 text-[13px] text-white/40 tabular-nums">{o.detail}</span>}
+                    {o.detail && <span className="shrink-0 text-[13px] text-muted tabular-nums">{o.detail}</span>}
                   </li>
                 );
               })}
             </ul>
           ) : (
-            <p className="px-2.5 py-6 text-center text-sm text-white/50">
+            <p className="px-2.5 py-6 text-center text-sm text-muted">
               {format(text.none, { query: query.trim() })}
             </p>
           )}

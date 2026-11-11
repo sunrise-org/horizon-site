@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-// The Official Horizon SMP's market (/hub/market): the page the SMP mod writes once a minute (horizon-mods
+// The Official Sunrise SMP's market (/hub/market): the page the SMP mod writes once a minute (horizon-mods
 // native/smp README, "web/market.json"), through Kira and /api/market.
 type Series = { step: number; t: number[]; price: number[]; volume: number[] };
 type Item = {
@@ -52,8 +52,8 @@ const side = (i: Item) => (i.sell == null ? "buy only" : i.buy == null ? "sell o
 const time = (ms: number) => new Date(ms).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
 function Change({ value }: { value: number | null }) {
-  if (value == null) return <span className="text-white/40">–</span>;
-  if (Math.abs(value) < 0.05) return <span className="text-white/55">0.0%</span>;
+  if (value == null) return <span className="text-muted">–</span>;
+  if (Math.abs(value) < 0.05) return <span className="text-muted">0.0%</span>;
   return (
     <span style={{ color: value > 0 ? UP : DOWN }} className="tabular-nums">
       {value > 0 ? "▲" : "▼"} {Math.abs(value).toFixed(1)}%
@@ -89,7 +89,7 @@ function useMarket() {
 
 function Spark({ s }: { s: Series }) {
   const p = s.price;
-  if (p.length < 2) return <span className="text-xs text-white/35">–</span>;
+  if (p.length < 2) return <span className="text-xs text-muted">–</span>;
   const lo = Math.min(...p);
   const hi = Math.max(...p);
   const span = hi - lo || hi * 0.01 || 1;
@@ -104,7 +104,7 @@ function Spark({ s }: { s: Series }) {
 
 function Chart({ item, range, currency }: { item: Item; range: "day" | "month"; currency: string }) {
   const s = item[range];
-  if (s.price.length < 2) return <p className="text-sm text-white/50">No trades yet in this span.</p>;
+  if (s.price.length < 2) return <p className="text-sm text-muted">No trades yet in this span.</p>;
   const lo = Math.min(...s.price);
   const hi = Math.max(...s.price);
   const pad = (hi - lo || hi * 0.02 || 1) * 0.1;
@@ -139,7 +139,7 @@ function Chart({ item, range, currency }: { item: Item; range: "day" | "month"; 
               width="2"
               y={H - BOTTOM - (v / maxVol) * 40}
               height={(v / maxVol) * 40}
-              fill="#a98fff"
+              fill="#ff8fc4"
               fillOpacity="0.45"
             />
           ) : null,
@@ -152,7 +152,7 @@ function Chart({ item, range, currency }: { item: Item; range: "day" | "month"; 
           </text>
         ))}
       </svg>
-      <figcaption className="mt-2 text-[13px] text-white/50">
+      <figcaption className="mt-2 text-[13px] text-muted">
         The price ({currency} per item, the same to buy and to sell), and in violet the items traded in each{" "}
         {range === "day" ? "5 minutes" : "hour"}.
       </figcaption>
@@ -162,10 +162,10 @@ function Chart({ item, range, currency }: { item: Item; range: "day" | "month"; 
 
 function Tile({ value, label, note }: { value: string; label: string; note?: string }) {
   return (
-    <div className="rounded-2xl bg-[#18112c] p-5">
-      <span className="block font-display text-[2rem] leading-none font-semibold text-white tabular-nums">{value}</span>
-      <span className="mt-2 block text-sm text-white/70">{label}</span>
-      {note ? <span className="mt-1 block text-xs text-white/45">{note}</span> : null}
+    <div className="rounded-2xl bg-surface p-5">
+      <span className="block font-display text-[2rem] leading-none font-semibold text-foreground tabular-nums">{value}</span>
+      <span className="mt-2 block text-sm text-muted">{label}</span>
+      {note ? <span className="mt-1 block text-xs text-muted">{note}</span> : null}
     </div>
   );
 }
@@ -182,7 +182,7 @@ export function MarketBoard() {
   const movers = [...(data?.items ?? [])].filter((i) => i.change_24h != null).sort((a, b) => Math.abs(b.change_24h!) - Math.abs(a.change_24h!));
 
   if (!data) {
-    return <p className="text-sm text-white/55">{failed ? "The server's market isn't available right now." : "Loading the market…"}</p>;
+    return <p className="text-sm text-muted">{failed ? "The server's market isn't available right now." : "Loading the market…"}</p>;
   }
   return (
     <div className="space-y-12">
@@ -196,9 +196,9 @@ export function MarketBoard() {
           ) : null}
         </div>
         {data.daily_summary?.lines.length ? (
-          <div className="mt-4 rounded-2xl bg-[#18112c] p-5 sm:p-6">
-            <h3 className="text-[15px] font-medium text-white">Yesterday&apos;s summary</h3>
-            <ul className="mt-2 space-y-1 text-[14px] text-white/70">
+          <div className="mt-4 rounded-2xl bg-surface p-5 sm:p-6">
+            <h3 className="text-[15px] font-medium text-foreground">Yesterday&apos;s summary</h3>
+            <ul className="mt-2 space-y-1 text-[14px] text-muted">
               {data.daily_summary.lines.map((l) => (
                 <li key={l}>{l}</li>
               ))}
@@ -208,16 +208,16 @@ export function MarketBoard() {
       </section>
 
       {item ? (
-        <section aria-labelledby="chart-title" className="rounded-2xl bg-[#18112c] p-5 sm:p-6">
+        <section aria-labelledby="chart-title" className="rounded-2xl bg-surface p-5 sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 id="chart-title" className="text-[15px] font-medium text-white">
+            <h2 id="chart-title" className="text-[15px] font-medium text-foreground">
               {item.name}: {price(item)} {data.currency}
-              {side(item) ? <span className="ml-1 text-white/50">({side(item)})</span> : null}{" "}
-              <span className="ml-2 text-white/60">
+              {side(item) ? <span className="ml-1 text-muted">({side(item)})</span> : null}{" "}
+              <span className="ml-2 text-muted">
                 <Change value={item.change_24h} /> in 24 hours
               </span>
             </h2>
-            <div role="group" aria-label="Show the" className="flex rounded-lg bg-white/[0.06] p-1">
+            <div role="group" aria-label="Show the" className="flex rounded-lg bg-lavender p-1">
               {(
                 [
                   ["day", "24 hours"],
@@ -229,8 +229,8 @@ export function MarketBoard() {
                   type="button"
                   aria-pressed={range === k}
                   onClick={() => setRange(k)}
-                  className={`h-8 rounded-md px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff] ${
-                    range === k ? "bg-white text-[#100a1f]" : "text-white/65 hover:text-white"
+                  className={`h-8 rounded-md px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                    range === k ? "bg-sky-surface text-foreground" : "text-muted hover:text-foreground"
                   }`}
                 >
                   {l}
@@ -246,18 +246,18 @@ export function MarketBoard() {
 
       <section aria-labelledby="prices-title">
         <div className="flex flex-wrap items-end justify-between gap-3">
-          <h2 id="prices-title" className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">
+          <h2 id="prices-title" className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">
             Prices
           </h2>
-          <div role="group" aria-label="Category" className="flex flex-wrap gap-1 rounded-lg bg-white/[0.06] p-1">
+          <div role="group" aria-label="Category" className="flex flex-wrap gap-1 rounded-lg bg-lavender p-1">
             {categories.map((c) => (
               <button
                 key={c}
                 type="button"
                 aria-pressed={category === c}
                 onClick={() => setCategory(c)}
-                className={`h-8 rounded-md px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#a98fff] ${
-                  category === c ? "bg-white text-[#100a1f]" : "text-white/65 hover:text-white"
+                className={`h-8 rounded-md px-3 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                  category === c ? "bg-sky-surface text-foreground" : "text-muted hover:text-foreground"
                 }`}
               >
                 {c}
@@ -265,9 +265,9 @@ export function MarketBoard() {
             ))}
           </div>
         </div>
-        <div className="mt-4 overflow-x-auto rounded-2xl bg-[#18112c]">
+        <div className="mt-4 overflow-x-auto rounded-2xl bg-surface">
           <table className="w-full text-left text-[14px]">
-            <thead className="text-[12px] tracking-wide text-white/50 uppercase">
+            <thead className="text-[12px] tracking-wide text-muted uppercase">
               <tr>
                 <th className="px-4 py-3 font-medium">Item</th>
                 <th className="px-4 py-3 text-right font-medium">Price</th>
@@ -281,19 +281,19 @@ export function MarketBoard() {
             </thead>
             <tbody>
               {items.map((i) => (
-                <tr key={i.id} className={`border-t border-white/[0.06] ${item?.id === i.id ? "bg-white/[0.04]" : ""}`}>
+                <tr key={i.id} className={`border-t border-line ${item?.id === i.id ? "bg-surface/80" : ""}`}>
                   <td className="px-4 py-2">
                     <button
                       type="button"
                       onClick={() => setPicked(i.id)}
-                      className="text-white underline-offset-4 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-[#a98fff]"
+                      className="text-foreground underline-offset-4 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-accent"
                     >
                       {i.name}
                     </button>
                   </td>
-                  <td className="px-4 py-2 text-right text-white/80 tabular-nums">
+                  <td className="px-4 py-2 text-right text-muted tabular-nums">
                     {price(i)}
-                    {side(i) ? <span className="block text-[11px] text-white/45">{side(i)}</span> : null}
+                    {side(i) ? <span className="block text-[11px] text-muted">{side(i)}</span> : null}
                   </td>
                   <td className="px-4 py-2 text-right">
                     <Change value={i.change_1h} />
@@ -301,7 +301,7 @@ export function MarketBoard() {
                   <td className="px-4 py-2 text-right">
                     <Change value={i.change_24h} />
                   </td>
-                  <td className="px-4 py-2 text-right text-white/70 tabular-nums">{num(i.volume_24h)}</td>
+                  <td className="px-4 py-2 text-right text-muted tabular-nums">{num(i.volume_24h)}</td>
                   <td className="px-4 py-2">
                     <Spark s={i.day} />
                   </td>
@@ -310,7 +310,7 @@ export function MarketBoard() {
             </tbody>
           </table>
         </div>
-        <p className="mt-3 text-[13px] leading-relaxed text-white/50">
+        <p className="mt-3 text-[13px] leading-relaxed text-muted">
           One price per item, in {data.currency}, the same to buy and to sell{data.tax_percent ? `; the ${data.tax_percent}% tax comes on top of each trade` : ", with no tax"}, and a big trade moves the price as it goes. Items bought from the market can&apos;t
           be sold back to it for 24 hours. Times are in your time zone.
         </p>

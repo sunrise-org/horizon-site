@@ -16,10 +16,10 @@ export async function ModsPage({ locale }: { locale: Locale }) {
           {mods ? (
             <ModsList projects={mods.map(summarize)} ratings={ratings} t={t.list} numberLocale={NUMBER_LOCALE[locale]} />
           ) : (
-            <div className="rounded-2xl bg-[#18112c] px-6 py-10">
-              <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-white">{t.unreachable.title}</h2>
-              <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-white/60">{t.unreachable.body}</p>
-              <a href={OFFICIAL_MODS} className="mt-4 inline-flex text-sm font-medium text-[#c4b5ff] underline underline-offset-4 hover:text-white">
+            <div className="rounded-2xl bg-surface px-6 py-10">
+              <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-foreground">{t.unreachable.title}</h2>
+              <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-muted">{t.unreachable.body}</p>
+              <a href={OFFICIAL_MODS} className="mt-4 inline-flex text-sm font-medium text-accent-ink underline underline-offset-4 hover:text-foreground">
                 {t.unreachable.link}
               </a>
             </div>

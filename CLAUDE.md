@@ -1,7 +1,8 @@
-# horizon-site: playhorizon.dev
+# horizon-site: playsunrise.net
 
-The website of Horizon (Minecraft: Java Edition 26.3 rewritten in Rust). The game, the launcher and their developer
-docs are in [horizon-rust/horizon](https://github.com/horizon-rust/horizon), called "the game's repository" below.
+The website of Sunrise, a community fork of Horizon (Minecraft: Java Edition 26.3 rewritten in Rust). The game, the launcher
+and their developer docs are in [sunrise-org/horizon](https://github.com/sunrise-org/horizon), branch `release/sunrise`
+(`components/game-repo.ts`), called "the game's repository" below.
 [README.md](README.md) has the layout, the data sources, Kira's feeds and the environment; this page is the short map
 for agents.
 
@@ -21,14 +22,14 @@ dev server. Doc share cards are served by `app/og/docs/[...slug]/route.ts` inste
 
 ## Where the data comes from
 
-- **The game's `main` on GitHub**: `README.md` (parity numbers), `roadmap/roadmap.json` (the hub, and
+- **The game's branch on GitHub** (`GAME_REPO` at `GAME_REF`): `README.md` (parity numbers), `roadmap/roadmap.json` (the hub, and
   `/data/roadmap.json`, which Kira reads), `docs/api/*.md` (the `/docs/api` pages). Change those in the game's
   repository, never here.
 - **GitHub's API**: releases, contributors, the roadmap's issues and pull requests. Each loader has a cache tag (`components/github-fresh.ts`) that Kira revalidates through `POST /api/revalidate` when GitHub's webhook says it changed.
 - **Other services**: the mod registry (`REGISTRY_UPSTREAM`), Kira's staff service (`STAFF_UPSTREAM`), the telemetry
-  server (`telemetry.playhorizon.dev`).
-- **This repository**: the pages (`app/`, `components/`), the player docs (`content/docs/`), our benchmark runs
-  (`content/benchmarks/`, `public/benchmarks.json`), assets (`public/`).
+  server (`telemetry.playsunrise.net`).
+- **This repository**: the pages (`app/`, `components/`), the player docs (`content/docs/`),
+  assets (`public/`).
 
 ## Kira's journal
 
@@ -39,10 +40,10 @@ entries the feed holds without changing Kira with it.
 ## Deploy
 
 Railway project `horizon-site`, service `site`, environment `production`: every push to `main` here goes live within
-minutes (Dockerfile: `next build`, then `next start` on `$PORT`). When the files above change on the game's `main`,
+minutes (Dockerfile: `next build`, then `next start` on `$PORT`). When the files above change on the game's branch,
 the site is redeployed from source: for now by `~/code/horizon-parity/tools/site_redeploy_watch.sh` on the Mac mini
 (every 10 minutes), later by the game repository's `site-redeploy.yml` workflow. A failed build keeps the previous
-deployment live. After a deploy, check https://playhorizon.dev (/, /hub, /mods, /docs, /releases, /benchmarks,
+deployment live. After a deploy, check https://playsunrise.net (/, /hub, /mods, /docs, /releases,
 /data/roadmap.json, /data/journal.json).
 
 ## Text and translations
@@ -70,6 +71,6 @@ for text with links in it, `format` for `{values}`). Client components get their
 
 - Branch work in a worktree under `.claude/worktrees/<name>`; keep the main checkout on `main`.
 - The site's rules (disclaimer, no Minecraft logo, no trackers, reduced motion): README "Rules the site keeps".
-- Agents' PRs start with `> 🤖 Opened by Ludovic's AI agent (Claude), not by Ludovic himself.`, comments with
+- Agents' PRs start with `> 🤖 Opened by <login>'s AI agent (<tool, model>), not by <login> personally.`, comments with
   `🤖 Agent:`; commits end with a `Co-Authored-By:` line for the agent.
 - Never commit Mojang's files, secrets, or `.next/` and `.data/`.

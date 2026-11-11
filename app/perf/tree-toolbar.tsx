@@ -3,8 +3,7 @@
 import { CRATE_GROUPS } from "@/lib/perf/crate-group";
 import type { CrateGroup } from "@/lib/perf/crate-group";
 import { t } from "@/lib/perf/i18n";
-import type { GroupKind, SampleOptions, SampleSelection, ViewKind } from "@/lib/perf/tree-options";
-import type { Side } from "@/lib/perf/types";
+import type { GroupKind, SampleOptions, ViewKind } from "@/lib/perf/tree-options";
 import { Segmented } from "./segmented";
 import { Swatch } from "./tree-rows";
 import styles from "./page.module.css";
@@ -12,16 +11,11 @@ import tree from "./tree.module.css";
 
 interface Props {
   options: SampleOptions;
-  side: Side;
-  selection: SampleSelection;
   group: GroupKind;
-  thread: string | null;
   view: ViewKind;
   merge: boolean;
   query: string;
-  onSelection: (value: SampleSelection) => void;
   onGroup: (value: GroupKind) => void;
-  onThread: (value: string) => void;
   onView: (value: ViewKind) => void;
   onMerge: () => void;
   onQuery: (value: string) => void;
@@ -30,9 +24,7 @@ interface Props {
 }
 
 export function TreeToolbar(props: Props) {
-  const { options, side, selection, group, view, merge, query } = props;
-  const pace = side === "client" ? "Frames" : "Ticks";
-  const thread = props.thread ?? options.thread ?? "";
+  const { options, group, view, merge, query } = props;
   return (
     <div className={tree.controls}>
       <div className={tree.control}>
@@ -47,25 +39,6 @@ export function TreeToolbar(props: Props) {
           ]}
         />
       </div>
-      {options.selections.length > 1 ? (
-        <label className={tree.control}>
-          <span className={tree.controlLabel}>{t("tree.selection")}</span>
-          <select
-            className={styles.select}
-            value={selection}
-            onChange={(event) => {
-              const next = options.selections.find((id) => id === event.target.value);
-              if (next) props.onSelection(next);
-            }}
-          >
-            {options.selections.map((id) => (
-              <option key={id} value={id}>
-                {t(`tree.selection.${id}${id === "all" || id === "slow" ? pace : ""}`)}
-              </option>
-            ))}
-          </select>
-        </label>
-      ) : null}
       {options.groups.length > 1 ? (
         <label className={tree.control}>
           <span className={tree.controlLabel}>{t("tree.groupBy")}</span>
@@ -80,18 +53,6 @@ export function TreeToolbar(props: Props) {
             {options.groups.map((id) => (
               <option key={id} value={id}>
                 {t(`tree.group.${id}`)}
-              </option>
-            ))}
-          </select>
-        </label>
-      ) : null}
-      {options.threads.length > 1 && group !== "thread" ? (
-        <label className={tree.control}>
-          <span className={tree.controlLabel}>{t("tree.thread")}</span>
-          <select className={styles.select} value={thread} onChange={(event) => props.onThread(event.target.value)}>
-            {options.threads.map((name) => (
-              <option key={name} value={name}>
-                {name}
               </option>
             ))}
           </select>

@@ -1,6 +1,6 @@
 import { ogCard } from "@/components/og-card";
 
-export const alt = "Horizon: Minecraft: Java Edition 26.3, rebuilt in Rust";
+export const alt = "Sunrise: Minecraft: Java Edition 26.3, rebuilt in Rust";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
