@@ -1081,18 +1081,19 @@ select optgroup {
     radial-gradient(44rem 26rem at 70% 18%, rgb(120 50 130 / 0.16), transparent 70%);
 }
 
-/* The horizon: the one bright neon line, with a darker land under it. */
-.dawn-horizon {
-  inset: auto 0 7vh;
-  height: 1px;
-  opacity: 0.7;
-  background: linear-gradient(90deg, transparent 4%, rgb(255 90 168 / 0.5) 30%, rgb(255 214 150 / 0.85) 50%, rgb(255 90 168 / 0.5) 70%, transparent 96%);
-  box-shadow: 0 0 10px 1px rgb(255 90 168 / 0.4), 0 0 46px 8px rgb(255 140 120 / 0.12);
+/* The land: a soft dusk that deepens toward the bottom, with no edge, so nothing strikes through text. */
+.dawn-land {
+  inset: 55% 0 0;
+  background: linear-gradient(180deg, transparent, rgb(23 12 25 / 0.35) 60%, rgb(15 8 18 / 0.6));
 }
 
-.dawn-land {
-  inset: calc(100% - 7vh) 0 0;
-  background: linear-gradient(180deg, rgb(255 120 160 / 0.06), rgb(23 12 25 / 0.55) 40%, rgb(15 8 18 / 0.7));
+/* Scenes fade into the page instead of ending on a hard edge. */
+.fade-bottom {
+  mask-image: linear-gradient(#000 70%, transparent);
+}
+
+.fade-y {
+  mask-image: linear-gradient(transparent, #000 14%, #000 68%, transparent);
 }
 
 .dawn-grain {
@@ -1271,44 +1272,53 @@ select optgroup {
   pointer-events: none;
 }
 
-/* The footer's edge: a horizon line that glows, with a spark of light travelling along it. */
+/* The footer rises out of the page: no edge, the night deepens into it and a dawn glow breathes along its top. */
 .footer-horizon {
   position: relative;
+  isolation: isolate;
   overflow-x: clip;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--background) 40%, transparent), color-mix(in srgb, var(--background) 90%, transparent) 4rem);
 }
 
 .footer-horizon::before,
 .footer-horizon::after {
   content: "";
   position: absolute;
-  inset: -1px 0 auto;
-  height: 1px;
+  z-index: -1;
   pointer-events: none;
 }
 
+/* The dusk above the footer, so the page dissolves into it. */
 .footer-horizon::before {
-  background: linear-gradient(90deg, transparent, rgb(255 90 168 / 0.55) 22%, rgb(255 214 150 / 0.9) 50%, rgb(255 90 168 / 0.55) 78%, transparent);
-  box-shadow: 0 0 12px 1px rgb(255 90 168 / 0.45), 0 -18px 50px 4px rgb(255 120 140 / 0.1);
+  inset: -10rem 0 100%;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--background) 40%, transparent));
 }
 
+/* The glow: a sun just under the footer's top, warm in the middle, pink at the sides. */
 .footer-horizon::after {
-  background: radial-gradient(closest-side, #fff 0%, rgb(255 214 150 / 0.9) 40%, transparent);
-  height: 3px;
-  top: -2px;
-  width: 9rem;
-  right: auto;
-  left: calc(50% - 4.5rem);
-  filter: blur(0.5px);
+  top: -7rem;
+  left: 50%;
+  width: min(72rem, 130%);
+  height: 15rem;
+  translate: -50% 0;
+  background:
+    radial-gradient(28% 40% at 50% 55%, rgb(255 200 150 / 0.2), transparent 70%),
+    radial-gradient(50% 50% at 50% 55%, rgb(255 100 170 / 0.16), transparent 72%);
+  filter: blur(24px);
+  opacity: 0.85;
+  /* Its own layer: the blur is drawn once, and the animation only moves and fades it. */
+  will-change: translate, scale, opacity;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .footer-horizon::after {
-    left: -9rem;
-    animation: footer-spark 9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    animation: footer-glow 14s ease-in-out infinite alternate;
   }
 
-  @keyframes footer-spark {
-    to { translate: calc(100vw + 9rem) 0; }
+  @keyframes footer-glow {
+    0% { opacity: 0.6; scale: 0.92 1; translate: -54% 0; }
+    50% { opacity: 1; scale: 1.06 1.1; }
+    100% { opacity: 0.7; scale: 0.96 1; translate: -46% 0; }
   }
 }
 
@@ -1351,9 +1361,8 @@ select optgroup {
   background: color-mix(in srgb, var(--lavender) 75%, transparent);
 }
 
-/* The horizon belongs to the top of the page: once reading starts it fades, so it never strikes through text. */
+/* The land belongs to the top of the page: once reading starts it fades. */
 @supports (animation-timeline: scroll()) {
-  .dawn-horizon,
   .dawn-land {
     animation: dawn-set linear both;
     animation-timeline: scroll(root block);

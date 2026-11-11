@@ -12,7 +12,7 @@ No. It is not an official Minecraft product, and it is not approved by or associ
 
 ## Is Sunrise the same as Minecraft Rust Edition?
 
-"Minecraft Rust Edition" is a name some players use for Sunrise, because Sunrise is Minecraft: Java Edition rewritten in Rust. It is not an edition made by Mojang or Microsoft. Other projects use the name too, including a fork of Sunrise. The original is the one on this site, with its source at [sunrise-org/horizon](https://github.com/sunrise-org/horizon). See [What Sunrise is](/docs/).
+"Minecraft Rust Edition" is a name some players use for Sunrise, because Sunrise is Minecraft: Java Edition rewritten in Rust. It is not an edition made by Mojang or Microsoft. Other projects use the name too, including a fork of Sunrise. The original is the one on this site, with its source at [sunrise-org/horizon](https://github.com/sunrise-org/horizon). See [What is Sunrise?](/docs).
 
 ## Will my Forge, NeoForge or Fabric mods work?
 
@@ -48,11 +48,11 @@ Preparation runs vanilla's own data generator on your copy of the game, to read 
 
 ## How close is Sunrise to vanilla?
 
-The harnesses compare Sunrise with the real game on the same inputs, subsystem by subsystem; [the status table](/#parity) shows what they covered when the project started. Passing them is not proof that nothing else differs, and players still find differences. Parity work targets 26.3, redstone first. See [What Sunrise is](/docs/).
+The harnesses compare Sunrise with the real game on the same inputs, subsystem by subsystem; [the status table](/#parity) shows what they covered when the project started. Passing them is not proof that nothing else differs, and players still find differences. Parity work targets 26.3, redstone first. See [What is Sunrise?](/docs).
 
 ## Which systems does it run on?
 
-Linux x86-64, macOS on Apple Silicon or Intel, and Windows x64 or ARM64. See [supported systems](/docs/#supported-systems).
+Linux x86-64, macOS on Apple Silicon or Intel, and Windows x64 or ARM64. See [supported systems](/docs/features#supported-systems).
 
 ## Are shader packs supported?
 

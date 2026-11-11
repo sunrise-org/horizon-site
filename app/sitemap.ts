@@ -33,8 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...inEveryLanguage("/", { lastModified: released, changeFrequency: "daily", priority: 1 }),
     ...inEveryLanguage("/releases", { lastModified: released, changeFrequency: "hourly", priority: 0.9 }),
     ...inEveryLanguage("/mods", { lastModified: modsUpdated, changeFrequency: "daily", priority: 0.8 }),
-    { url: absolute("/hub"), changeFrequency: "daily", priority: 0.7 },
-    ...inEveryLanguage("/stats", { changeFrequency: "hourly", priority: 0.5 }),
+    { url: absolute("/team"), changeFrequency: "weekly", priority: 0.6 },
     ...docs.map((doc) => ({
       url: absolute(doc.path),
       changeFrequency: "weekly" as const,
@@ -47,7 +46,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5,
     })),
     { url: absolute("/mods/policy"), changeFrequency: "monthly", priority: 0.3 },
-    ...inEveryLanguage("/artists", { changeFrequency: "monthly", priority: 0.4 }),
     ...inEveryLanguage("/faq", { changeFrequency: "monthly", priority: 0.6 }),
     { url: absolute("/modding-team"), changeFrequency: "monthly", priority: 0.4 },
     { url: absolute("/privacy"), changeFrequency: "yearly", priority: 0.2 },
