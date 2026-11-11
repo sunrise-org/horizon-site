@@ -2,7 +2,7 @@
 
 > **Legacy.** `horizon-mixin.toml`, `compatibility.json` and `.hnmod` belong to released Sunrise's mixin workflow. A new mod has one manifest, [`horizon-mod.toml`](/docs/mod-manifest), and ships as one `.hmod`.
 
-A native mod is a bundle for [horizon-mixins](https://github.com/sunrise-org/horizon-mixins): the manifest `horizon-mixin.toml`, the mod's own code, and one small helper for each place it hooks. This page explains the manifest, what Sunrise a mod builds on, and the `.hnmod` file players install. Content mods have a different manifest, on [their own page](/docs/content-mods#the-manifest).
+A native mod is a bundle for [horizon-mixins](https://github.com/sunrise-org/horizon-mixins): the manifest `horizon-mixin.toml`, the mod's own code, and one small helper for each place it hooks. This page explains the manifest, what Sunrise a mod builds on, and the `.hnmod` file players install. Content mods have a different manifest, on [their own page](/docs/mod-manifest).
 
 ## The manifest
 

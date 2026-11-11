@@ -17,11 +17,11 @@ Nothing is uploaded or shared. The mod jars and what is made from them stay on y
 
 ## What carries over, and what does not
 
-**Carries over today:** content mods whose substance is data and assets. Blocks and items built on vanilla's shapes, recipes, loot tables, tags, models, textures and language files, and structures that are described in data, such as the structure mods that use jigsaw pools. Loot tables and structures from the mods you carry show up in your world.
+**Carries over today:** mods whose substance is data and assets. Blocks and items built on vanilla's shapes, recipes, loot tables, tags, models, textures and language files, and structures that are described in data, such as the structure mods that use jigsaw pools. Loot tables and structures from the mods you carry show up in your world.
 
 **Not yet:**
 
-- **Mods with Java code:** machines, magic, new mob behaviour, anything that needs the mod's own logic. Each of these must be ported by hand as a Sunrise [native mod](/docs/make-a-mod), and checked against the original mod running in a Java test instance. That work is under way; none of it is something you can install yet.
+- **Mods with Java code:** machines, magic, new mob behaviour, anything that needs the mod's own logic. Each of these must be ported by hand as a Sunrise [mod with Rust code](/docs/mod-code), and checked against the original mod running in a Java test instance. That work is under way; none of it is something you can install yet.
 - **World generation written in code:** custom biomes, terrain shaping and structure types that are Java classes.
 - **Scripts** such as KubeJS, and recipe viewers and map mods that are built around Java.
 
@@ -35,7 +35,7 @@ Measured on three packs: Vanilla Perfected (108 files) ports 2 mods, Slimes Adve
 
 ## Example: All the Mods 10
 
-All the Mods 10 has 495 jars. Sunrise's report sorts them: about 290 add content, 80 are libraries, and the rest are integrations, interface mods, tools and performance mods. A few dozen of the content mods carry over today. The measured numbers are in [docs/modpacks.md](https://github.com/sunrise-org/horizon/blob/main/docs/modpacks.md).
+All the Mods 10 has 495 jars. Sunrise's report sorts them: about 290 add content, 80 are libraries, and the rest are integrations, interface mods, tools and performance mods. A few dozen of the content-adding mods carry over today. The measured numbers are in [docs/modpacks.md](https://github.com/sunrise-org/horizon/blob/main/docs/modpacks.md).
 
 ## From the command line
 

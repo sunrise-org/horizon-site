@@ -1,9 +1,10 @@
 import { getDocs, getDocsNav, searchIndex } from "@/components/docs-data";
 import { DocsNav, type DocsNavItem } from "@/components/docs-nav";
+import "./docs.css";
 
 export default async function DocsLayout({ children }: LayoutProps<"/docs">) {
   const [nav, docs] = await Promise.all([getDocsNav(), getDocs()]);
-  const groups = nav.map(({ group, section, pages, parents = {} }) => {
+  const groups = nav.map(({ group, section, pages, parents = {}, book }) => {
     const items: DocsNavItem[] = [];
     const bySlug = new Map<string, DocsNavItem>();
     for (const slug of pages) {
@@ -13,7 +14,7 @@ export default async function DocsLayout({ children }: LayoutProps<"/docs">) {
       bySlug.set(slug, item);
       (bySlug.get(parents[slug])?.children ?? items).push(item);
     }
-    return { group, section, items };
+    return { group, section, items, book };
   });
 
   return (

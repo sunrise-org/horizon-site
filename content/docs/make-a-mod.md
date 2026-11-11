@@ -1,61 +1,131 @@
-# Make a mod
+# Make a mod: quickstart
 
-A mod is one project folder with one manifest, `horizon-mod.toml`, and it ships as one file, `<id>.hmod`. That is true whether it adds a block from data files, runs Rust code in the game, or both. This page gets the tool installed and points you at the first thing to build.
+Install the mod tool, make your first mod folder and pack it into one `.hmod` file. Plan on fifteen minutes, most of it waiting for the tool to compile.
 
-## One mod, one file
+## What you will have at the end
 
-| Kind | What the folder holds | How it runs |
-| --- | --- | --- |
-| **Content** | `horizon-mod.toml`, `assets/`, `data/` | The game reads it when it starts. Nothing compiles. |
-| **Native** | The same, plus `Cargo.toml` and `src/lib.rs` | The launcher compiles the Rust into the game for one instance. |
-| **WebAssembly** | The same source, built to `mod.wasm` | The game runs it in its sandbox, with no rebuild of the game. |
+- A folder on your computer with your mod's files in it.
+- One file, `my_first_mod.hmod`, that holds the whole mod.
 
-Native and WebAssembly mods are written against the same API, `mod_api`. A mod with code can carry blocks and items in the same folder: there is no second file for the code and no second manifest. The older split between `.hmod` content and `.hnmod` native bundles is [legacy](/docs/what-changed#migrating-an-hnmod-mod).
+That is the whole idea of Sunrise modding: **one folder while you work, one `.hmod` file when you share it.** The same is true when your mod has Rust code in it. [How a mod works](/docs/how-mods-work) explains why.
 
-A Sunrise mod is not a Java mod. Fabric, NeoForge and Forge jars don't run, and Sunrise mods don't run in Java Minecraft. What carries over from a jar is its data and assets ([modpacks](/docs/modpacks)).
+## Step 1: Open a terminal
 
-## Which build these guides follow
+Every command on these pages is typed in a terminal, then run with Enter.
 
-The guides follow the mod API on [Ari's Horizon](https://github.com/arismoko/horizon), where it is developed. They were checked against commit [`514ecf9`](https://github.com/arismoko/horizon/tree/514ecf9a966cdf2bc4f81f091827d81767756fd9) on 2026-11-11: the templates, commands and launcher steps were compared with that commit's source and documentation. `new`, `build` and `check` were last run for both examples at [`8fbf4ba`](https://github.com/arismoko/horizon/tree/8fbf4ba61b5a4676b606337ead882e4a003d447d), and their output is quoted as printed then; the tool's commands and output did not change between the two. The API is still moving: [What changed](/docs/what-changed) keeps track, and the [modding book](/docs/modding) is that repository's own documentation, copied at the same commit.
+- **Windows:** open the Start menu, type `PowerShell` and open it.
+- **macOS:** open **Terminal**, in Applications, then Utilities.
+- **Linux:** open your usual terminal.
 
-Released Sunrise is older and still installs `.hnmod` bundles. If you maintain one, its pages are under [Legacy](/docs/legacy-native-mods).
+> [!TIP] One terminal is enough
+> The commands are the same on all three systems unless a step says otherwise. Keep the same window open as you go.
 
-## Install the tool
+## Step 2: Install Rust
 
-You need [Rust](https://rustup.rs) and Git. `cargo horizon-mod` makes, packs and checks mods:
+The mod tool is written in Rust, and Rust's installer also gives you `cargo`, which runs it.
+
+1. Go to [rustup.rs](https://rustup.rs).
+2. **Windows:** download and run `rustup-init.exe`. If it offers to install the Visual Studio C++ build tools, accept: Rust needs them on Windows.
+3. **macOS and Linux:** paste this line in the terminal:
+
+   ```sh
+   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   ```
+
+4. **Close the terminal and open a new one,** so it finds the new commands.
+5. Check it worked:
+
+   ```sh
+   cargo --version
+   ```
+
+   It prints a version, such as `cargo 1.x.y`. If it says the command is not found, open a new terminal again.
+
+## Step 3: Install the mod tool
+
+`cargo horizon-mod` makes, packs and checks mods. Install it from Ari's repository, where the mod API is developed:
 
 ```sh
 cargo install --locked --git https://github.com/arismoko/horizon cargo-horizon-mod
 ```
 
-It builds from source in a few minutes. Run the same command again later to update it. To get exactly the tool these pages were checked with, add `--rev 514ecf9a966cdf2bc4f81f091827d81767756fd9`.
+- It compiles the tool from source. That takes a few minutes the first time.
+- Run the same line again later to update it.
 
-A content mod needs nothing else to build. To play it, and to build a native mod, you also need Ari's launcher and a prepared game: [Installing and using mods](/docs/modding/start/installing) in the book covers both.
+Check it worked by running it with nothing after it:
 
-## Pick a first mod
+```sh
+cargo horizon-mod
+```
 
-- **[Build your first block](/docs/build-your-first-block)**: a content mod. Data and assets only, about ten minutes.
-- **[Your first typed hook](/docs/mod-code#your-first-typed-hook)**: a native mod. One Rust file that greets a player.
+It answers with a long line that starts with `error: usage: cargo horizon-mod new <path>`. The "error" only means you gave it no command: the tool is installed.
 
-## The commands
+## Step 4: Make your mod folder
 
-All of them run in the mod's folder.
+1. Go to the folder where you keep your projects. For example, your Documents folder:
 
-| Command | What it does |
-| --- | --- |
-| `cargo horizon-mod new <path> [--name "Name"]` | A content mod from the template: a manifest and one block with its model, loot table and recipe. |
-| `cargo horizon-mod new <path> --template native` | A native mod: `horizon-mod.toml` with `[native]`, `Cargo.toml` and `src/lib.rs`. It pins the newest prebuilt game, so the launcher downloads the game instead of building it. `--horizon <commit>` pins another. |
-| `cargo horizon-mod build` | Checks the project and packs it into `target/horizon-mod/<id>.hmod`. It does not compile code. `--wasm` builds the Rust to `mod.wasm` first. |
-| `cargo horizon-mod run [--game <horizon-client>]` | Builds, then starts the game with the mod turned on. |
-| `cargo horizon-mod check <file>` | Runs the registry's checks on a `.hmod`. `--json` prints JSON. |
-| `cargo horizon-mod update [--horizon <commit>]` | Moves a native mod's pins to a newer game. |
+   ```sh
+   cd ~/Documents
+   ```
 
-## The path
+   This works in PowerShell, Terminal and Linux shells alike.
 
-1. **[Build your first block](/docs/build-your-first-block)**: the content tutorial.
-2. **[The typed mod API](/docs/mod-code)**: hooks, the host, Parts and a first native mod.
-3. **[The manifest](/docs/mod-manifest)**: every field of `horizon-mod.toml` and what goes in the `.hmod`.
-4. **[Test a mod](/docs/test-a-mod)**: the checker, unit tests and the game.
-5. **[Publish a mod](/docs/publish-a-mod)**: sign it and submit it.
+2. Make the mod:
 
-Next: [build your first block](/docs/build-your-first-block).
+   ```sh
+   cargo horizon-mod new my_first_mod --name "My First Mod"
+   ```
+
+3. The tool answers:
+
+   ```text
+   Created my_first_mod (mod id my_first_mod). Next: cd my_first_mod && cargo horizon-mod run
+   ```
+
+You now have a folder `my_first_mod` with a manifest and one example block, Glowing Amethyst.
+
+> [!NOTE] The folder name becomes the mod's id
+> Letters and digits are kept in lowercase, and every other character becomes `_`. So `new My-Mod` makes the id `my_mod`. The id is the mod's namespace: its block is `my_first_mod:glowing_amethyst`.
+
+## Step 5: Pack it into one file
+
+1. Go into the folder:
+
+   ```sh
+   cd my_first_mod
+   ```
+
+2. Pack it:
+
+   ```sh
+   cargo horizon-mod build
+   ```
+
+3. The tool answers with the path of your new file (on Windows, some `/` show as ``):
+
+   ```text
+   Built ./target/horizon-mod/my_first_mod.hmod
+   ```
+
+That `.hmod` is your whole mod. You can now [test it](/docs/test-a-mod), or send it to a friend.
+
+## Step 6: Pick what to build next
+
+- **[Build your first block](/docs/build-your-first-block).** Walks through every file the tool just made, then adds your own.
+- **[Add code to your mod](/docs/mod-code).** One Rust file that greets players when they join.
+- **[How a mod works](/docs/how-mods-work).** Registries, ids and where each file goes, explained in plain words.
+
+## The tool's commands
+
+Run them inside your mod's folder.
+
+- `cargo horizon-mod new <folder>` makes a mod from the example template. Add `--name "Name"` to set its display name.
+- `cargo horizon-mod new <folder> --template native` makes a mod with Rust code: the manifest, `Cargo.toml` and `src/lib.rs`.
+- `cargo horizon-mod build` checks your files and packs them into `target/horizon-mod/<id>.hmod`. It does not compile Rust: the player's launcher does that.
+- `cargo horizon-mod build --wasm` first builds your Rust to `mod.wasm`, for the game's sandbox.
+- `cargo horizon-mod run` packs the mod, then starts the game with it turned on. For mods with data only.
+- `cargo horizon-mod check <file>` reads a `.hmod` the way the mod registry does. Add `--json` for JSON.
+- `cargo horizon-mod update` moves a mod with Rust code to a newer game.
+
+> [!NOTE] Which build these guides follow
+> The mod API is developed on [Ari's repository](https://github.com/arismoko/horizon) and still changes. These guides were checked against commit [`bfbda6a`](https://github.com/arismoko/horizon/tree/bfbda6a8a3b32a0bcbc93b90831576934a00dabd) on 2026-11-11: the templates and commands were compared with its source. The tool's printed output was last captured at [`8fbf4ba`](https://github.com/arismoko/horizon/tree/8fbf4ba61b5a4676b606337ead882e4a003d447d). To install exactly that tool, add `--rev bfbda6a8a3b32a0bcbc93b90831576934a00dabd` to the install line.

@@ -8,12 +8,17 @@ import { DocsSearch } from "@/components/docs-search";
 import { ChevronDownIcon } from "@/components/icons";
 
 export type DocsNavItem = { path: string; title: string; children: DocsNavItem[] };
-export type DocsNavGroup = { group: string; section: string; items: DocsNavItem[] };
+export type DocsNavGroup = { group: string; section: string; items: DocsNavItem[]; book?: boolean };
 
 type DocsNavProps = { groups: DocsNavGroup[]; index: DocIndexEntry[] };
 
-// A group this long starts closed unless the reader is on one of its pages.
-const LONG = 12;
+// One line under each part's name, so the reader knows what the part is for before opening a group.
+const PARTS: Record<string, string> = {
+  Overview: "What Sunrise is, what it can do and who makes it.",
+  Play: "Install, play, add mods and host a server.",
+  Modding: "Make a mod: one folder, one .hmod file.",
+  API: "Formats, commands and the server and launcher APIs.",
+};
 
 // The current path is runtime data: reading it outside <Suspense> stops Next.js from rendering /docs/[...slug]
 // (CLIENT_HOOK_DYNAMIC, 500 on every doc page). The fallback is the same nav with no page marked as current.
@@ -96,25 +101,18 @@ function NavLink({ item, pathname, depth }: { item: DocsNavItem; pathname: strin
 function NavGroup({ group, pathname }: { group: DocsNavGroup; pathname: string }) {
   const inside = group.items.some((i) => holds(i, pathname));
   const [toggled, setToggled] = useState<boolean | null>(null);
-  const open = toggled ?? (inside || group.items.length <= LONG);
-  const id = `docs-nav-group-${group.group.replace(/\W+/g, "-")}`;
+  const open = toggled ?? (inside || !group.book);
+  const id = `docs-nav-group-${group.section}-${group.group}`.replace(/\W+/g, "-");
+  const label = group.book ? group.group.replace(/^Book: /, "") : group.group;
   return (
-    <div className="mt-5 first:mt-0">
-      <button
-        type="button"
-        aria-expanded={open}
-        aria-controls={id}
-        onClick={() => setToggled(!open)}
-        className="group flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-left outline-none focus-visible:ring-2 focus-visible:ring-accent"
-      >
-        <span className={`text-[11.5px] font-semibold tracking-[0.09em] uppercase transition-colors group-hover:text-foreground ${inside ? "text-accent-ink" : "text-muted"}`}>
-          {group.group}
-        </span>
-        <span className="ml-auto text-[11px] text-muted tabular-nums">{group.items.length}</span>
+    <div className="docs-group" data-inside={inside || undefined}>
+      <button type="button" aria-expanded={open} aria-controls={id} onClick={() => setToggled(!open)} className="docs-group-head">
         <Chevron open={open} />
+        <span className="min-w-0 flex-1 truncate">{label}</span>
+        <span className="docs-group-count">{group.items.length}</span>
       </button>
       <Fold open={open} id={id}>
-        <ul className="mt-1 space-y-px">
+        <ul className="docs-group-list">
           {group.items.map((item) => (
             <NavLink key={item.path} item={item} pathname={pathname} depth={0} />
           ))}
@@ -137,6 +135,7 @@ function DocsNavView({ groups, index, pathname }: DocsNavProps & { pathname: str
   const here = groups.find((g) => g.items.some((i) => holds(i, pathname)));
   const section = picked ?? here?.section ?? sections[0];
   const current = here?.items.flatMap((i) => [i, ...i.children]).find((i) => i.path === pathname);
+  const shown = groups.filter((g) => g.section === section);
   const list = useRef<HTMLElement>(null);
 
   // Bring the current page into view inside the menu's own scroll area, without moving the page.
@@ -191,11 +190,21 @@ function DocsNavView({ groups, index, pathname }: DocsNavProps & { pathname: str
           className={`${open ? "block" : "hidden"} docs-nav-scroll mt-3 lg:block lg:max-h-[calc(100vh-15.5rem)] lg:overflow-y-auto`}
         >
           <div key={section} className="docs-nav-section pb-1">
-            {groups
-              .filter((g) => g.section === section)
-              .map((group) => (
-                <NavGroup key={group.group} group={group} pathname={pathname} />
-              ))}
+            <div className="docs-part-head">
+              <p className="docs-part-title">{section}</p>
+              {PARTS[section] && <p className="docs-part-blurb">{PARTS[section]}</p>}
+            </div>
+            {shown.map((group, i) => (
+              <div key={group.group}>
+                {group.book && !shown[i - 1]?.book && (
+                  <div className="docs-book-divider">
+                    <p className="docs-book-title">Reference book</p>
+                    <p className="docs-part-blurb">Ari&rsquo;s complete mod API book, copied from arismoko/horizon.</p>
+                  </div>
+                )}
+                <NavGroup group={group} pathname={pathname} />
+              </div>
+            ))}
           </div>
         </nav>
       </div>

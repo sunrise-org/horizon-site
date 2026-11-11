@@ -7,15 +7,41 @@ Download the launcher, let it install Sunrise, then prepare the game from your o
 - **A Microsoft account that owns Minecraft: Java Edition.** Like other launchers, Sunrise's launcher plays only while such an account is signed in.
 - **Minecraft: Java Edition 26.3, played once.** Install it with the official Minecraft launcher (or Prism Launcher, MultiMC, the Modrinth App, ATLauncher or GDLauncher) and start 26.3 once, so it downloads its files. Sunrise reads them from there and never copies them anywhere else.
 - **Java 25, a JDK**, for the one-time preparation only (the game itself needs no Java). Nothing to install: the launcher uses the Java the Minecraft launcher downloaded for 26.3, or downloads that same Java from Mojang. A JDK you installed yourself (for example [Eclipse Temurin 25](https://adoptium.net/temurin/releases/?version=25)) works too.
-- **A computer on the [supported list](/docs/#supported-systems).** On Linux and Windows that means a graphics card with Vulkan (or DirectX 12 on Windows).
+- **A computer on the [supported list](/docs/features#supported-systems).** On Linux and Windows that means a graphics card with Vulkan (or DirectX 12 on Windows).
 
 ## Download the launcher
 
 Get the newest launcher from the [Download button on the home page](/), which picks the right file for your system, or from [the launcher releases on GitHub](https://github.com/sunrise-org/horizon/releases?q=launcher&expanded=true).
 
-- **Linux:** download `horizon-launcher-linux-x86_64.tar.gz`, extract it and run `horizon-launcher`.
-- **macOS:** download `horizon-launcher-macos-arm64.dmg` for Apple Silicon (M1 or newer), or `horizon-launcher-macos-x64.dmg` for an Intel Mac (Apple menu, **About This Mac**: "Chip" means Apple Silicon, "Processor" Intel). Open it and drag Sunrise onto Applications, then open it from Applications, not from the disk image. The first time, macOS says it cannot check the app, because it is not signed with a paid Apple developer account. On macOS 14 and earlier, right-click Sunrise, choose **Open**, then **Open** again. On macOS 15 and later, open it once, then go to **System Settings, Privacy & Security** and choose **Open Anyway**. After that it opens normally.
-- **Windows:** download `horizon-launcher-setup.exe` and run it (on a Windows on ARM PC, such as a Snapdragon laptop, `horizon-launcher-setup-arm64.exe` runs natively; the x64 one works there too). It installs the launcher for your account (no administrator needed) with a Start menu shortcut, and the launcher updates itself from there; **Apps & features** removes it. If you'd rather not install it, `horizon-launcher-windows-x64.zip` holds the same launcher: extract it (right-click, **Extract All**) and run `horizon-launcher.exe` from the extracted folder, not from inside the ZIP, where Windows runs a temporary copy it throws away later.
+### Linux
+
+1. Download `horizon-launcher-linux-x86_64.tar.gz`.
+2. Extract it.
+3. Run `horizon-launcher`.
+
+### macOS
+
+1. Download the right disk image:
+   - `horizon-launcher-macos-arm64.dmg` for Apple Silicon (M1 or newer).
+   - `horizon-launcher-macos-x64.dmg` for an Intel Mac.
+   - Not sure? Apple menu, **About This Mac**: "Chip" means Apple Silicon, "Processor" means Intel.
+2. Open it and drag Sunrise onto **Applications**.
+3. Open Sunrise from Applications, not from the disk image.
+4. The first time, macOS says it cannot check the app, because it is not signed with a paid Apple developer account:
+   - **macOS 14 and earlier:** right-click Sunrise, choose **Open**, then **Open** again.
+   - **macOS 15 and later:** open it once, then go to **System Settings, Privacy & Security** and choose **Open Anyway**.
+
+After that it opens normally.
+
+### Windows
+
+1. Download `horizon-launcher-setup.exe` and run it. On a Windows on ARM PC, such as a Snapdragon laptop, `horizon-launcher-setup-arm64.exe` runs natively; the x64 one works there too.
+2. It installs the launcher for your account, with no administrator needed, and adds a Start menu shortcut.
+
+The launcher updates itself from there. **Apps & features** removes it.
+
+> [!TIP] Rather not install it?
+> `horizon-launcher-windows-x64.zip` holds the same launcher. Extract it first (right-click, **Extract All**), then run `horizon-launcher.exe` from the extracted folder. Run from inside the ZIP, Windows uses a temporary copy it throws away.
 
 Every release also carries `SHA256SUMS` and a signature, `SHA256SUMS.sig`, if you want to check your download. The launcher does not check that signature for you yet.
 
@@ -31,7 +57,8 @@ The game opens on vanilla's title screen. Your worlds, options and logs live in 
 - macOS: `~/Library/Application Support/horizon`
 - Windows: `%APPDATA%\horizon`
 
-> **Sign in to play.** Without a signed-in account, the launcher shows **Sign in to play**. Choose **Open link**, enter the code it shows on Microsoft's page in your browser, and the launcher goes on by itself. Until an account that owns Java Edition is signed in, **Play** asks you to sign in instead of starting the game. Once one is, you can also play under an offline name.
+> [!NOTE] Sign in to play
+> Without a signed-in account, the launcher shows **Sign in to play**. Choose **Open link**, enter the code it shows on Microsoft's page in your browser, and the launcher goes on by itself. Until an account that owns Java Edition is signed in, **Play** asks you to sign in instead of starting the game. Once one is, you can also play under an offline name.
 
 ## Updating
 

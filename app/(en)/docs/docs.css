@@ -1,0 +1,286 @@
+/* The docs' own styles, loaded by app/(en)/docs/layout.tsx after app/globals.css. */
+
+/* ── Text that breaks badly ─────────────────────────────────────────────── */
+
+/* `overflow-wrap: anywhere` lets a table column shrink until `.hmod` breaks as ".hm" / "od". Inline code may still
+   wrap at a space or, as a last resort, inside a word that would otherwise overflow, but it never sets a column's
+   width below its longest word: a table that is too wide scrolls inside its frame instead. */
+.docs-lede code,
+.docs-prose :not(pre) > code {
+  overflow-wrap: break-word;
+}
+
+/* Table code breaks only at the <wbr> after `/`, `::` and `_` (components/docs-markdown.ts), never inside a word. */
+.docs-prose :is(td, th) code {
+  overflow-wrap: normal;
+  word-break: normal;
+  white-space: normal;
+}
+
+.docs-prose th {
+  white-space: nowrap;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.875rem;
+}
+
+/* ── Callouts: `> [!NOTE]`, `> [!TIP]`, `> [!WARNING]` ──────────────────── */
+
+.docs-prose .callout {
+  --callout: var(--accent-ink);
+  position: relative;
+  max-width: 44rem;
+  padding: 0.85em 1.1em 0.9em 1.35em;
+  border: 1px solid color-mix(in srgb, var(--callout) 30%, var(--line));
+  border-radius: 12px;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--callout) 11%, transparent), transparent 75%), var(--surface);
+  color: var(--muted);
+  overflow: hidden;
+}
+
+.docs-prose .callout::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--callout);
+}
+
+.docs-prose .callout-tip {
+  --callout: #8fe0b0;
+}
+
+.docs-prose .callout-warning {
+  --callout: var(--accent);
+}
+
+.docs-prose .callout > * + * {
+  margin-top: 0.55em;
+}
+
+.docs-prose .callout-title {
+  color: var(--foreground);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.01em;
+}
+
+.docs-prose .callout-title::before {
+  display: inline-block;
+  width: 1.4em;
+  color: var(--callout);
+  font-weight: 700;
+}
+
+.docs-prose .callout-note .callout-title::before {
+  content: "i";
+}
+
+.docs-prose .callout-tip .callout-title::before {
+  content: "\2713";
+}
+
+.docs-prose .callout-warning .callout-title::before {
+  content: "!";
+}
+
+/* ── The menu: part, group, page, chapter ───────────────────────────────── */
+
+/* Level 1, the part: the name of the chosen tab, large, with what it is for. */
+.docs-part-head {
+  padding: 0.15rem 0.6rem 0.75rem;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+
+.docs-part-title {
+  color: var(--foreground);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.docs-part-blurb {
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+/* Level 2, the group: a full-width row with a chevron in front, in the text colour, never uppercase. */
+.docs-group {
+  margin-top: 0.35rem;
+}
+
+.docs-group-head {
+  display: flex;
+  width: 100%;
+  min-height: 36px;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.6rem 0.35rem 0.45rem;
+  border-radius: 9px;
+  color: var(--foreground);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+.docs-group-head:hover {
+  background: color-mix(in srgb, var(--lavender) 70%, transparent);
+}
+
+.docs-group-head:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.docs-group[data-inside] > .docs-group-head {
+  color: var(--accent-ink);
+}
+
+.docs-group-count {
+  min-width: 1.5rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--background) 60%, transparent);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.6;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Level 3, the page: indented under its group, on a rail. Level 4, a chapter, keeps the rail of globals.css. */
+.docs-group-list {
+  margin: 0.15rem 0 0.5rem 1.05rem;
+  padding-left: 0.5rem;
+  border-left: 1px solid color-mix(in srgb, var(--line) 85%, transparent);
+}
+
+.docs-group-list > li + li {
+  margin-top: 1px;
+}
+
+.docs-group-list .docs-nav-link[aria-current="page"] {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-ink) 35%, transparent);
+}
+
+/* The modding book: a labelled divider, so it reads as Modding's reference and not as a second set of docs. */
+.docs-book-divider {
+  margin: 1.1rem 0.6rem 0.35rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed color-mix(in srgb, var(--line) 90%, transparent);
+}
+
+.docs-book-title {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Four parts fit the tab bar only in short words. */
+.docs-tab {
+  font-size: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-group-head svg {
+    transition: none;
+  }
+}
+
+/* Tables get a touch smaller text and tighter cells, so wide reference tables fit without scrolling. */
+.docs-prose table {
+  font-size: 0.875rem;
+}
+
+.docs-prose :is(td, th) {
+  padding-inline: 0.75rem;
+}
+
+/* Text keeps a comfortable line length; only tables and code use the page's full width. */
+.docs-prose > :is(p, ul, ol, h2, h3, h4, blockquote) {
+  max-width: 48rem;
+}
+
+/* ── Reference cards: a table whose cells hold sentences (components/docs-markdown.ts) ───────────────── */
+
+.docs-prose ul.ref-cards {
+  display: grid;
+  gap: 0.85rem;
+  margin-block: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.docs-prose .ref-cards > li.ref-card {
+  margin: 0;
+  padding: 1rem 1.15rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  border-left: 3px solid color-mix(in srgb, var(--accent-ink) 55%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+}
+
+.docs-prose .ref-cards > li.ref-card::before {
+  content: none;
+}
+
+.docs-prose .ref-card-title {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-display, inherit);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.docs-prose .ref-card dl {
+  display: grid;
+  gap: 0.35rem 1.25rem;
+  margin: 0;
+}
+
+.docs-prose .ref-card dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+
+.docs-prose .ref-card dd {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.docs-prose .ref-card dd:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 48rem) {
+  .docs-prose .ref-card dl {
+    grid-template-columns: 9rem minmax(0, 1fr);
+  }
+
+  .docs-prose .ref-card dt {
+    padding-top: 0.2rem;
+  }
+
+  .docs-prose .ref-card dd {
+    margin-bottom: 0;
+  }
+}
+
+/* The card's own code may wrap like table code, at the <wbr> only. */
+.docs-prose .ref-card code {
+  overflow-wrap: normal;
+  word-break: normal;
+}

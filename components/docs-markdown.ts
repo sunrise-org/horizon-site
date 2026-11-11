@@ -123,12 +123,31 @@ function cells(row: string) {
   return out.map((c) => c.trim());
 }
 
+// Long paths and names in table code may break after `/`, `::` or `_`, and nowhere else, so `.hmod` stays whole.
+const breakable = (html: string) =>
+  html.replace(/<code>([^<]*)<\/code>/g, (_, code: string) => `<code>${code.replace(/(\/|::|_)/g, "$1<wbr>")}</code>`);
+
+// A table whose cells hold sentences reads badly in narrow columns: with 3+ columns and a cell over this many
+// characters, each row becomes a card instead, its first cell as the title and the others labelled by their header.
+const LONG_CELL = 90;
+
 function table(lines: string[], start: number): [string, number] {
-  const row = (line: string, tag: string) => `<tr>${cells(line).map((c) => `<${tag}>${inline(c)}</${tag}>`).join("")}</tr>`;
+  const cell = (c: string) => breakable(inline(c));
+  const head = cells(lines[start]);
   let i = start + 2;
-  const body: string[] = [];
-  while (i < lines.length && ROW.test(lines[i])) body.push(row(lines[i++], "td"));
-  return [`<div class="table-wrap" role="region" aria-label="Reference table" tabindex="0"><table><thead>${row(lines[start], "th")}</thead><tbody>${body.join("")}</tbody></table></div>`, i];
+  const rows: string[][] = [];
+  while (i < lines.length && ROW.test(lines[i])) rows.push(cells(lines[i++]));
+  if (head.length >= 3 && rows.some((r) => r.some((c) => c.length > LONG_CELL))) {
+    const cards = rows.map(
+      ([title, ...rest]) =>
+        `<li class="ref-card"><p class="ref-card-title">${cell(title ?? "")}</p><dl>${rest
+          .map((c, k) => `<dt>${cell(head[k + 1] ?? "")}</dt><dd>${cell(c)}</dd>`)
+          .join("")}</dl></li>`,
+    );
+    return [`<ul class="ref-cards" aria-label="${escape(head[0] ?? "Reference")}">${cards.join("")}</ul>`, i];
+  }
+  const row = (r: string[], tag: string) => `<tr>${r.map((c) => `<${tag}>${cell(c)}</${tag}>`).join("")}</tr>`;
+  return [`<div class="table-wrap" role="region" aria-label="Reference table" tabindex="0"><table><thead>${row(head, "th")}</thead><tbody>${rows.map((r) => row(r, "td")).join("")}</tbody></table></div>`, i];
 }
 
 const indentOf = (line: string) => line.match(/^ */)![0].length;
@@ -196,6 +215,8 @@ export const slug = (text: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
+const CALLOUTS: Record<string, string> = { note: "Note", tip: "Tip", warning: "Careful" };
+
 export function plainText(md: string) {
   return md.replace(/`/g, "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/\*\*/g, "");
 }
@@ -256,7 +277,15 @@ export function markdown(source: string, headings: DocHeading[] = [], imageSize:
     } else if (line.startsWith(">")) {
       const quote: string[] = [];
       while (i < lines.length && lines[i].startsWith(">")) quote.push(lines[i++].replace(/^>\s?/, ""));
-      out.push(`<blockquote>${markdown(quote.join("\n"), [], imageSize)}</blockquote>`);
+      // GitHub's alert syntax, `> [!TIP] Optional title`, makes a labelled callout.
+      const alert = quote[0].match(/^\[!(NOTE|TIP|WARNING)\]\s*(.*)$/i);
+      if (alert) {
+        const kind = alert[1].toLowerCase();
+        const title = inline(alert[2] || CALLOUTS[kind]);
+        out.push(`<div class="callout callout-${kind}" role="note"><p class="callout-title">${title}</p>${markdown(quote.slice(1).join("\n"), [], imageSize)}</div>`);
+      } else {
+        out.push(`<blockquote>${markdown(quote.join("\n"), [], imageSize)}</blockquote>`);
+      }
     } else {
       const para: string[] = [];
       while (i < lines.length && lines[i].trim() && !/^(#{1,6}\s|>|\s*```|\s*~~~)/.test(lines[i]) && !ITEM.test(lines[i])) {

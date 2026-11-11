@@ -1,7 +1,6 @@
 import { About } from "@/components/about";
 import { Community } from "@/components/community";
 import { Contributors } from "@/components/contributors";
-import { Gallery } from "@/components/gallery";
 import { getReleases } from "@/components/github-releases";
 import { Hero } from "@/components/hero";
 import { getMessages, type Locale } from "@/components/i18n";
@@ -91,7 +90,6 @@ export async function HomePage({ locale }: { locale: Locale }) {
       <Hero locale={locale} />
       <About locale={locale} />
       <Community locale={locale} />
-      <Gallery locale={locale} />
       <Contributors locale={locale} />
       <Parity locale={locale} />
     </main>

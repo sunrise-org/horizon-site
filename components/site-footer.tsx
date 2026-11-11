@@ -12,7 +12,7 @@ import { getMessages, LOCALES, rich, type Locale } from "@/components/i18n";
 import { localePath } from "@/components/i18n-text";
 import { LanguageSwitch } from "@/components/language-switch";
 import { GITHUB_URL, UPSTREAM_URL } from "@/components/links";
-import { profileUrl, TEAM } from "@/components/team";
+import { ORIGINAL_SITE_MAKER, profileUrl, TEAM } from "@/components/team";
 
 const LEGAL = [{ href: "/privacy", key: "privacy" }] as const;
 
@@ -76,7 +76,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
       );
     };
   return (
-    <footer className="footer-horizon glass-panel glass-chrome mt-auto">
+    <footer className="footer-horizon mt-auto">
       <div className="mx-auto w-full max-w-6xl px-6 pt-14 pb-10 lg:px-10">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-16">
           <Link
@@ -109,6 +109,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
                 horizon: out(UPSTREAM_URL),
                 umut: out(profileUrl("UMCEKO")),
                 xmilon: out(profileUrl("Xmilon")),
+                anthony: out(ORIGINAL_SITE_MAKER.url),
                 github: out(GITHUB_URL),
               })}
             </p>

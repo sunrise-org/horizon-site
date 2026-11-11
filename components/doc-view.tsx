@@ -28,9 +28,9 @@ function PagerLink({ doc, rel }: { doc: Doc | null; rel: "prev" | "next" }) {
 }
 
 const START_HERE = [
-  { href: "/docs/install", title: "Play Sunrise", text: "Install the launcher and start playing." },
-  { href: "/docs/make-a-mod", title: "Make a mod", text: "One folder, one manifest, one .hmod file." },
-  { href: "/docs/apis", title: "Browse reference", text: "Find formats, launcher commands, and server APIs." },
+  { href: "/docs/install", title: "Play", text: "Install the launcher and start your first world." },
+  { href: "/docs/make-a-mod", title: "Make a mod", text: "Set up the tool and build a block in ten minutes." },
+  { href: "/docs/apis", title: "Use the APIs", text: "Formats, launcher commands and server APIs." },
 ];
 
 export function DocView({ doc, prev, next, children }: { doc: Doc; prev: Doc | null; next: Doc | null; children?: ReactNode }) {
@@ -41,11 +41,13 @@ export function DocView({ doc, prev, next, children }: { doc: Doc; prev: Doc | n
   const showToc = toc.length >= 4;
   return (
     <div key={doc.slug} className={`docs-page ${showToc ? "min-[80rem]:grid min-[80rem]:grid-cols-[minmax(0,1fr)_13rem] min-[80rem]:gap-12" : ""}`}>
-      <article id="main" className="min-w-0 max-w-[50rem]">
+      <article id="main" className="min-w-0 max-w-[58rem]">
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-muted">
           <Link href="/docs" className="hover:text-foreground">
             Docs
           </Link>
+          <span aria-hidden>/</span>
+          <span>{doc.section}</span>
           <span aria-hidden>/</span>
           <span className="rounded-full bg-lavender px-2.5 py-0.5 font-medium text-accent-ink">{doc.group}</span>
         </nav>
@@ -81,13 +83,13 @@ export function DocView({ doc, prev, next, children }: { doc: Doc; prev: Doc | n
                   <span className="mt-2 block font-display text-xl font-semibold">A block that glows and drops</span>
                   <span className="mt-2 block text-sm leading-relaxed text-muted">Build Glowing Amethyst with a model, a recipe, and a pickaxe drop.</span>
                 </Link>
-                <Link href="/docs/mod-code#your-first-typed-hook" className="glass-panel soft-press rounded-xl border border-line p-5 focus-visible:outline-2 focus-visible:outline-accent">
-                  <span className="text-xs font-medium text-accent-ink">TYPED RUST</span>
+                <Link href="/docs/mod-code" className="glass-panel soft-press rounded-xl border border-line p-5 focus-visible:outline-2 focus-visible:outline-accent">
+                  <span className="text-xs font-medium text-accent-ink">RUST CODE</span>
                   <span className="mt-2 block font-display text-xl font-semibold">Greet a player when they join</span>
-                  <span className="mt-2 block text-sm leading-relaxed text-muted">Use a server hook and the Host to send a welcome message.</span>
+                  <span className="mt-2 block text-sm leading-relaxed text-muted">Add one Rust file to the same mod: a hook that sends a welcome message.</span>
                 </Link>
                 <Link href="/docs/modding" className="glass-panel soft-press rounded-xl border border-line p-5 focus-visible:outline-2 focus-visible:outline-accent sm:col-span-2">
-                  <span className="text-xs font-medium text-accent-ink">THE MODDING BOOK</span>
+                  <span className="text-xs font-medium text-accent-ink">REFERENCE BOOK</span>
                   <span className="mt-2 block font-display text-xl font-semibold">Everything the mod API can do</span>
                   <span className="mt-2 block text-sm leading-relaxed text-muted">Ari’s own guide and reference: hooks, Parts, attachments, injections, the manifest and the registry.</span>
                 </Link>
@@ -163,7 +165,7 @@ export function DocView({ doc, prev, next, children }: { doc: Doc; prev: Doc | n
 
 export function DocSkeleton() {
   return (
-    <div aria-busy="true" aria-label="Loading the page" className="max-w-[50rem] motion-safe:animate-pulse">
+    <div aria-busy="true" aria-label="Loading the page" className="max-w-[58rem] motion-safe:animate-pulse">
       <div className="h-4 w-32 rounded bg-lavender" />
       <div className="mt-5 h-11 w-3/4 rounded-lg bg-lavender" />
       <div className="mt-6 space-y-3">

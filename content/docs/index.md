@@ -1,33 +1,41 @@
-# Sunrise documentation
+# What is Sunrise?
 
-Find the guides for playing and hosting Sunrise, a fork of Horizon’s Rust rewrite of Minecraft: Java Edition. The modding guides take you from an empty folder to one `.hmod` file, and the modding book is the mod API’s own documentation.
+Sunrise is Minecraft: Java Edition 26.3, rewritten in Rust. It is a community fork of Horizon, made to speed up development and to get new features into players' hands sooner.
 
-## In one minute
+## Sunrise in four lines
 
-- **A new game program, not a mod.** Sunrise is written from scratch in Rust. It reads the same worlds, plays by the same rules and generates the same terrain as the Java game.
-- **Checked against vanilla.** {{HARNESSES}} automated tests ("harnesses") feed the same inputs to Sunrise and to the real game, then compare the results. Passing them is not proof that nothing else differs, and players still find differences. The [status table](/#parity) shows what they covered when the project started.
-- **Light and fast.** It starts quickly, uses little memory and draws efficiently. See [Performance](/docs/performance) for what is measured and what is not.
-- **A few things vanilla doesn't have.** Its own settings, added to vanilla's menus the way mods add theirs, graphics presets, distant terrain, controller support, optional extras such as dynamic lights, official mods such as zoom and a minimap, an invite code to play your world with friends, and a server you can run without Java.
+- **A new game program.** It is written from scratch in Rust, not a mod of the Java game.
+- **It plays like vanilla.** It reads the same worlds and plays by the same rules as Java Edition 26.3.
+- **It is a fork.** Sunrise builds on Horizon and adds features that are still in development, such as the new mod system.
+- **You bring your own Minecraft.** Sunrise ships no Minecraft files. It builds its game files from your own copy.
 
-## What Sunrise is not
+## Where Sunrise comes from
 
-- **Not Minecraft itself.** Sunrise contains no Minecraft code, assets or data, and it never downloads them. You need your own legally obtained copy of Minecraft: Java Edition 26.3. Sunrise builds its game files from that copy, on your computer.
-- **Not a place where Java mods run.** Forge, NeoForge, Fabric and Quilt mod jars do **not** work in Sunrise, and neither do Mixins. Sunrise has its own mod system, and the launcher can port some Java mods' content. See [Mods and data packs](/docs/mods) and [Modpacks](/docs/modpacks).
-- **Not for other versions.** Sunrise plays Java Edition 26.3. Worlds from older versions (1.8 to 26.2) are upgraded the way vanilla upgrades them.
-- **Not an official Minecraft product.** It is not approved by or associated with Mojang or Microsoft.
+**Horizon** is the original project: Minecraft: Java Edition rewritten in Rust. It was founded by Ludovic Marie.
 
-## Supported systems
+**Sunrise** is a community fork of Horizon. It exists for two reasons:
 
-- **Linux, x86-64.** A graphics card with Vulkan drivers. Builds are made on Ubuntu 22.04, so use a distribution at least that recent.
-- **macOS, Apple Silicon or Intel.** Any M1 or newer, or an Intel Mac, on macOS 12 or later.
-- **Windows, x64 or ARM64.** Vulkan or DirectX 12. Sunrise picks DirectX 12 by itself when Vulkan does not work, and first on ARM64 PCs (Snapdragon).
+- **Easier development.** The team develops and tests changes together, in one shared place.
+- **Earlier features.** Work that is still in development, such as Ari's typed mod API, reaches players and mod makers sooner.
 
-There is no build for 32-bit systems or ARM Linux. The server can be built from source on other systems.
+Sunrise keeps Horizon's rule: wherever vanilla has a feature, vanilla is the specification.
 
-## Where to go next
+## Who makes Sunrise
 
-- **Playing:** [install and first launch](/docs/install), [settings worth knowing](/docs/settings), [multiplayer](/docs/multiplayer) and [what to do when something breaks](/docs/troubleshooting).
-- **Hosting:** [host a server](/docs/hosting), from the launcher or the command line.
-- **Going further:** [modpacks](/docs/modpacks), [mods and data packs](/docs/mods) and [performance](/docs/performance).
-- **Making mods:** [make a mod](/docs/make-a-mod), content or code, from the first file to the registry, and the [modding book](/docs/modding) for everything else.
-- **Helping out:** [contribute](/docs/contributing) and the [FAQ](/docs/faq).
+Sunrise is made by its team: **Umut, Xmilon, Juan Luci, Ari, levzzz, Isloka** and others, with every contributor who sends a pull request.
+
+- **Ari** leads the mod API. The modding guides here follow Ari's repository, [arismoko/horizon](https://github.com/arismoko/horizon).
+- **This website** is made by **Xmilon and Umut**.
+
+The whole team is listed at the bottom of this page.
+
+## Pick where to start
+
+- **I want to play.** Start with [Install and first launch](/docs/install). It takes a few minutes.
+- **I want to make a mod.** Start with the [modding quickstart](/docs/make-a-mod). Your first block takes about ten minutes.
+- **I want to know what it can do.** Read [What Sunrise can do](/docs/features).
+- **I run a server or write tools.** See [Host a server](/docs/hosting) and the [APIs](/docs/apis).
+- **Something is broken.** See [Logs, crashes and bug reports](/docs/troubleshooting).
+
+> [!NOTE] Not an official Minecraft product
+> Sunrise is not approved by or associated with Mojang or Microsoft. You need your own copy of Minecraft: Java Edition 26.3.

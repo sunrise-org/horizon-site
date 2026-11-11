@@ -614,7 +614,7 @@ export function HorizonScene({ className, landscape, sunX, wideSun, sun = true, 
     <div
       ref={wrapRef}
       aria-hidden
-      className={`group overflow-hidden bg-[linear-gradient(to_bottom,#120a16_0%,#26122a_38%,#481b3e_62%,#913254_80%,#170c19_86%)] ${className ?? ""}`}
+      className={`fade-bottom group overflow-hidden bg-[linear-gradient(to_bottom,#120a16_0%,#26122a_38%,#481b3e_62%,#913254_80%,#170c19_86%)] ${className ?? ""}`}
     >
       <canvas
         ref={skyRef}

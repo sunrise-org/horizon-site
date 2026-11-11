@@ -36,11 +36,19 @@ const nextConfig: NextConfig = {
     return [
       { source: "/:path*", has: [{ type: "host", value: "[^.]+\\.up\\.railway\\.app" }], destination: `${process.env.SITE_URL || "https://playsunrise.net"}/:path*`, permanent: true },
       { source: "/docs/how-horizon-is-built", destination: "/docs/how-sunrise-is-built", permanent: true },
+      { source: "/docs/content-mods", destination: "/docs/mod-data", permanent: true },
       { source: "/server", destination: "/docs/hosting", permanent: true },
       { source: "/server.html", destination: "/docs/hosting", permanent: true },
       { source: "/benchmarks", destination: "/", permanent: true },
       { source: "/es/benchmarks", destination: "/es", permanent: true },
-      { source: "/roadmap", destination: "/hub#roadmap", permanent: true },
+      // The public hub, the players page and the 3D artists page were removed (2026-11-11); the staff pages under /hub stay.
+      { source: "/roadmap", destination: "/team", permanent: true },
+      { source: "/hub", destination: "/team", permanent: true },
+      { source: "/hub/market", destination: "/team", permanent: true },
+      { source: "/stats", destination: "/", permanent: true },
+      { source: "/es/stats", destination: "/es", permanent: true },
+      { source: "/artists", destination: "/", permanent: true },
+      { source: "/es/artists", destination: "/es", permanent: true },
       // The staff dashboards moved into the hub (2026-11-01). Browsers keep the #fragment of old setup links across the redirect.
       { source: "/staff", destination: "/hub/sign-in", permanent: true },
       { source: "/staff/help", destination: "/hub/staff-help", permanent: true },

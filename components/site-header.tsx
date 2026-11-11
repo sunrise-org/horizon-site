@@ -17,11 +17,10 @@ type NavKey = keyof Messages["header"]["nav"];
 
 const NAV: { key: NavKey; href: string }[] = [
   { key: "about", href: "/#about" },
-  { key: "hub", href: "/hub" },
+  { key: "team", href: "/team" },
   { key: "mods", href: "/mods" },
   { key: "releases", href: "/releases" },
   { key: "docs", href: "/docs" },
-  { key: "players", href: "/stats" },
   { key: "apiGaps", href: "/api-gaps" },
   { key: "faq", href: "/faq" },
 ];

@@ -10,11 +10,10 @@
   "header": {
     "nav": {
       "about": "About",
-      "hub": "Hub",
+      "team": "Team",
       "mods": "Mods",
       "releases": "Releases",
       "docs": "Docs",
-      "players": "Players",
       "apiGaps": "API gaps",
       "faq": "FAQ"
     },
@@ -28,7 +27,7 @@
   "footer": {
     "disclaimer": "Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.",
     "whoTitle": "Who makes it",
-    "who": "Sunrise is made by its team: <members>Sunrise</members>, with <team>everyone who contributes</team>. It builds on <horizon>Horizon</horizon> by Ludovic Marie and the horizon-rust contributors, and this site is made by <umut>Umut</umut> and <xmilon>Xmilon</xmilon>, and hosted by <umut>Umut</umut>. Reach us on <github>GitHub</github>. Sunrise contains no Minecraft code, assets or data, and this site offers no game files: you need your own legally obtained copy of Minecraft: Java Edition. Minecraft is a trademark of Mojang Synergies AB.",
+    "who": "Sunrise is made by its team: <members>Sunrise</members>, with <team>everyone who contributes</team>. It builds on <horizon>Horizon</horizon>, founded by Ludovic Marie, and the horizon-rust contributors. This site is made by <umut>Umut</umut> and <xmilon>Xmilon</xmilon>, hosted by <umut>Umut</umut>, and grew out of the Horizon site by <anthony>Anthony S</anthony>. Reach us on <github>GitHub</github>. Sunrise contains no Minecraft code, assets or data, and this site offers no game files: you need your own legally obtained copy of Minecraft: Java Edition. Minecraft is a trademark of Mojang Synergies AB.",
     "licencesTitle": "Licences",
     "licences": "Sunrise's code is under the <mit>MIT licence</mit>, as Horizon's. The fonts are Geist, Geist Mono and Sora, with Bricolage Grotesque on share cards, under the <ofl>SIL Open Font License</ofl>. Every asset on this site is listed in LEGAL.md.",
     "privacyTitle": "Privacy",
@@ -67,7 +66,7 @@
     "about": {
       "eyebrow": "What it is",
       "title": "Same inputs, identical outputs.",
-      "fork": "Sunrise is a community fork of <upstream>Horizon</upstream>.",
+      "fork": "Sunrise is a community fork of <upstream>Horizon</upstream>, made to ease development and to ship features that are still in development.",
       "lead": "Sunrise, sometimes called Minecraft Rust Edition, rebuilds Minecraft: Java Edition 26.3 in Rust, one subsystem at a time, and holds every piece to the same inputs as the vanilla game until the outputs are identical.",
       "contributors": "Visit contributors",
       "imageAlt": "A Minecraft windmill above a field of lavender",
@@ -113,30 +112,23 @@
           "title": "How it's built",
           "body": "Who writes it, how changes are checked, why it's safe to run."
         }
-      },
-      "artists": "Do you make 3D models? <link>Sunrise is looking for 3D artists</link>."
-    },
-    "gallery": {
-      "eyebrow": "Drawn by",
-      "title": "The same game you love, <accent>frame for frame.</accent>",
-      "lead": "Every frame here was rendered by Sunrise, with vanilla's block models, lighting, sky and fog.",
-      "shots": {
-        "nether": "A piglin with a golden sword in a crimson forest above a sea of lava in the Nether",
-        "village": "A savanna village of thatched houses among acacia trees under a blue sky",
-        "night": "A torch-lit village under a square moon and a starry night sky",
-        "ocean": "Tropical fish swimming over a coral reef in a warm ocean"
       }
     },
     "contributors": {
-      "eyebrow": "Contributors",
+      "eyebrow": "Horizon contributors",
       "title": "Built by {n} people.",
       "claude": "…and<claude/>Claude too",
       "titleFallback": "Built by its contributors.",
-      "lead": "Everyone with commits in {repo}, most commits first, and the people behind this site.",
+      "lead": "Everyone with commits in Horizon, through {repo}, most commits first.",
       "all": "All contributors on GitHub",
       "oneCommit": "1 commit",
       "commits": "{n} commits",
-      "webDeveloper": "Site maker"
+      "webDeveloper": "Site maker",
+      "onePull": "1 pull request to this site",
+      "pulls": "{n} pull requests to this site",
+      "siteTitle": "This site",
+      "siteLead": "playsunrise.net is made by Xmilon and Umut, in {repo}, and grew out of the Horizon site.",
+      "originalSite": "Made the original Horizon site"
     },
     "parity": {
       "harnesses": "differential harnesses when we started: each drives the same inputs through Sunrise and through the vanilla client and server, and compares what comes out.",
@@ -382,108 +374,6 @@
         "githubOne": "{n} star on GitHub"
       }
     }
-  },
-  "stats": {
-    "meta": {
-      "title": "Sunrise player count: how many play right now",
-      "description": "How many people play Sunrise right now, its peaks and its history, from the anonymous ping every running game sends."
-    },
-    "kicker": "Players",
-    "kickerLive": "Live, every minute",
-    "titleA": "Who plays Sunrise",
-    "titleB": "right now.",
-    "lead": "Every running game sends an anonymous “I'm playing” ping once a minute: no account, no address, nothing you do in the game (<link>what it holds</link>). The count below is exact, and the history keeps only totals.",
-    "live": {
-      "ranges": {
-        "24h": "24 hours",
-        "7d": "7 days",
-        "30d": "30 days",
-        "all": "All"
-      },
-      "spans": {
-        "24h": "over the last 24 hours",
-        "7d": "over the last 7 days",
-        "30d": "over the last 30 days",
-        "all": "since the count began"
-      },
-      "platforms": {
-        "linux": "Linux",
-        "macos": "macOS",
-        "windows": "Windows",
-        "other": "Other"
-      },
-      "label": "{title} {span}",
-      "noSamples": "No samples in this range yet: the history began on 31 October 2026.",
-      "highest": "Highest",
-      "average": "Average",
-      "peak": "Peak {n} on {when}",
-      "chartLabel": "{title}: the highest count per point and the average. The table below lists every point.",
-      "tooltip": "Highest {max} · Average {avg}",
-      "table": "Table",
-      "when": "When",
-      "showThe": "Show the",
-      "down": "The server doesn't answer right now.",
-      "loading": "Loading…",
-      "nowTitle": "Now and the peaks",
-      "playingNow": "playing now",
-      "updated": "Updated {time}, again every minute",
-      "asking": "Asking the server…",
-      "peakToday": "peak today",
-      "at": "at {time}",
-      "noSampleToday": "No sample yet today",
-      "allTime": "all-time peak",
-      "on": "on {when}",
-      "lan": "open to LAN or friends",
-      "lanShare": "{pct}% of those playing",
-      "system": "On which system",
-      "nobody": "Nobody is playing right now.",
-      "overTime": "Over time",
-      "historyNote": "Each point is the highest and the average count in its 5 minutes (24 hours), hour (7 days), 3 hours (30 days) or day (all, UTC days). Times are in your time zone.",
-      "officialTitle": "The Official Sunrise SMP",
-      "officialLead": "The Official Sunrise SMP, the survival server at the top of the game's server list. Every minute the telemetry server asks it how many play, with the same status ping your game's Multiplayer list sends.",
-      "playingThere": "playing there now",
-      "atAgain": "At {time}, again every minute",
-      "notAnswering": "Not answering since {time}",
-      "playersTitle": "Players",
-      "officialHistory": "On the Official Sunrise SMP"
-    }
-  },
-  "artists": {
-    "meta": {
-      "title": "3D artists · Sunrise",
-      "description": "Sunrise welcomes 3D artists to make cosmetics for its players: hats, back items, shoulder pets, trails and emotes in a blocky style. Say hello on Discord."
-    },
-    "kicker": "3D artists",
-    "titleA": "We're looking for",
-    "titleB": "3D artists.",
-    "lead": "Sunrise welcomes 3D artists to make cosmetics for Sunrise players: things players wear and carry that other Sunrise players see in every world and on every server. If you like making small, blocky models, we'd like to hear from you.",
-    "make": {
-      "title": "What we'd make together",
-      "items": [
-        "Hats and other head pieces.",
-        "Back items, such as backpacks or rigid wings.",
-        "Small pets that ride on a player's shoulder, or companions that float beside them.",
-        "Auras and trails made of a few particles.",
-        "Emotes: short animations for the player's own model."
-      ],
-      "note": "Cosmetics only change how a player looks, never how the game plays."
-    },
-    "fits": {
-      "title": "What fits",
-      "items": [
-        "Low-poly models in Minecraft's blocky style, built from a few dozen cubes, with small pixel textures (16 to 64 pixels).",
-        "Your own designs. No copies of Minecraft's mobs and items, or of anyone else's work.",
-        "Art for every age, that still reads at a distance.",
-        "No capes, or anything that hangs from the shoulders like one.",
-        "Blockbench is welcome. Animation is a plus, not a requirement."
-      ]
-    },
-    "contact": {
-      "title": "Get in touch",
-      "body": "Join Sunrise's Discord and say you're a 3D artist, with a few pieces you've made: links or pictures are fine. If you'd rather write privately, write through <link>lu4ovic.com</link>.",
-      "discord": "Join the Discord"
-    },
-    "newTab": " (opens in a new tab)"
   },
   "faq": {
     "meta": {

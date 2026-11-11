@@ -6,14 +6,14 @@ Sunrise is built to be built on. Mods, shaders, agents, server panels, launchers
 
 | Surface | For | Today | Stability |
 | --- | --- | --- | --- |
-| **Mods** | mod authors | Native mods: Rust on the game's hook points, more than 350 of them (tick, HUD, keys, commands, blocks, mobs, damage, loot, menus, rendering and more), through mixin helpers or the typed `Hooks` trait, compiled into the game by the launcher. Content mods: data-driven blocks, items, recipes and structures | experimental |
+| **Mods** | mod authors | One `.hmod` per mod: data-driven blocks, items, recipes and structures, plus optional Rust code on the game's hooks (tick, HUD, keys, commands, blocks, mobs, damage, loot, menus, rendering and more) through the typed `Hooks` trait, compiled into the game by the launcher | experimental |
 | **Shaders** | shader authors | a new shader API in WGSL is being designed: stages with typed inputs, options, reload on save, a debug overlay | planned |
 | **Agent control** | AI agents, scripts, tests | `horizon-ctl` and its MCP server: 96 commands to watch and play the game | preview |
 | **Servers** | hosts, panels, bots | `horizon-server`'s commands, `server.toml` and a local HTTP control API | stable |
 | **Launcher** | your agent, pack makers | `horizon-launcher`'s 46 commands and its MCP server | preview |
 | **Data formats** | tools that read Sunrise's files | benchmark reports, telemetry, settings, release checksums; worlds are vanilla's format | per format |
 
-The full pages, one per surface, with their references: [the API portal](/docs/api). Mods: [hook points and helpers](/docs/mod-code) and [content mods](/docs/content-mods). Mods for players: [Mods](/docs/mods). Agents: [Control Sunrise with your AI agent](/docs/agents). Hosting: [Host a server](/docs/hosting).
+The full pages, one per surface, with their references: [the API portal](/docs/api). Mods: [add code to a mod](/docs/mod-code) and [blocks, items and data files](/docs/mod-data). Mods for players: [Mods](/docs/mods). Agents: [Control Sunrise with your AI agent](/docs/agents). Hosting: [Host a server](/docs/hosting).
 
 ## What the levels mean
 
@@ -27,7 +27,7 @@ Every API has its own version (the native hook points are version 1, the server'
 
 Each API starts from what its users need to do, and from how Sunrise is built: Rust, wgpu and a server thread that runs every world. Sunrise's APIs are its own: they are not modelled on another mod loader's, renderer's or server platform's. Vanilla Minecraft 26.3 is the reference for game concepts such as ids, commands and data packs.
 
-They are safe by default (content mods are data only, native mods build only after a warning and play in a game of their own; control sockets only listen on your computer, behind a token) and cost nothing when unused.
+They are safe by default (a mod's data can't run anything, and its code builds only after a warning, into a game of its own; control sockets only listen on your computer, behind a token) and cost nothing when unused.
 
 ## References that can't drift
 
