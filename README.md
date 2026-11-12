@@ -55,6 +55,9 @@ The `/docs/api/*` pages come from `docs/api/` in the game's repository, read fro
 
 - **GitHub's API**: releases, contributors, the roadmap's issues and pull requests. Cached for about 15 minutes.
   `GITHUB_TOKEN` lifts the rate limit.
+- **Contributor credits**: the homepage counts commits in `arismoko/horizon`, including inherited Horizon history,
+  and links to that fork's contributor graph. Website-maker PR counts stay on `sunrise-org/horizon-site`.
+  Both use the `hours` cache profile: after an hour, the next visit triggers a background refresh.
 - **Fresh within a minute**: every GitHub loader carries a cache tag (`components/github-fresh.ts`: the game's branch,
   its issues and pull requests, its releases, horizon-mods' main). Kira gets GitHub's organization webhook and calls
   `POST /api/revalidate` (`Authorization: Bearer $REVALIDATE_SECRET`, body `{"tags": [...]}`) for what changed; the
