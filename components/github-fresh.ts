@@ -6,11 +6,11 @@ import { GAME_REF, GAME_REPO } from "@/components/game-repo";
 // webhook says they changed (a push to the game's branch, an issue or pull request, a release), so the pages follow
 // within a minute; without that call each loader keeps its own cacheLife, as before.
 export const TAGS = {
-  main: `github:${GAME_REPO}:${GAME_REF}`, // files on the game's branch (roadmap.json, docs/api, README), contributors
+  main: `github:${GAME_REPO}:${GAME_REF}`, // files on the game's branch (roadmap.json, docs/api, README), site-maker PR counts
   issues: `github:${GAME_REPO}:issues`, // the game's issues and pull requests (the hub, the journal)
   releases: `github:${GAME_REPO}:releases`, // the game's releases
   mods: "github:sunrise-org/horizon-mods:main", // horizon-mods' main (the mod policy, the registry index it publishes)
-  apiGaps: "github:arismoko-horizon:main", // arismoko/horizon's main and issues (/api-gaps)
+  apiGaps: "github:arismoko-horizon:main", // arismoko/horizon's contributors, main and issues (/api-gaps)
 } as const;
 export const REVALIDATE_TAGS: readonly string[] = Object.values(TAGS);
 

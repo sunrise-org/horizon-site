@@ -1,14 +1,14 @@
 import Image from "next/image";
 import { cacheLife, cacheTag } from "next/cache";
 import { TAGS } from "@/components/github-fresh";
-import { GAME_REPO } from "@/components/game-repo";
 import { githubFetch } from "@/components/github-api";
 import { format, getMessages, NUMBER_LOCALE, rich, type Locale } from "@/components/i18n";
 import { ClaudeIcon, ExternalLinkIcon } from "@/components/icons";
-import { GITHUB_URL } from "@/components/links";
+import { MOD_API_REPO, MOD_API_REPO_URL } from "@/components/links";
 import { avatarUrl, memberOf, ORIGINAL_SITE_MAKER, profileUrl, SITE_MAKERS, SITE_REPO } from "@/components/team";
 
-const REPO = GAME_REPO;
+// Include Horizon's inherited history alongside new contributions to Ari's fork.
+const REPO = MOD_API_REPO;
 
 const NOT_PEOPLE = new Set(["claude", "cursoragent", "noreply"]);
 
@@ -21,7 +21,7 @@ type Card = { name: string; detail: string; avatar: string; url: string };
 
 export async function getContributors(): Promise<Contributor[] | null> {
   "use cache";
-  cacheTag(TAGS.main);
+  cacheTag(TAGS.apiGaps);
   const all: GitHubContributor[] = [];
   try {
     for (let page = 1; page <= 5; page++) {
@@ -119,7 +119,7 @@ export async function Contributors({ locale }: { locale: Locale }) {
             </p>
           </div>
           <a
-            href={`${GITHUB_URL}/graphs/contributors`}
+            href={`${MOD_API_REPO_URL}/graphs/contributors`}
             target="_blank"
             rel="noreferrer"
             className="inline-flex shrink-0 items-center gap-1.5 text-[15px] font-medium text-accent-ink underline decoration-accent-ink/40 underline-offset-4 transition-colors hover:text-[#ffd2e4] hover:decoration-[#ffd2e4]"
